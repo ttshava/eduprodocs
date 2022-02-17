@@ -1,9 +1,8 @@
-Template for the Read the Docs tutorial
+Edupro's documentation
 =======================================
 
-This GitHub template includes fictional Python library
-with some basic Sphinx docs.
+Edupro its an  online tests and quizzes application for junior and high school students.
 
-Read the tutorial here:
+Read here:
 
-https://docs.readthedocs.io/en/stable/tutorial/
+https://eduprodocs.readthedocs.io/en/latest/
