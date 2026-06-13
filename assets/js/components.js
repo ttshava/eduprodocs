@@ -194,45 +194,99 @@
   </div>
 </nav>
 
-<!-- Mobile Nav -->
+<!-- Mobile Nav Backdrop -->
+<div class="mobile-nav-backdrop" id="mobileNavBackdrop"></div>
+
+<!-- Mobile Nav Drawer -->
 <div class="mobile-nav" id="mobileNav" role="dialog" aria-label="Mobile navigation">
   <div class="mobile-nav-header">
     <a href="${root}index.html" class="nav-logo">
-      <img src="${root}assets/img/logo.png" alt="Edupro SMS" class="nav-logo-img">
+      <img src="${root}assets/img/logo.png" alt="Edupro SMS" class="nav-logo-img" style="height:36px;">
     </a>
     <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
   </div>
+
   <div class="mobile-nav-body">
     <div class="mobile-nav-section">
       <div class="mobile-nav-section-title">Main</div>
-      <a href="${root}index.html" class="mobile-nav-link">Home</a>
-      <a href="${root}getting-started.html" class="mobile-nav-link">Get Started</a>
-      <a href="${root}pricing.html" class="mobile-nav-link">Pricing</a>
-      <a href="${root}gallery.html" class="mobile-nav-link">Screenshots &amp; Demo</a>
-      <a href="${root}blog/index.html" class="mobile-nav-link">Blog</a>
-      <a href="${root}docs.html" class="mobile-nav-link">Documentation</a>
-      <a href="${root}subjects.html" class="mobile-nav-link">Subjects / Curriculum</a>
-      <a href="${root}contact.php" class="mobile-nav-link">Contact</a>
-      <a href="${root}register.php" class="mobile-nav-link" style="color:var(--red);font-weight:700;">Register Your School</a>
+      <a href="${root}index.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        Home
+      </a>
+      <a href="${root}getting-started.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
+        Get Started
+      </a>
+      <a href="${root}pricing.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Pricing
+      </a>
+      <a href="${root}faq.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        FAQ
+      </a>
+      <a href="${root}gallery.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        Screenshots &amp; Demo
+      </a>
+      <a href="${root}blog/index.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        Blog
+      </a>
+      <a href="${root}subjects.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        Curriculum
+      </a>
+      <a href="${root}docs.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Documentation
+      </a>
+      <a href="${root}contact.php" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Contact
+      </a>
     </div>
+
     <div class="mobile-nav-section">
       <div class="mobile-nav-section-title">Modules</div>
-      <a href="${root}modules/sim-100.html" class="mobile-nav-link">Student Information (SIM-100)</a>
-      <a href="${root}modules/adm-200.html" class="mobile-nav-link">Admissions (ADM-200)</a>
-      <a href="${root}modules/com-400.html" class="mobile-nav-link">Communications (COM-400)</a>
-      <a href="${root}modules/att-300.html" class="mobile-nav-link">Attendance (ATT-300)</a>
-      <a href="${root}modules/fin-500.html" class="mobile-nav-link">Fees Management (FIN-500)</a>
-      <a href="${root}modules/lms-200.html" class="mobile-nav-link">Moodle LMS (LMS-200)</a>
-      <a href="${root}modules/tts-300.html" class="mobile-nav-link">Timetable (TTS-300)</a>
-      <a href="${root}modules/rpt-800.html" class="mobile-nav-link">Academic Reporting (RPT-800)</a>
-      <a href="${root}modules/ast-900.html" class="mobile-nav-link">Asset Management (AST-900)</a>
-      <a href="${root}modules/trn-1000.html" class="mobile-nav-link">Capacity Building (TRN-1000)</a>
+      <a href="${root}modules/sim-100.html" class="mobile-nav-link">Student Information <span style="font-size:.75rem;color:var(--red);font-weight:700;margin-left:auto;">SIM-100</span></a>
+      <a href="${root}modules/adm-200.html" class="mobile-nav-link">Admissions <span style="font-size:.75rem;color:var(--red);font-weight:700;margin-left:auto;">ADM-200</span></a>
+      <a href="${root}modules/att-300.html" class="mobile-nav-link">Attendance <span style="font-size:.75rem;color:var(--red);font-weight:700;margin-left:auto;">ATT-300</span></a>
+      <a href="${root}modules/com-400.html" class="mobile-nav-link">Communications <span style="font-size:.75rem;color:var(--red);font-weight:700;margin-left:auto;">COM-400</span></a>
+      <a href="${root}modules/fin-500.html" class="mobile-nav-link">Fees Management <span style="font-size:.75rem;color:var(--red);font-weight:700;margin-left:auto;">FIN-500</span></a>
+      <a href="${root}modules/lms-200.html" class="mobile-nav-link">Moodle LMS <span style="font-size:.75rem;color:var(--red);font-weight:700;margin-left:auto;">LMS-200</span></a>
+      <a href="${root}modules/tts-300.html" class="mobile-nav-link">Timetable <span style="font-size:.75rem;color:var(--red);font-weight:700;margin-left:auto;">TTS-300</span></a>
+      <a href="${root}modules/rpt-800.html" class="mobile-nav-link">Academic Reports <span style="font-size:.75rem;color:var(--red);font-weight:700;margin-left:auto;">RPT-800</span></a>
+      <a href="${root}modules/ast-900.html" class="mobile-nav-link">Asset Management <span style="font-size:.75rem;color:var(--red);font-weight:700;margin-left:auto;">AST-900</span></a>
+      <a href="${root}modules/trn-1000.html" class="mobile-nav-link">Capacity Building <span style="font-size:.75rem;color:var(--red);font-weight:700;margin-left:auto;">TRN-1000</span></a>
+    </div>
+
+    <div class="mobile-nav-section">
+      <div class="mobile-nav-section-title">Follow Us</div>
+      <div class="mobile-nav-social">
+        <a href="https://www.facebook.com/eduprozw" target="_blank" rel="noopener" aria-label="Facebook">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/company/eduprozw" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://instagram.com/eduprozw" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://www.tiktok.com/@eduprozw" target="_blank" rel="noopener" aria-label="TikTok">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.3 6.3 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>
+        </a>
+        <a href="https://www.youtube.com/@eduprozw" target="_blank" rel="noopener" aria-label="YouTube">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.54C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon fill="white" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+        </a>
+      </div>
     </div>
   </div>
+
   <div class="mobile-nav-footer">
-    <a href="tel:+263788111611" class="btn-nav-ghost">Call Us</a>
+    <a href="tel:+263788111611" class="btn-nav-ghost">📞 Call Us</a>
     <a href="${root}register.php" class="btn-nav-solid">Register School</a>
   </div>
 </div>
@@ -319,7 +373,39 @@
     </div>
   </div>
 
-  <div class="footer-bottom" style="border-top:1px solid #1f2937;padding:20px 32px;max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:0.83rem;color:#6b7280;">
+  <!-- Social Media Bar -->
+  <div style="border-top:1px solid #1f2937;padding:20px 32px;max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+    <span style="font-size:0.85rem;color:#9ca3af;font-weight:500;">Follow Edupro SMS</span>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <a href="https://www.facebook.com/eduprozw" target="_blank" rel="noopener" aria-label="Facebook"
+         style="width:38px;height:38px;border-radius:50%;background:#1877f2;display:flex;align-items:center;justify-content:center;color:#fff;transition:opacity .2s;"
+         onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </a>
+      <a href="https://www.linkedin.com/company/eduprozw" target="_blank" rel="noopener" aria-label="LinkedIn"
+         style="width:38px;height:38px;border-radius:50%;background:#0a66c2;display:flex;align-items:center;justify-content:center;color:#fff;transition:opacity .2s;"
+         onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      </a>
+      <a href="https://instagram.com/eduprozw" target="_blank" rel="noopener" aria-label="Instagram"
+         style="width:38px;height:38px;border-radius:50%;background:radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);display:flex;align-items:center;justify-content:center;color:#fff;transition:opacity .2s;"
+         onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="https://www.tiktok.com/@eduprozw" target="_blank" rel="noopener" aria-label="TikTok"
+         style="width:38px;height:38px;border-radius:50%;background:#010101;display:flex;align-items:center;justify-content:center;color:#fff;transition:opacity .2s;"
+         onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.3 6.3 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>
+      </a>
+      <a href="https://www.youtube.com/@eduprozw" target="_blank" rel="noopener" aria-label="YouTube"
+         style="width:38px;height:38px;border-radius:50%;background:#ff0000;display:flex;align-items:center;justify-content:center;color:#fff;transition:opacity .2s;"
+         onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.54C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon fill="white" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="footer-bottom" style="border-top:1px solid #1f2937;padding:16px 32px;max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:0.83rem;color:#6b7280;">
     <span>&copy; 2026 Edupro Enterprises (Pvt) Ltd. All Rights Reserved. | Harare, Zimbabwe</span>
     <div class="footer-bottom-links">
       <a href="${root}docs.html">Privacy Policy</a>
@@ -350,20 +436,24 @@
     const hamburger = document.getElementById('navHamburger');
     const mobileNav = document.getElementById('mobileNav');
     const mobileClose = document.getElementById('mobileNavClose');
-    if (hamburger && mobileNav) {
-      hamburger.addEventListener('click', () => {
-        mobileNav.classList.add('open');
-        hamburger.setAttribute('aria-expanded', 'true');
-        document.body.style.overflow = 'hidden';
-      });
-    }
-    if (mobileClose && mobileNav) {
-      mobileClose.addEventListener('click', () => {
-        mobileNav.classList.remove('open');
-        if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-      });
-    }
+    const backdrop = document.getElementById('mobileNavBackdrop');
+
+    const openMobileNav = () => {
+      mobileNav.classList.add('open');
+      if (backdrop) backdrop.classList.add('open');
+      if (hamburger) hamburger.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    };
+    const closeMobileNav = () => {
+      mobileNav.classList.remove('open');
+      if (backdrop) backdrop.classList.remove('open');
+      if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    };
+
+    if (hamburger) hamburger.addEventListener('click', openMobileNav);
+    if (mobileClose) mobileClose.addEventListener('click', closeMobileNav);
+    if (backdrop) backdrop.addEventListener('click', closeMobileNav);
 
     // Scroll to top
     const scrollBtn = document.getElementById('scrollTop');
