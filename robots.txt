@@ -1,0 +1,19 @@
+# robots.txt — edupro.co.zw
+# Edupro SMS | School Management System for Zimbabwe
+
+User-agent: *
+Allow: /
+
+# Block form submission URLs from being indexed
+Disallow: /register.php?*
+Disallow: /demo.php?*
+Disallow: /contact.php?*
+
+# Block any admin or private paths if added in future
+Disallow: /admin/
+Disallow: /private/
+Disallow: /uploads/
+Disallow: /.well-known/
+
+# Sitemap location
+Sitemap: https://edupro.co.zw/sitemap.xml
