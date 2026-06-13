@@ -259,6 +259,7 @@
 <script src="assets/js/components.js"></script>
 
 <?php
+require_once __DIR__ . '/includes/mailer.php';
 $success = false;
 $error   = '';
 $old     = [];
@@ -335,29 +336,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $body .= "Submitted: " . date('Y-m-d H:i:s T') . "\r\n";
     $body .= "IP: " . ($_SERVER['REMOTE_ADDR'] ?? 'unknown') . "\r\n";
 
-    $to      = 'sales@edupro.co.zw';
     $subject = "School Registration: {$old['school_name']} [{$old['province']}]";
-    $headers  = "From: no-reply@edupro.co.zw\r\n";
-    $headers .= "Reply-To: {$old['contact_email']}\r\n";
-    $headers .= "X-Mailer: Edupro-Registration-Form/1.0\r\n";
-    $headers .= "MIME-Version: 1.0\r\n";
-    $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 
-    if (mail($to, $subject, $body, $headers)) {
+    if (mail_sales('sales@edupro.co.zw', $subject, $body, $old['contact_email'])) {
       /* Auto-reply to the contact */
       $reply_body  = "Dear {$old['contact_name']},\r\n\r\n";
       $reply_body .= "Thank you for registering {$old['school_name']} for Edupro SMS.\r\n\r\n";
       $reply_body .= "We have received your request for the following modules:\r\n";
       $reply_body .= $moduleList . "\r\n\r\n";
       $reply_body .= "A member of our sales team will contact you within 24 hours to arrange a demonstration and discuss deployment.\r\n\r\n";
-      $reply_body .= "If you have any urgent questions, please call us on +263 788 111 611.\r\n\r\n";
+      $reply_body .= "If you have any urgent questions, please call us on +263 788 111 611 or WhatsApp +263 772 837 385.\r\n\r\n";
       $reply_body .= "Regards,\r\nEdupro SMS Sales Team\r\nHarare, Zimbabwe\r\nsales@edupro.co.zw";
 
-      $reply_headers  = "From: Edupro SMS <sales@edupro.co.zw>\r\n";
-      $reply_headers .= "MIME-Version: 1.0\r\n";
-      $reply_headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
-
-      mail($old['contact_email'], "Your Edupro SMS Registration — {$old['school_name']}", $reply_body, $reply_headers);
+      mail_sales($old['contact_email'], "Your Edupro SMS Registration — {$old['school_name']}", $reply_body);
 
       $success = true;
       $old = []; // clear form

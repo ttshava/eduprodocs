@@ -93,6 +93,7 @@
 <script src="assets/js/components.js"></script>
 
 <?php
+require_once __DIR__ . '/includes/mailer.php';
 $success = false;
 $error   = '';
 $old     = [];
@@ -133,11 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($old['message']) $body .= "Notes           : {$old['message']}\r\n\r\n";
     $body .= "Submitted: " . date('Y-m-d H:i:s T') . "\r\n";
 
-    $headers  = "From: no-reply@edupro.co.zw\r\n";
-    $headers .= "Reply-To: {$old['email']}\r\n";
-    $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
-
-    if (mail('sales@edupro.co.zw', "Demo Request: {$old['school_name']} [{$old['demo_type']}]", $body, $headers)) {
+    if (mail_sales('sales@edupro.co.zw', "Demo Request: {$old['school_name']} [{$old['demo_type']}]", $body, $old['email'])) {
       // Auto-reply
       $rb  = "Dear {$old['contact_name']},\r\n\r\n";
       $rb .= "Thank you for requesting a demonstration of Edupro SMS for {$old['school_name']}.\r\n\r\n";
@@ -145,10 +142,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $rb .= "Demo type requested: {$old['demo_type']}\r\n";
       if ($old['preferred_date']) $rb .= "Preferred date: {$old['preferred_date']}\r\n";
       if ($old['preferred_time']) $rb .= "Preferred time: {$old['preferred_time']}\r\n";
-      $rb .= "\r\nIf you have any urgent questions, call us on +263 788 111 611.\r\n\r\n";
+      $rb .= "\r\nIf you have any urgent questions, call +263 788 111 611 or WhatsApp +263 772 837 385.\r\n\r\n";
       $rb .= "Regards,\r\nEdupro SMS Sales Team\r\nsales@edupro.co.zw";
-      $rh  = "From: Edupro SMS <sales@edupro.co.zw>\r\nContent-Type: text/plain; charset=UTF-8\r\n";
-      mail($old['email'], "Demo Confirmed — Edupro SMS", $rb, $rh);
+      mail_sales($old['email'], "Demo Confirmed — Edupro SMS", $rb);
       $success = true;
       $old = [];
     } else {
