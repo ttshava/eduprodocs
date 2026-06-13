@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en-ZW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Your School System Must Work Offline | Edupro SMS Blog</title>
+<meta name="description" content="Cloud-only school management systems fail Zimbabwean schools when internet goes down. Here's why offline-first design is non-negotiable in Zimbabwe's connectivity environment.">
+<link rel="stylesheet" href="../assets/css/style.css">
+<style>
+  .article-hero { background:linear-gradient(135deg,#0f2b0f,#1a4d1a); padding:72px 0 56px; text-align:center; color:#fff; }
+  .article-hero h1 { font-size:clamp(1.6rem,4vw,2.6rem); font-weight:800; max-width:740px; margin:0 auto 16px; line-height:1.25; }
+  .article-meta { font-size:.9rem; color:rgba(255,255,255,.6); }
+  .article-meta span { margin:0 8px; }
+  .article-layout { padding:56px 0 80px; background:var(--gray-50); }
+  .article-grid { display:grid; grid-template-columns:1fr 300px; gap:48px; align-items:start; }
+  @media(max-width:960px){ .article-grid{ grid-template-columns:1fr; } }
+  .article-body { background:#fff; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); padding:48px; }
+  @media(max-width:600px){ .article-body{ padding:24px 20px; } }
+  .article-body h2 { font-size:1.4rem; font-weight:800; margin:36px 0 14px; }
+  .article-body p { font-size:1rem; color:var(--gray-600); line-height:1.8; margin-bottom:18px; }
+  .article-body ul { padding-left:20px; margin-bottom:18px; }
+  .article-body li { font-size:1rem; color:var(--gray-600); line-height:1.7; margin-bottom:8px; }
+  .article-body strong { color:var(--gray-900); }
+  .tip-box { background:var(--red-light); border-left:4px solid var(--red); border-radius:0 var(--radius-sm) var(--radius-sm) 0; padding:18px 20px; margin:24px 0; }
+  .tip-box p { margin:0; color:var(--gray-800); }
+  .scenario-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:24px 0; }
+  @media(max-width:600px){ .scenario-grid{ grid-template-columns:1fr; } }
+  .scenario-card { padding:20px; border-radius:var(--radius-md); }
+  .scenario-bad { background:#fff1f2; border:1.5px solid #fda4af; }
+  .scenario-bad h4 { color:#9f1239; font-size:.875rem; margin-bottom:8px; }
+  .scenario-good { background:#f0fdf4; border:1.5px solid #86efac; }
+  .scenario-good h4 { color:#14532d; font-size:.875rem; margin-bottom:8px; }
+  .scenario-card p { font-size:.85rem; line-height:1.5; margin:0; }
+  .article-sidebar { display:flex; flex-direction:column; gap:20px; position:sticky; top:90px; }
+  .sidebar-box { background:#fff; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); padding:24px; }
+  .sidebar-box h3 { font-size:.9rem; font-weight:700; margin-bottom:14px; }
+  .related-link { display:flex; flex-direction:column; gap:4px; padding:10px 0; border-bottom:1px solid var(--gray-100); text-decoration:none; }
+  .related-link:last-child { border-bottom:none; }
+  .related-link span { font-size:.8rem; color:var(--gray-400); }
+  .related-link strong { font-size:.875rem; color:var(--gray-800); line-height:1.4; }
+  .related-link:hover strong { color:var(--red); }
+</style>
+</head>
+<body>
+<script src="../assets/js/components.js"></script>
+
+<section class="article-hero">
+  <div class="container">
+    <div style="margin-bottom:16px;"><a href="index.html" style="color:rgba(255,255,255,.6);font-size:.875rem;">← Blog</a></div>
+    <span class="module-code badge badge-red" style="margin-bottom:16px;">Technology</span>
+    <h1>Why Your School Management System Must Work Without Internet</h1>
+    <div class="article-meta">
+      <span>May 2026</span>·<span>4 min read</span>·<span>Offline-First Design</span>
+    </div>
+  </div>
+</section>
+
+<section class="article-layout">
+  <div class="container">
+    <div class="article-grid">
+
+      <article class="article-body">
+        <p>Cloud computing has transformed how businesses work. But cloud-only solutions make a quiet assumption: that the internet is always available, fast, and reliable. In most of the world, that assumption is reasonable. In Zimbabwe, it is not.</p>
+
+        <p>Before your school adopts any digital management system, ask one question: <strong>what happens when the internet goes down?</strong></p>
+
+        <h2>Zimbabwe's Real Connectivity Environment</h2>
+        <p>Zimbabwe's internet infrastructure has improved dramatically over the past five years. Harare has fibre in many suburbs; LTE coverage reaches most provincial towns. But reliability is a different story:</p>
+        <ul>
+          <li>ZESA load-shedding affects routers, fibre ONTs, and wireless base stations</li>
+          <li>Rural schools — where most of Zimbabwe's learners are educated — often have no broadband access at all</li>
+          <li>Even Harare schools experience outages during peak hours or during adverse weather</li>
+          <li>Mobile data connectivity is inconsistent in multi-storey school buildings</li>
+          <li>School budgets may not always allow for continuous LTE data top-ups</li>
+        </ul>
+        <p>A cloud-only system in this environment is not a productivity tool — it is a liability. Every time the internet fails, your Bursar cannot record payments, your teachers cannot mark registers, and your admin staff cannot access student records.</p>
+
+        <h2>What Happens When a Cloud System Goes Offline</h2>
+        <div class="scenario-grid">
+          <div class="scenario-card scenario-bad">
+            <h4>❌ Cloud-only system — internet down</h4>
+            <p>Bursar cannot record the morning's EcoCash payments. Teachers use paper and try to re-enter later. Registers are late. Parents calling about balances get "the system is down." Deputy Head has no visibility of who is absent.</p>
+          </div>
+          <div class="scenario-card scenario-good">
+            <h4>✅ Offline-first system — internet down</h4>
+            <p>Everything continues normally on the school's local network. Payments are recorded. Registers are submitted. Reports are generated. When internet returns, data syncs automatically to the cloud. Nobody noticed the outage.</p>
+          </div>
+        </div>
+
+        <h2>What "Offline First" Actually Means</h2>
+        <p>Offline-first is not simply a mode you switch on when the internet fails. It means the system was designed from the beginning to run entirely on the school's local network, with internet connectivity being <em>optional</em> — used for cloud backup and remote communication, but never required for core operations.</p>
+        <p>The right architecture for a Zimbabwean school looks like this:</p>
+        <ul>
+          <li><strong>Local server on-premise</strong> — all data stored and processed at the school</li>
+          <li><strong>Local area network (LAN)</strong> — staff access the system from any device on the school network, with or without internet</li>
+          <li><strong>Automatic cloud sync</strong> — when internet is available, data backs up to a secure cloud data centre</li>
+          <li><strong>Parent communications via cloud gateway</strong> — SMS and WhatsApp alerts require brief internet connectivity, but can queue and send when connection is restored</li>
+        </ul>
+
+        <h2>The ZimHPC Advantage</h2>
+        <p>When Edupro SMS does connect to the cloud, it connects to the <strong>Zimbabwe Higher Performance Computing Centre (ZimHPC)</strong> at the University of Zimbabwe — not a server farm in South Africa or Europe. Your school's data stays in Zimbabwe, under Zimbabwean jurisdiction, at one of the most secure computing facilities in the country.</p>
+        <p>This matters for two reasons: data sovereignty (your school's learner data never leaves Zimbabwe) and latency (sync is faster when the data centre is local).</p>
+
+        <div class="tip-box">
+          <p><strong>What to ask any vendor:</strong> "If I unplug the internet right now, can your system still record payments, mark registers, and generate reports?" If the answer is no — or if they hesitate — the system is not suitable for a Zimbabwean school.</p>
+        </div>
+
+        <h2>The Bottom Line</h2>
+        <p>The best school management system for Zimbabwe is one that treats the internet as a bonus, not a requirement. It runs perfectly on your local network every day, and uses the cloud for backup, parent communication, and multi-campus visibility when connectivity is available. That is what offline-first means — and it is the only design that is honest about Zimbabwe's real operating environment.</p>
+      </article>
+
+      <aside class="article-sidebar">
+        <div class="sidebar-box" style="background:var(--gray-900);color:#fff;">
+          <h3 style="color:#fff;">Offline-First by Design</h3>
+          <p style="font-size:.875rem;color:rgba(255,255,255,.75);line-height:1.6;margin-bottom:16px;">Edupro SMS runs 100% on your school's local server. No internet needed for daily operations.</p>
+          <a href="../getting-started.html" style="display:block;background:var(--red);color:#fff;text-align:center;padding:10px;border-radius:var(--radius-sm);font-weight:700;font-size:.875rem;">See How It Works →</a>
+        </div>
+        <div class="sidebar-box">
+          <h3>Related Articles</h3>
+          <a href="improve-fee-collection.html" class="related-link">
+            <span>Finance</span>
+            <strong>5 Ways Schools Can Improve Fee Collection This Term</strong>
+          </a>
+          <a href="zimsec-attendance-requirements.html" class="related-link">
+            <span>ZIMSEC Compliance</span>
+            <strong>ZIMSEC Attendance Requirements: What Every Headmaster Must Know</strong>
+          </a>
+          <a href="moodle-for-zimbabwe-schools.html" class="related-link">
+            <span>e-Learning</span>
+            <strong>Moodle in Zimbabwean Schools: What It Is and Why It Matters</strong>
+          </a>
+        </div>
+        <div class="sidebar-box">
+          <h3>Book a Demo</h3>
+          <p style="font-size:.875rem;color:var(--gray-500);margin-bottom:14px;">We'll disconnect the WiFi during the demo to show you offline mode in action.</p>
+          <a href="../demo.php" class="btn btn-red" style="display:block;text-align:center;padding:12px;font-size:.9rem;">Book Free Demo</a>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="container">
+    <h2>See Offline Mode in Action</h2>
+    <p>We'll disconnect the internet during your demo so you can see it with your own eyes.</p>
+    <div class="cta-actions">
+      <a href="../demo.php" class="btn btn-white btn-lg">Book a Demo</a>
+      <a href="../getting-started.html" class="btn btn-outline-white btn-lg">How It Works</a>
+    </div>
+  </div>
+</section>
+</body>
+</html>
