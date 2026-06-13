@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en-ZW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Screenshots &amp; Demo | Edupro SMS</title>
+<meta name="description" content="See Edupro SMS in action. Screenshots of the fee management dashboard, attendance registers, report cards, Moodle learning, and more.">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+  .gallery-hero {
+    background:linear-gradient(135deg,#0f172a 0%,#1e293b 60%,#1a0a0e 100%);
+    padding:80px 0 64px; text-align:center; color:#fff;
+  }
+  .gallery-hero h1 { font-size:clamp(2rem,5vw,3rem); font-weight:800; margin-bottom:16px; }
+  .gallery-hero p { font-size:1.1rem; color:rgba(255,255,255,.75); max-width:540px; margin:0 auto; }
+
+  .gallery-section { padding:64px 0 80px; background:var(--gray-50); }
+
+  /* Filter tabs */
+  .filter-tabs { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-bottom:40px; }
+  .filter-tab {
+    padding:8px 20px; border-radius:20px; font-size:.875rem; font-weight:600;
+    cursor:pointer; border:1.5px solid var(--gray-200); background:#fff;
+    color:var(--gray-500); transition:all .18s; font-family:inherit;
+  }
+  .filter-tab.active { background:var(--red); border-color:var(--red); color:#fff; }
+  .filter-tab:hover:not(.active) { border-color:var(--gray-400); color:var(--gray-700); }
+
+  /* Screenshot grid */
+  .screenshot-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  @media(max-width:960px){ .screenshot-grid{ grid-template-columns:1fr 1fr; } }
+  @media(max-width:600px){ .screenshot-grid{ grid-template-columns:1fr; } }
+
+  .screenshot-card {
+    background:#fff; border-radius:var(--radius-lg); overflow:hidden;
+    box-shadow:var(--shadow-sm); transition:all .2s; cursor:pointer;
+    border:1.5px solid transparent;
+  }
+  .screenshot-card:hover { box-shadow:var(--shadow-md); transform:translateY(-3px); border-color:var(--gray-200); }
+
+  .screenshot-preview {
+    height:200px; display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+  }
+  .screenshot-preview svg { position:absolute; inset:0; width:100%; height:100%; }
+
+  /* Mockup UI in SVG-like layout using CSS */
+  .mockup-window {
+    width:calc(100% - 24px); height:calc(100% - 20px);
+    background:#fff; border-radius:8px; box-shadow:0 4px 20px rgba(0,0,0,.25);
+    overflow:hidden; display:flex; flex-direction:column;
+    margin:10px 12px 0;
+  }
+  .mockup-bar { height:28px; background:#1f2937; display:flex; align-items:center; gap:6px; padding:0 10px; flex-shrink:0; }
+  .mockup-dot { width:9px; height:9px; border-radius:50%; }
+  .mockup-bar-title { flex:1; text-align:center; font-size:8px; color:#6b7280; margin-right:30px; }
+  .mockup-body { flex:1; padding:8px; display:flex; flex-direction:column; gap:6px; overflow:hidden; }
+
+  /* Stat row */
+  .mock-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:4px; }
+  .mock-stat { background:var(--gray-50); border-radius:4px; padding:6px; text-align:center; }
+  .mock-stat-num { font-size:14px; font-weight:800; }
+  .mock-stat-label { font-size:6px; color:var(--gray-400); }
+  .mock-table-row { display:flex; gap:4px; align-items:center; padding:4px 6px; background:var(--gray-50); border-radius:3px; font-size:7px; }
+  .mock-table-row.header { background:var(--gray-800); color:#fff; }
+  .mock-col { flex:1; overflow:hidden; white-space:nowrap; }
+  .mock-badge { padding:2px 6px; border-radius:10px; font-size:6px; font-weight:700; }
+  .mock-badge-red { background:#fff0f2; color:var(--red); }
+  .mock-badge-green { background:#f0fdf4; color:#16a34a; }
+
+  .screenshot-info { padding:16px 18px; }
+  .screenshot-module { font-size:.75rem; font-weight:700; color:var(--red); text-transform:uppercase; letter-spacing:.06em; margin-bottom:4px; }
+  .screenshot-title { font-size:.95rem; font-weight:700; color:var(--gray-900); margin-bottom:4px; }
+  .screenshot-desc { font-size:.8rem; color:var(--gray-500); line-height:1.4; }
+
+  /* Lightbox */
+  .lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:1000; align-items:center; justify-content:center; padding:20px; }
+  .lightbox.open { display:flex; }
+  .lightbox-inner { background:#fff; border-radius:var(--radius-lg); max-width:800px; width:100%; overflow:hidden; }
+  .lightbox-header { padding:20px 24px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--gray-100); }
+  .lightbox-header h3 { font-size:1.05rem; font-weight:700; }
+  .lightbox-close { background:none; border:none; cursor:pointer; color:var(--gray-400); font-size:1.4rem; padding:4px; }
+  .lightbox-close:hover { color:var(--gray-900); }
+  .lightbox-preview { height:400px; }
+  .lightbox-body { padding:20px 24px; }
+  .lightbox-body p { font-size:.9rem; color:var(--gray-600); line-height:1.6; }
+  .lightbox-cta { display:flex; gap:12px; margin-top:16px; flex-wrap:wrap; }
+
+  /* Video section */
+  .video-section { background:var(--gray-900); padding:72px 0; }
+  .video-wrapper { max-width:760px; margin:0 auto; }
+  .video-placeholder {
+    background:linear-gradient(135deg,#1a0a0e,#3d0812);
+    border-radius:var(--radius-lg); aspect-ratio:16/9;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    cursor:pointer; gap:16px; border:2px dashed rgba(255,255,255,.15);
+    transition:border-color .2s;
+  }
+  .video-placeholder:hover { border-color:var(--red); }
+  .play-btn {
+    width:72px; height:72px; background:var(--red); border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 0 0 12px rgba(255,5,39,.2); transition:transform .2s;
+  }
+  .video-placeholder:hover .play-btn { transform:scale(1.1); }
+  .video-placeholder p { color:rgba(255,255,255,.7); font-size:.95rem; text-align:center; margin:0; }
+  .video-placeholder span { color:rgba(255,255,255,.4); font-size:.8rem; }
+</style>
+</head>
+<body>
+<script src="assets/js/components.js"></script>
+
+<!-- Hero -->
+<section class="gallery-hero">
+  <div class="container">
+    <div class="module-code badge badge-red" style="margin-bottom:14px;">See It First</div>
+    <h1>Screenshots &amp; Demo</h1>
+    <p>See how Edupro SMS looks and works before booking a live demonstration.</p>
+  </div>
+</section>
+
+<!-- Video Demo -->
+<section class="video-section">
+  <div class="container">
+    <h2 class="heading text-center" style="color:#fff;margin-bottom:8px;">Watch the Overview Demo</h2>
+    <p class="subheading text-center" style="color:rgba(255,255,255,.6);margin-bottom:32px;">A 5-minute walkthrough of the key modules — fees, attendance, report cards, and Moodle.</p>
+    <div class="video-wrapper">
+      <div class="video-placeholder" onclick="alert('Live video demo coming soon. Book a personal demo for a live walkthrough — it\'s free and tailored to your school.')">
+        <div class="play-btn">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <p>Edupro SMS — 5-Minute System Overview</p>
+        <span>Book a personalised live demo for a full walkthrough tailored to your school</span>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:24px;">
+      <a href="demo.php" class="btn btn-red btn-lg">Book a Live Demo Instead →</a>
+    </div>
+  </div>
+</section>
+
+<!-- Screenshots -->
+<section class="gallery-section">
+  <div class="container">
+    <h2 class="heading text-center" style="margin-bottom:8px;">System Screenshots</h2>
+    <p class="subheading text-center" style="margin-bottom:32px;">Illustrated previews of each major module. Book a demo to see the live system.</p>
+
+    <!-- Filter -->
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="filterScreenshots('all',this)">All Modules</button>
+      <button class="filter-tab" onclick="filterScreenshots('finance',this)">Fees</button>
+      <button class="filter-tab" onclick="filterScreenshots('attendance',this)">Attendance</button>
+      <button class="filter-tab" onclick="filterScreenshots('academic',this)">Academic</button>
+      <button class="filter-tab" onclick="filterScreenshots('lms',this)">Moodle LMS</button>
+      <button class="filter-tab" onclick="filterScreenshots('admin',this)">Admin</button>
+    </div>
+
+    <div class="screenshot-grid" id="screenshotGrid">
+
+      <!-- FIN-500 Debtor Dashboard -->
+      <div class="screenshot-card" data-cat="finance" onclick="openLightbox('fin1')">
+        <div class="screenshot-preview" style="background:linear-gradient(135deg,#0f172a,#1e293b);">
+          <div class="mockup-window">
+            <div class="mockup-bar"><div class="mockup-dot" style="background:#ef4444"></div><div class="mockup-dot" style="background:#f59e0b"></div><div class="mockup-dot" style="background:#22c55e"></div><span class="mockup-bar-title">FIN-500 — Debtor Dashboard</span></div>
+            <div class="mockup-body">
+              <div class="mock-stats">
+                <div class="mock-stat"><div class="mock-stat-num" style="color:#FF0527">$48,200</div><div class="mock-stat-label">Total Invoiced</div></div>
+                <div class="mock-stat"><div class="mock-stat-num" style="color:#16a34a">$36,150</div><div class="mock-stat-label">Collected</div></div>
+                <div class="mock-stat"><div class="mock-stat-num" style="color:#dc2626">$12,050</div><div class="mock-stat-label">Outstanding</div></div>
+                <div class="mock-stat"><div class="mock-stat-num" style="color:#1d4ed8">75%</div><div class="mock-stat-label">Collection Rate</div></div>
+              </div>
+              <div class="mock-table-row header"><span class="mock-col">Student</span><span class="mock-col">Grade</span><span class="mock-col">Balance</span><span class="mock-col">Status</span></div>
+              <div class="mock-table-row"><span class="mock-col">T. Moyo</span><span class="mock-col">Form 4</span><span class="mock-col">$320</span><span><span class="mock-badge mock-badge-red">Overdue</span></span></div>
+              <div class="mock-table-row"><span class="mock-col">S. Dube</span><span class="mock-col">Form 2</span><span class="mock-col">$180</span><span><span class="mock-badge mock-badge-red">Overdue</span></span></div>
+              <div class="mock-table-row"><span class="mock-col">R. Mutasa</span><span class="mock-col">Form 6</span><span class="mock-col">$0</span><span><span class="mock-badge mock-badge-green">Paid</span></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="screenshot-info">
+          <div class="screenshot-module">FIN-500</div>
+          <div class="screenshot-title">Real-Time Debtor Dashboard</div>
+          <div class="screenshot-desc">Total invoiced, collected, outstanding, and collection rate — updated live as payments are recorded.</div>
+        </div>
+      </div>
+
+      <!-- ATT-300 Register -->
+      <div class="screenshot-card" data-cat="attendance" onclick="openLightbox('att1')">
+        <div class="screenshot-preview" style="background:linear-gradient(135deg,#1e293b,#0f172a);">
+          <div class="mockup-window">
+            <div class="mockup-bar"><div class="mockup-dot" style="background:#ef4444"></div><div class="mockup-dot" style="background:#f59e0b"></div><div class="mockup-dot" style="background:#22c55e"></div><span class="mockup-bar-title">ATT-300 — Form 4A Morning Register</span></div>
+            <div class="mockup-body">
+              <div style="display:flex;gap:6px;margin-bottom:6px;">
+                <div style="background:var(--gray-100);padding:4px 8px;border-radius:3px;font-size:7px;font-weight:600;">Present: 34</div>
+                <div style="background:#fff0f2;padding:4px 8px;border-radius:3px;font-size:7px;font-weight:600;color:var(--red);">Absent: 4</div>
+                <div style="background:#fffbeb;padding:4px 8px;border-radius:3px;font-size:7px;font-weight:600;color:#92400e;">Late: 2</div>
+              </div>
+              <div class="mock-table-row header"><span class="mock-col">Name</span><span class="mock-col">Status</span><span class="mock-col">Reason</span></div>
+              <div class="mock-table-row"><span class="mock-col">Chikwanda, P.</span><span><span class="mock-badge mock-badge-green">Present</span></span><span class="mock-col">—</span></div>
+              <div class="mock-table-row"><span class="mock-col">Dube, T.</span><span><span class="mock-badge mock-badge-red">Absent</span></span><span class="mock-col" style="color:var(--red)">Sick</span></div>
+              <div class="mock-table-row"><span class="mock-col">Moyo, A.</span><span><span class="mock-badge mock-badge-green">Present</span></span><span class="mock-col">—</span></div>
+              <div class="mock-table-row"><span class="mock-col">Ncube, R.</span><span><span class="mock-badge" style="background:#fffbeb;color:#92400e;">Late</span></span><span class="mock-col">08:45</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="screenshot-info">
+          <div class="screenshot-module">ATT-300</div>
+          <div class="screenshot-title">Digital Class Register</div>
+          <div class="screenshot-desc">Morning register for Form 4A. Teachers mark Present, Absent, or Late during Period 1.</div>
+        </div>
+      </div>
+
+      <!-- RPT-800 Report Card -->
+      <div class="screenshot-card" data-cat="academic" onclick="openLightbox('rpt1')">
+        <div class="screenshot-preview" style="background:linear-gradient(135deg,#1a0a0e,#2d1520);">
+          <div class="mockup-window">
+            <div class="mockup-bar"><div class="mockup-dot" style="background:#ef4444"></div><div class="mockup-dot" style="background:#f59e0b"></div><div class="mockup-dot" style="background:#22c55e"></div><span class="mockup-bar-title">RPT-800 — Report Card Preview</span></div>
+            <div class="mockup-body">
+              <div style="background:var(--gray-900);color:#fff;padding:6px 8px;border-radius:3px;text-align:center;font-size:8px;font-weight:700;margin-bottom:4px;">FORM 4A — TERM 2 REPORT</div>
+              <div style="font-size:7px;color:var(--gray-500);margin-bottom:6px;text-align:center;">T. Moyo &nbsp;·&nbsp; 85% Attendance</div>
+              <div class="mock-table-row header"><span class="mock-col">Subject</span><span class="mock-col">CA</span><span class="mock-col">Exam</span><span class="mock-col">Total</span><span class="mock-col">Grade</span></div>
+              <div class="mock-table-row"><span class="mock-col">Mathematics</span><span class="mock-col">24</span><span class="mock-col">58</span><span class="mock-col">82%</span><span><span class="mock-badge mock-badge-green">2</span></span></div>
+              <div class="mock-table-row"><span class="mock-col">English</span><span class="mock-col">22</span><span class="mock-col">52</span><span class="mock-col">74%</span><span><span class="mock-badge mock-badge-green">2</span></span></div>
+              <div class="mock-table-row"><span class="mock-col">Science</span><span class="mock-col">20</span><span class="mock-col">45</span><span class="mock-col">65%</span><span><span class="mock-badge" style="background:#eff6ff;color:#1d4ed8;">3</span></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="screenshot-info">
+          <div class="screenshot-module">RPT-800</div>
+          <div class="screenshot-title">Report Card Generation</div>
+          <div class="screenshot-desc">ZIMSEC grading with CA and exam marks. Attendance percentage auto-pulled from ATT-300.</div>
+        </div>
+      </div>
+
+      <!-- LMS-200 Moodle -->
+      <div class="screenshot-card" data-cat="lms" onclick="openLightbox('lms1')">
+        <div class="screenshot-preview" style="background:linear-gradient(135deg,#0a1628,#1e3a5f);">
+          <div class="mockup-window">
+            <div class="mockup-bar"><div class="mockup-dot" style="background:#ef4444"></div><div class="mockup-dot" style="background:#f59e0b"></div><div class="mockup-dot" style="background:#22c55e"></div><span class="mockup-bar-title">LMS-200 — Moodle Dashboard</span></div>
+            <div class="mockup-body">
+              <div style="background:#1e3a5f;color:#fff;padding:6px 8px;border-radius:3px;font-size:8px;font-weight:700;margin-bottom:4px;">My Courses — Term 2 2026</div>
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <div style="background:var(--gray-50);border-radius:3px;padding:6px 8px;display:flex;align-items:center;gap:6px;">
+                  <div style="width:6px;height:32px;background:#FF0527;border-radius:2px;"></div>
+                  <div><div style="font-size:8px;font-weight:700;">Form 4 — Mathematics</div><div style="font-size:6px;color:var(--gray-400);">Mr Chikwanda · 3 pending assignments</div></div>
+                </div>
+                <div style="background:var(--gray-50);border-radius:3px;padding:6px 8px;display:flex;align-items:center;gap:6px;">
+                  <div style="width:6px;height:32px;background:#1d4ed8;border-radius:2px;"></div>
+                  <div><div style="font-size:8px;font-weight:700;">Form 4 — English Literature</div><div style="font-size:6px;color:var(--gray-400);">Mrs Dube · Quiz due Friday</div></div>
+                </div>
+                <div style="background:var(--gray-50);border-radius:3px;padding:6px 8px;display:flex;align-items:center;gap:6px;">
+                  <div style="width:6px;height:32px;background:#16a34a;border-radius:2px;"></div>
+                  <div><div style="font-size:8px;font-weight:700;">Form 4 — Combined Science</div><div style="font-size:6px;color:var(--gray-400);">Mr Moyo · New notes uploaded</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="screenshot-info">
+          <div class="screenshot-module">LMS-200</div>
+          <div class="screenshot-title">Moodle Student Dashboard</div>
+          <div class="screenshot-desc">Student's Moodle course list. Assignments, quizzes, and lesson notes — accessible on any device.</div>
+        </div>
+      </div>
+
+      <!-- FIN-500 Payment Recording -->
+      <div class="screenshot-card" data-cat="finance" onclick="openLightbox('fin2')">
+        <div class="screenshot-preview" style="background:linear-gradient(135deg,#0f2b0f,#1a4d1a);">
+          <div class="mockup-window">
+            <div class="mockup-bar"><div class="mockup-dot" style="background:#ef4444"></div><div class="mockup-dot" style="background:#f59e0b"></div><div class="mockup-dot" style="background:#22c55e"></div><span class="mockup-bar-title">FIN-500 — Record Payment</span></div>
+            <div class="mockup-body">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:4px;">
+                <div style="background:var(--gray-50);padding:5px;border-radius:3px;"><div style="font-size:6px;color:var(--gray-400);">Student</div><div style="font-size:8px;font-weight:700;">Tatenda Moyo</div></div>
+                <div style="background:var(--gray-50);padding:5px;border-radius:3px;"><div style="font-size:6px;color:var(--gray-400);">Balance</div><div style="font-size:8px;font-weight:700;color:var(--red);">$320.00</div></div>
+                <div style="background:var(--gray-50);padding:5px;border-radius:3px;"><div style="font-size:6px;color:var(--gray-400);">Amount</div><div style="font-size:8px;font-weight:700;">$200.00</div></div>
+                <div style="background:var(--gray-50);padding:5px;border-radius:3px;"><div style="font-size:6px;color:var(--gray-400);">Method</div><div style="font-size:8px;font-weight:700;">EcoCash</div></div>
+              </div>
+              <div style="background:var(--gray-50);padding:5px;border-radius:3px;margin-bottom:4px;"><div style="font-size:6px;color:var(--gray-400);">EcoCash Ref</div><div style="font-size:8px;font-weight:600;font-family:monospace;">ECO2024061301234</div></div>
+              <div style="background:#FF0527;color:#fff;text-align:center;padding:7px;border-radius:3px;font-size:8px;font-weight:700;">Record Payment + Generate QR Receipt</div>
+            </div>
+          </div>
+        </div>
+        <div class="screenshot-info">
+          <div class="screenshot-module">FIN-500</div>
+          <div class="screenshot-title">EcoCash Payment Recording</div>
+          <div class="screenshot-desc">Record amount, method, and EcoCash reference. QR receipt generated instantly and sent to parent.</div>
+        </div>
+      </div>
+
+      <!-- SIM-100 Student Profile -->
+      <div class="screenshot-card" data-cat="admin" onclick="openLightbox('sim1')">
+        <div class="screenshot-preview" style="background:linear-gradient(135deg,#1a1a0a,#3d3408);">
+          <div class="mockup-window">
+            <div class="mockup-bar"><div class="mockup-dot" style="background:#ef4444"></div><div class="mockup-dot" style="background:#f59e0b"></div><div class="mockup-dot" style="background:#22c55e"></div><span class="mockup-bar-title">SIM-100 — Student Profile</span></div>
+            <div class="mockup-body">
+              <div style="display:flex;gap:8px;margin-bottom:6px;align-items:center;">
+                <div style="width:32px;height:32px;background:var(--gray-200);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--gray-500);">TM</div>
+                <div><div style="font-size:9px;font-weight:800;">Tatenda Moyo</div><div style="font-size:7px;color:var(--gray-400);">Form 4A · SIM2024-0142</div></div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;font-size:7px;">
+                <div style="background:var(--gray-50);padding:4px;border-radius:3px;"><span style="color:var(--gray-400);">DOB:</span> 12 Mar 2009</div>
+                <div style="background:var(--gray-50);padding:4px;border-radius:3px;"><span style="color:var(--gray-400);">Gender:</span> Male</div>
+                <div style="background:var(--gray-50);padding:4px;border-radius:3px;"><span style="color:var(--gray-400);">Parent:</span> Mrs T. Moyo</div>
+                <div style="background:var(--gray-50);padding:4px;border-radius:3px;"><span style="color:var(--gray-400);">Phone:</span> +263 77X XXX</div>
+                <div style="background:var(--gray-50);padding:4px;border-radius:3px;"><span style="color:var(--gray-400);">Enrolment:</span> Jan 2022</div>
+                <div style="background:var(--gray-50);padding:4px;border-radius:3px;"><span style="color:var(--gray-400);">Curriculum:</span> ZIMSEC</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="screenshot-info">
+          <div class="screenshot-module">SIM-100</div>
+          <div class="screenshot-title">Student Profile</div>
+          <div class="screenshot-desc">Complete learner record: personal details, parent contacts, enrolment history, curriculum, and linked modules.</div>
+        </div>
+      </div>
+
+    </div><!-- .screenshot-grid -->
+
+    <div style="text-align:center;margin-top:48px;">
+      <p style="color:var(--gray-500);margin-bottom:20px;">These are illustrated previews. Book a demo to see the live system with real data.</p>
+      <a href="demo.php" class="btn btn-red btn-lg">Book a Live Demo →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightboxOnBg(event)">
+  <div class="lightbox-inner">
+    <div class="lightbox-header">
+      <h3 id="lb-title">Screenshot</h3>
+      <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+    </div>
+    <div class="lightbox-preview" id="lb-preview"></div>
+    <div class="lightbox-body">
+      <p id="lb-desc"></p>
+      <div class="lightbox-cta">
+        <a href="demo.php" class="btn btn-red">Book a Demo to See This Live</a>
+        <button onclick="closeLightbox()" class="btn btn-outline-red">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="cta-section">
+  <div class="container">
+    <h2>Ready to See It Live at Your School?</h2>
+    <p>A 45-minute live demo — free, no commitment, tailored to your school's needs.</p>
+    <div class="cta-actions">
+      <a href="demo.php" class="btn btn-white btn-lg">Book a Free Demo</a>
+      <a href="register.php" class="btn btn-outline-white btn-lg">Register Your School</a>
+    </div>
+  </div>
+</section>
+
+<script>
+const lbData = {
+  fin1: { title: 'FIN-500 — Real-Time Debtor Dashboard', desc: 'The Bursar and Headmaster see total invoiced, collected, outstanding, and collection rate for the whole school — or drilled down to a specific grade or class. Updated live as payments are recorded throughout the day.' },
+  att1: { title: 'ATT-300 — Digital Class Register', desc: 'Class teachers mark attendance during Period 1 on any device connected to the school network. The Deputy Head\'s dashboard updates in real-time. Parents are automatically notified by SMS or WhatsApp when their child is absent.' },
+  rpt1: { title: 'RPT-800 — Report Card Generation', desc: 'Continuous Assessment and examination marks entered by teachers. RPT-800 calculates totals, applies ZIMSEC grading, pulls attendance from ATT-300, and generates a fully formatted report card ready for printing or PDF.' },
+  lms1: { title: 'LMS-200 — Moodle Student Dashboard', desc: 'Each student sees their Moodle courses for the term — assignments due, new lesson notes, quizzes, and their grades. Moodle works offline on the school LAN and syncs to the cloud when internet is available.' },
+  fin2: { title: 'FIN-500 — EcoCash Payment Recording', desc: 'The Bursar enters the payment amount, selects EcoCash as the method, and enters the EcoCash transaction reference. A QR-coded receipt is generated instantly and can be printed or sent to the parent via WhatsApp.' },
+  sim1: { title: 'SIM-100 — Student Profile', desc: 'The central learner record links to every other module: attendance history, fee account, report cards, Moodle enrolments, and admission records. One screen shows the complete picture of any student in the school.' },
+};
+
+function openLightbox(id) {
+  const d = lbData[id];
+  if (!d) return;
+  document.getElementById('lb-title').textContent = d.title;
+  document.getElementById('lb-desc').textContent = d.desc;
+  document.getElementById('lb-preview').style.background = 'var(--gray-100)';
+  document.getElementById('lb-preview').innerHTML = '<div style="height:100%;display:flex;align-items:center;justify-content:center;color:var(--gray-400);font-size:.9rem;">Full screenshot available in live demo</div>';
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeLightboxOnBg(e) {
+  if (e.target === document.getElementById('lightbox')) closeLightbox();
+}
+function filterScreenshots(cat, btn) {
+  document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.screenshot-card').forEach(card => {
+    card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'flex' : 'none';
+    card.style.flexDirection = 'column';
+  });
+}
+</script>
+</body>
+</html>
