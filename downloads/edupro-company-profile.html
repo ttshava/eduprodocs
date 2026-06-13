@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edupro SMS — Company Profile</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--red:#FF0527;--dark:#1a0a0e;--red-dark:#c8021e;--red-light:#fff0f2;}
+body{font-family:'Inter',sans-serif;color:#1f2937;background:#fff;font-size:11pt;line-height:1.6;}
+
+/* ── Cover ── */
+.cover{width:210mm;height:297mm;display:flex;flex-direction:column;justify-content:space-between;padding:0;position:relative;overflow:hidden;page-break-after:always;}
+.cover-top{background:var(--dark);flex:1;padding:56px 56px 48px;display:flex;flex-direction:column;justify-content:space-between;position:relative;}
+.cover-top::after{content:'';position:absolute;top:-80px;right:-80px;width:360px;height:360px;border-radius:50%;background:var(--red);opacity:.12;}
+.cover-bottom{background:var(--red);padding:32px 56px;display:flex;justify-content:space-between;align-items:center;}
+.cover-logo img{width:180px;filter:brightness(10);}
+.cover-tag{display:inline-block;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.8);font-size:8pt;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:5px 14px;border-radius:4px;margin-bottom:20px;width:fit-content;}
+.cover-title{font-size:38pt;font-weight:900;color:#fff;line-height:1.05;margin-bottom:16px;}
+.cover-title span{color:var(--red);}
+.cover-sub{font-size:11pt;color:rgba(255,255,255,.55);font-weight:300;line-height:1.75;max-width:440px;}
+.cover-bottom-left{color:#fff;}
+.cover-bottom-left .label{font-size:8pt;opacity:.7;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;}
+.cover-bottom-left .value{font-size:10.5pt;font-weight:700;}
+.cover-bottom-right{text-align:right;color:rgba(255,255,255,.7);font-size:8.5pt;line-height:2;}
+
+/* ── Pages ── */
+.doc-page{width:210mm;min-height:297mm;padding:48px 52px;page-break-after:always;position:relative;}
+.doc-page:last-child{page-break-after:avoid;}
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:36px;padding-bottom:14px;border-bottom:2px solid #fff0f2;}
+.page-header img{height:26px;}
+.page-header span{font-size:7.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#9ca3af;}
+
+h2{font-size:20pt;font-weight:900;color:var(--dark);margin-bottom:8px;}
+h3{font-size:12pt;font-weight:800;color:var(--dark);margin:24px 0 10px;}
+h4{font-size:10.5pt;font-weight:700;color:var(--dark);margin:16px 0 6px;}
+.section-sub{font-size:10pt;color:#6b7280;margin-bottom:28px;line-height:1.65;}
+p{font-size:10pt;color:#374151;line-height:1.75;margin-bottom:10px;}
+ul{padding-left:18px;margin-bottom:12px;}
+li{font-size:10pt;color:#374151;line-height:1.7;margin-bottom:3px;}
+
+/* ── Stat bar ── */
+.stat-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;margin:24px 0;}
+.stat-item{padding:18px 16px;text-align:center;border-right:1px solid #e5e7eb;}
+.stat-item:last-child{border-right:none;}
+.stat-num{font-size:22pt;font-weight:900;color:var(--red);line-height:1;}
+.stat-label{font-size:7.5pt;color:#6b7280;text-transform:uppercase;letter-spacing:.07em;margin-top:4px;line-height:1.4;}
+
+/* ── Vision / Mission ── */
+.vm-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0;}
+.vm-box{border-radius:10px;padding:20px 22px;}
+.vm-box.vision{background:var(--dark);color:#fff;}
+.vm-box.mission{background:var(--red-light);border:1px solid #fecaca;}
+.vm-label{font-size:7.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;}
+.vm-box.vision .vm-label{color:var(--red);}
+.vm-box.mission .vm-label{color:var(--red);}
+.vm-text{font-size:9.5pt;line-height:1.7;}
+.vm-box.vision .vm-text{color:rgba(255,255,255,.8);}
+.vm-box.mission .vm-text{color:#374151;}
+
+/* ── Value props ── */
+.value-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;}
+.value-card{border:1px solid #e5e7eb;border-radius:10px;padding:16px 18px;}
+.value-card-icon{font-size:1.6rem;margin-bottom:8px;display:block;}
+.value-card-title{font-size:10pt;font-weight:800;color:var(--dark);margin-bottom:5px;}
+.value-card-text{font-size:8.5pt;color:#6b7280;line-height:1.6;}
+
+/* ── Module overview ── */
+.module-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;}
+.module-mini{display:flex;gap:10px;align-items:flex-start;border:1px solid #f3f4f6;border-radius:8px;padding:10px 12px;}
+.mod-code{background:var(--dark);color:#fff;font-size:7pt;font-weight:800;font-family:monospace;padding:3px 7px;border-radius:4px;white-space:nowrap;flex-shrink:0;margin-top:1px;}
+.mod-name{font-size:8.5pt;font-weight:700;color:var(--dark);}
+.mod-desc{font-size:7.5pt;color:#6b7280;margin-top:2px;line-height:1.4;}
+
+/* ── Testimonials ── */
+.quote-box{background:#f9fafb;border-left:3px solid var(--red);border-radius:0 10px 10px 0;padding:16px 20px;margin:14px 0;}
+.quote-text{font-size:9.5pt;color:#374151;line-height:1.7;font-style:italic;margin-bottom:8px;}
+.quote-author{font-size:8pt;font-weight:700;color:var(--dark);}
+.quote-school{font-size:7.5pt;color:#6b7280;}
+
+/* ── Technology ── */
+.tech-table{width:100%;border-collapse:collapse;font-size:9pt;margin:14px 0;}
+.tech-table th{background:var(--dark);color:#fff;padding:9px 12px;text-align:left;font-weight:700;}
+.tech-table td{padding:8px 12px;border:1px solid #e5e7eb;color:#374151;vertical-align:top;}
+.tech-table tr:nth-child(even) td{background:#fafafa;}
+
+/* ── Contact card ── */
+.contact-footer{background:var(--dark);border-radius:14px;padding:28px 32px;display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px;}
+.contact-col .contact-label{font-size:7.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--red);margin-bottom:10px;}
+.contact-row{margin-bottom:8px;}
+.contact-row .icon{color:var(--red);margin-right:6px;}
+.contact-row .val{font-size:9.5pt;color:#fff;font-weight:600;}
+.contact-row .desc{font-size:8pt;color:rgba(255,255,255,.45);display:block;margin-top:1px;}
+
+.doc-footer{position:absolute;bottom:28px;left:52px;right:52px;display:flex;justify-content:space-between;border-top:1px solid #f3f4f6;padding-top:10px;}
+.doc-footer span{font-size:7.5pt;color:#9ca3af;}
+
+@media print{*{-webkit-print-color-adjust:exact;print-color-adjust:exact;}body{margin:0;}@page{size:A4;margin:0;}}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-top">
+    <div class="cover-logo"><img src="../assets/img/logo.png" alt="Edupro SMS" onerror="this.outerHTML='<span style=\'color:#fff;font-size:18pt;font-weight:900;\'>Edupro SMS</span>'"></div>
+    <div>
+      <div class="cover-tag">Company Profile · 2025</div>
+      <div class="cover-title">About<br><span>Edupro SMS</span></div>
+      <div class="cover-sub">Zimbabwe's dedicated school management platform — empowering every school, from a rural primary in Binga to a boarding secondary in Harare, with technology built for African education.</div>
+    </div>
+  </div>
+  <div class="cover-bottom">
+    <div class="cover-bottom-left">
+      <div class="label">Headquarters</div>
+      <div class="value">Harare, Zimbabwe</div>
+    </div>
+    <div class="cover-bottom-left">
+      <div class="label">Website</div>
+      <div class="value">www.edupro.co.zw</div>
+    </div>
+    <div class="cover-bottom-right">
+      sales@edupro.co.zw<br>+263 788 111 611<br>+263 772 837 385 (WhatsApp)</div>
+  </div>
+</div>
+
+<!-- PAGE 2: About & Stats -->
+<div class="doc-page">
+  <div class="page-header">
+    <img src="../assets/img/logo.png" alt="Edupro SMS" onerror="this.outerHTML='<span style=\'font-weight:900;font-size:11pt;color:#1a0a0e;\'>Edupro SMS</span>'">
+    <span>About Edupro SMS</span>
+  </div>
+
+  <h2>Who We Are</h2>
+  <div class="section-sub">Edupro SMS is Zimbabwe's dedicated school management platform — designed from the ground up for the realities of Zimbabwean education, not adapted from a foreign system.</div>
+
+  <p>Zimbabwe's schools operate in a unique and demanding environment: a dual-currency economy, two major curriculum boards (ZIMSEC and Cambridge International), inconsistent internet connectivity, and limited IT support staff. Generic school management software — designed for schools in the UK, USA, or South Africa — simply does not fit.</p>
+
+  <p>Edupro SMS was built by Zimbabweans, for Zimbabwean schools. Every feature — from EcoCash fee collection and ZiG invoicing, to ZIMSEC O-Level grade scales and Ministry of Primary &amp; Secondary Education reporting formats — is designed for the specific context of Zimbabwean school administration.</p>
+
+  <p>Our platform runs <strong>offline-first</strong> on a local school server, ensuring that load-shedding, fibre cuts, and ZESA outages never prevent teachers from marking attendance, bursars from issuing receipts, or administrators from generating report cards. Schools that want cloud backup and remote access can add our ZimHPC integration — backed by the University of Zimbabwe's High Performance Computing Centre, keeping all student data on Zimbabwean soil.</p>
+
+  <div class="stat-bar">
+    <div class="stat-item">
+      <div class="stat-num">10</div>
+      <div class="stat-label">Integrated<br>Modules</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">10K+</div>
+      <div class="stat-label">Zimbabwe Schools<br>in Our Database</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Offline<br>Capable</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">2</div>
+      <div class="stat-label">Curricula<br>ZIMSEC &amp; Cambridge</div>
+    </div>
+  </div>
+
+  <div class="vm-grid">
+    <div class="vm-box vision">
+      <div class="vm-label">Our Vision</div>
+      <div class="vm-text">A Zimbabwe where every school — regardless of location, size, or resource level — operates with the same administrative efficiency, data accuracy, and professional documentation as the best-resourced institutions in the world.</div>
+    </div>
+    <div class="vm-box mission">
+      <div class="vm-label">Our Mission</div>
+      <div class="vm-text">To provide Zimbabwean schools with affordable, offline-capable, locally relevant management software that reduces administrative burden, improves financial accountability, and gives school leaders the data they need to make better decisions.</div>
+    </div>
+  </div>
+
+  <h3>Our Core Values</h3>
+  <div class="value-grid">
+    <div class="value-card">
+      <span class="value-card-icon">🇿🇼</span>
+      <div class="value-card-title">Built for Zimbabwe</div>
+      <div class="value-card-text">Every feature reflects Zimbabwe's specific curriculum, payment methods, currencies, and administrative requirements — not adapted from a foreign template.</div>
+    </div>
+    <div class="value-card">
+      <span class="value-card-icon">📶</span>
+      <div class="value-card-title">Offline-First</div>
+      <div class="value-card-text">Internet is unreliable. Power cuts are frequent. Edupro SMS works fully on your local school network with no internet dependency for daily operations.</div>
+    </div>
+    <div class="value-card">
+      <span class="value-card-icon">🔒</span>
+      <div class="value-card-title">Data Sovereignty</div>
+      <div class="value-card-text">Your students' data stays in Zimbabwe — on your school server, backed up at ZimHPC in Harare. We never store or sell school data on foreign servers.</div>
+    </div>
+    <div class="value-card">
+      <span class="value-card-icon">🤝</span>
+      <div class="value-card-title">Partnership, Not Just Software</div>
+      <div class="value-card-text">We train your staff, respond to WhatsApp within hours, and visit your school. We succeed only when your school succeeds in using the system.</div>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <span>Edupro SMS — Company Profile 2025</span>
+    <span>© 2025 Edupro SMS · www.edupro.co.zw</span>
+    <span>Page 2</span>
+  </div>
+</div>
+
+<!-- PAGE 3: Modules + Technology -->
+<div class="doc-page">
+  <div class="page-header">
+    <img src="../assets/img/logo.png" alt="Edupro SMS" onerror="this.outerHTML='<span style=\'font-weight:900;font-size:11pt;color:#1a0a0e;\'>Edupro SMS</span>'">
+    <span>Platform &amp; Technology</span>
+  </div>
+
+  <h2>The Edupro SMS Platform</h2>
+  <div class="section-sub">Ten integrated modules covering every aspect of school management — from student registration and daily attendance to fees, timetables, e-learning, and report cards.</div>
+
+  <div class="module-mini-grid">
+    <div class="module-mini">
+      <span class="mod-code">SIM-100</span>
+      <div><div class="mod-name">Student Information Management</div><div class="mod-desc">Central registry for all learners ECD–Form 6. Demographics, medical, academic history, parent contacts.</div></div>
+    </div>
+    <div class="module-mini">
+      <span class="mod-code">ADM-200</span>
+      <div><div class="mod-name">Admissions &amp; Enrolment</div><div class="mod-desc">Online applications, entrance tests, waiting lists, class placement, and acceptance letters.</div></div>
+    </div>
+    <div class="module-mini">
+      <span class="mod-code">LMS-200</span>
+      <div><div class="mod-name">Moodle Learning Management</div><div class="mod-desc">World-class e-learning platform (400M+ users) integrated offline on your school server.</div></div>
+    </div>
+    <div class="module-mini">
+      <span class="mod-code">ATT-300</span>
+      <div><div class="mod-name">Attendance Management</div><div class="mod-desc">Digital registers, parent absence alerts, ZIMSEC 80% threshold tracking, Ministry reports.</div></div>
+    </div>
+    <div class="module-mini">
+      <span class="mod-code">TTS-300</span>
+      <div><div class="mod-name">Timetable &amp; Scheduling</div><div class="mod-desc">Automated timetable generation, A-Level option blocks, exam timetables, substitute teachers.</div></div>
+    </div>
+    <div class="module-mini">
+      <span class="mod-code">COM-400</span>
+      <div><div class="mod-name">Communications Portal</div><div class="mod-desc">Bulk SMS, WhatsApp, and email to parents — fee reminders, absence alerts, announcements.</div></div>
+    </div>
+    <div class="module-mini">
+      <span class="mod-code">FIN-500</span>
+      <div><div class="mod-name">Fees Management</div><div class="mod-desc">EcoCash, Innbucks, RTGS, USD &amp; ZiG invoicing. QR receipts, debtor dashboard, board reports.</div></div>
+    </div>
+    <div class="module-mini">
+      <span class="mod-code">RPT-800</span>
+      <div><div class="mod-name">Academic Reporting</div><div class="mod-desc">ZIMSEC O-Level, A-Level, Cambridge, and primary competency report cards — bulk PDF in one click.</div></div>
+    </div>
+    <div class="module-mini">
+      <span class="mod-code">AST-900</span>
+      <div><div class="mod-name">Asset Management</div><div class="mod-desc">School property register with depreciation, maintenance scheduling, and Board valuation reports.</div></div>
+    </div>
+    <div class="module-mini">
+      <span class="mod-code">TRN-1000</span>
+      <div><div class="mod-name">Capacity Building &amp; Training</div><div class="mod-desc">On-site &amp; remote staff training, video library, printed quick-reference guides for every role.</div></div>
+    </div>
+  </div>
+
+  <h3>Technology Foundation</h3>
+  <table class="tech-table">
+    <thead><tr><th>Component</th><th>Technology</th><th>Why We Chose It</th></tr></thead>
+    <tbody>
+      <tr><td>School Management</td><td>Edupro SMS (web-based)</td><td>Purpose-built for Zimbabwe schools — offline capable, dual currency, ZIMSEC/Cambridge</td></tr>
+      <tr><td>Learning Management</td><td>Moodle LMS (open source)</td><td>World's most trusted e-learning platform. 400M+ users. No per-student licensing fees.</td></tr>
+      <tr><td>Database</td><td>PostgreSQL / SQLite</td><td>Enterprise-grade reliability. Runs on modest school hardware. Full data ownership.</td></tr>
+      <tr><td>Server OS</td><td>Ubuntu Linux LTS</td><td>Stable, secure, free. No Windows licensing costs. Industry-standard for servers.</td></tr>
+      <tr><td>Web Server</td><td>Nginx</td><td>High-performance, low resource usage — ideal for school hardware specifications.</td></tr>
+      <tr><td>Cloud Backup</td><td>ZimHPC (University of Zimbabwe)</td><td>Zimbabwe-based data sovereignty. National HPC infrastructure. Encrypted backups.</td></tr>
+      <tr><td>Client Access</td><td>Any modern browser</td><td>No software to install on student/teacher devices. Works on phones, tablets, laptops.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="doc-footer">
+    <span>Edupro SMS — Company Profile 2025</span>
+    <span>© 2025 Edupro SMS · www.edupro.co.zw</span>
+    <span>Page 3</span>
+  </div>
+</div>
+
+<!-- PAGE 4: Schools We Serve + Contact -->
+<div class="doc-page">
+  <div class="page-header">
+    <img src="../assets/img/logo.png" alt="Edupro SMS" onerror="this.outerHTML='<span style=\'font-weight:900;font-size:11pt;color:#1a0a0e;\'>Edupro SMS</span>'">
+    <span>Schools We Serve &amp; Contact</span>
+  </div>
+
+  <h2>Schools We Serve</h2>
+  <div class="section-sub">Edupro SMS is designed for every type of Zimbabwean school — from government primaries to elite private secondaries and boarding schools.</div>
+
+  <div class="value-grid">
+    <div class="value-card">
+      <span class="value-card-icon">🏫</span>
+      <div class="value-card-title">Government Schools</div>
+      <div class="value-card-text">Full Ministry reporting compliance. LPO payment accepted. Designed to handle large enrolments (500–2,000+ learners) on modest hardware.</div>
+    </div>
+    <div class="value-card">
+      <span class="value-card-icon">⛪</span>
+      <div class="value-card-title">Mission Schools</div>
+      <div class="value-card-text">Respects the unique governance structure of mission schools. Supports both ZIMSEC and Cambridge curricula for dual-pathway schools.</div>
+    </div>
+    <div class="value-card">
+      <span class="value-card-icon">🏛️</span>
+      <div class="value-card-title">Private Schools</div>
+      <div class="value-card-text">Full Cambridge International grading, multi-currency fee invoicing in USD, and professional branded report cards and receipts.</div>
+    </div>
+    <div class="value-card">
+      <span class="value-card-icon">🌳</span>
+      <div class="value-card-title">Rural &amp; Remote Schools</div>
+      <div class="value-card-text">Fully offline operation with local server. No internet required for daily use. ZimHPC backup activates when connectivity is available.</div>
+    </div>
+  </div>
+
+  <h3>Zimbabwe Geographic Coverage</h3>
+  <p>Our school database includes all <strong>10,147 registered primary and secondary schools</strong> across all ten provinces of Zimbabwe — from Matabeleland South to Mashonaland East, covering urban, peri-urban, and rural settings.</p>
+  <ul>
+    <li>Harare Province · Bulawayo Province</li>
+    <li>Mashonaland East · West · Central</li>
+    <li>Matabeleland North · South</li>
+    <li>Manicaland · Midlands · Masvingo</li>
+  </ul>
+
+  <h3>What Schools Say</h3>
+  <div class="quote-box">
+    <div class="quote-text">"Before Edupro SMS, generating report cards took our entire admin team a full week. Now we generate all 800 report cards in about 20 minutes, and they're emailed to parents the same day. The Bursar loves the EcoCash reconciliation feature — no more end-of-day cash counting errors."</div>
+    <div class="quote-author">Deputy Headmistress</div>
+    <div class="quote-school">Boarding Secondary School, Harare Province</div>
+  </div>
+  <div class="quote-box">
+    <div class="quote-text">"We are a rural school with no reliable internet. Edupro SMS works perfectly on our local network. Teachers mark attendance on their phones, parents get SMS reminders about fees, and the Headmaster can pull Board reports at any time. It has professionalised how we run this school."</div>
+    <div class="quote-author">School Head</div>
+    <div class="quote-school">Government Secondary School, Midlands Province</div>
+  </div>
+
+  <h3>Get in Touch</h3>
+  <div class="contact-footer">
+    <div class="contact-col">
+      <div class="contact-label">Sales &amp; Demonstrations</div>
+      <div class="contact-row"><span class="icon">📧</span><span class="val">sales@edupro.co.zw</span><span class="desc">Quotations, demos, LPO requests</span></div>
+      <div class="contact-row"><span class="icon">💬</span><span class="val">+263 772 837 385</span><span class="desc">WhatsApp — fastest response</span></div>
+      <div class="contact-row"><span class="icon">📞</span><span class="val">+263 788 111 611</span><span class="desc">Office line · Mon–Fri 8AM–5PM</span></div>
+    </div>
+    <div class="contact-col">
+      <div class="contact-label">Support &amp; Website</div>
+      <div class="contact-row"><span class="icon">📧</span><span class="val">support@edupro.co.zw</span><span class="desc">Technical support for active clients</span></div>
+      <div class="contact-row"><span class="icon">🌐</span><span class="val">www.edupro.co.zw</span><span class="desc">Documentation, blog, school portal</span></div>
+      <div class="contact-row"><span class="icon">📱</span><span class="val">@eduprozw</span><span class="desc">Facebook · LinkedIn · Instagram · TikTok</span></div>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <span>Edupro SMS — Company Profile 2025</span>
+    <span>© 2025 Edupro SMS · www.edupro.co.zw</span>
+    <span>Page 4</span>
+  </div>
+</div>
+
+</body>
+</html>

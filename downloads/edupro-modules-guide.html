@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edupro SMS — 10 Modules: Features & Functionality</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--red:#FF0527;--dark:#1a0a0e;--red-dark:#c8021e;--red-light:#fff0f2;}
+body{font-family:'Inter',sans-serif;color:#1f2937;background:#fff;font-size:11pt;line-height:1.6;}
+
+.cover{width:210mm;height:297mm;background:var(--dark);display:flex;flex-direction:column;justify-content:space-between;padding:60px 56px;position:relative;overflow:hidden;page-break-after:always;}
+.cover::before{content:'';position:absolute;top:-100px;right:-80px;width:420px;height:420px;border-radius:50%;background:var(--red);opacity:.1;}
+.cover::after{content:'';position:absolute;bottom:-60px;left:-80px;width:340px;height:340px;border-radius:50%;background:var(--red);opacity:.07;}
+.cover-logo img{width:180px;filter:brightness(10);}
+.cover-tag{display:inline-block;background:var(--red);color:#fff;font-size:8pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:4px;margin-bottom:20px;}
+.cover-title{font-size:36pt;font-weight:900;color:#fff;line-height:1.1;margin-bottom:16px;}
+.cover-title span{color:var(--red);}
+.cover-sub{font-size:11.5pt;color:rgba(255,255,255,.55);font-weight:300;line-height:1.7;max-width:400px;}
+.cover-modules{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px;}
+.cover-module-chip{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);font-size:7.5pt;font-weight:700;padding:4px 10px;border-radius:4px;font-family:monospace;}
+.cover-footer{color:rgba(255,255,255,.35);font-size:8pt;z-index:1;}
+
+.doc-page{width:210mm;min-height:297mm;padding:48px 52px;page-break-after:always;position:relative;}
+.doc-page:last-child{page-break-after:avoid;}
+
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:36px;padding-bottom:14px;border-bottom:2px solid #fff0f2;}
+.page-header img{height:26px;}
+.page-header span{font-size:7.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#9ca3af;}
+
+/* Module card */
+.module-block{margin-bottom:32px;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;}
+.module-header{background:var(--dark);padding:18px 24px;display:flex;align-items:center;gap:16px;}
+.module-code-badge{background:var(--red);color:#fff;font-size:8pt;font-weight:800;font-family:monospace;padding:4px 10px;border-radius:5px;letter-spacing:.05em;white-space:nowrap;}
+.module-name{font-size:14pt;font-weight:800;color:#fff;}
+.module-tagline{font-size:8.5pt;color:rgba(255,255,255,.5);margin-top:2px;}
+.module-body{padding:18px 24px;background:#fff;}
+.module-body p{font-size:9.5pt;color:#374151;line-height:1.7;margin-bottom:12px;}
+.feature-cols{display:grid;grid-template-columns:1fr 1fr;gap:0 24px;}
+.feature-item{display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-bottom:1px solid #f9fafb;}
+.feature-item:last-child{border-bottom:none;}
+.feature-dot{width:6px;height:6px;border-radius:50%;background:var(--red);flex-shrink:0;margin-top:5px;}
+.feature-text{font-size:8.5pt;color:#374151;line-height:1.5;}
+.module-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid #f3f4f6;}
+.tag{background:#fff0f2;color:var(--red);font-size:7pt;font-weight:700;padding:3px 8px;border-radius:4px;}
+
+h2{font-size:20pt;font-weight:900;color:var(--dark);margin-bottom:6px;}
+.section-sub{font-size:10pt;color:#6b7280;margin-bottom:28px;line-height:1.65;}
+
+.doc-footer{position:absolute;bottom:28px;left:52px;right:52px;display:flex;justify-content:space-between;border-top:1px solid #f3f4f6;padding-top:10px;}
+.doc-footer span{font-size:7.5pt;color:#9ca3af;}
+
+.integration-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:8.5pt;}
+.integration-table th{background:var(--dark);color:#fff;padding:9px 12px;text-align:left;font-weight:700;}
+.integration-table td{padding:8px 12px;border:1px solid #e5e7eb;vertical-align:top;color:#374151;}
+.integration-table tr:nth-child(even) td{background:#f9fafb;}
+.badge-red{background:var(--red);color:#fff;font-size:7pt;font-weight:700;padding:2px 7px;border-radius:3px;font-family:monospace;}
+
+@media print{*{-webkit-print-color-adjust:exact;print-color-adjust:exact;}body{margin:0;}@page{size:A4;margin:0;}}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-logo"><img src="../assets/img/logo.png" alt="Edupro SMS" onerror="this.outerHTML='<span style=\'color:#fff;font-size:18pt;font-weight:900;\'>Edupro SMS</span>'"></div>
+  <div>
+    <div class="cover-tag">Product Reference Guide</div>
+    <div class="cover-title">10 Modules:<br><span>Features &amp;<br>Functionality</span></div>
+    <div class="cover-sub">A complete reference for every module in the Edupro SMS school management platform — built for Zimbabwe's ZIMSEC and Cambridge schools.</div>
+    <div class="cover-modules">
+      <span class="cover-module-chip">SIM-100</span>
+      <span class="cover-module-chip">ADM-200</span>
+      <span class="cover-module-chip">LMS-200</span>
+      <span class="cover-module-chip">ATT-300</span>
+      <span class="cover-module-chip">TTS-300</span>
+      <span class="cover-module-chip">COM-400</span>
+      <span class="cover-module-chip">FIN-500</span>
+      <span class="cover-module-chip">RPT-800</span>
+      <span class="cover-module-chip">AST-900</span>
+      <span class="cover-module-chip">TRN-1000</span>
+    </div>
+  </div>
+  <div class="cover-footer">www.edupro.co.zw · sales@edupro.co.zw · +263 788 111 611</div>
+</div>
+
+<!-- PAGE 2: Overview -->
+<div class="doc-page">
+  <div class="page-header">
+    <img src="../assets/img/logo.png" alt="Edupro SMS" onerror="this.outerHTML='<span style=\'font-weight:900;font-size:11pt;color:#1a0a0e;\'>Edupro SMS</span>'">
+    <span>Platform Overview</span>
+  </div>
+  <h2>The Edupro SMS Platform</h2>
+  <div class="section-sub">Edupro SMS is a modular, offline-capable school management platform designed specifically for Zimbabwean primary and secondary schools. Schools activate only the modules they need — starting from a single module and expanding as their capacity grows.</div>
+
+  <div class="module-block">
+    <div class="module-header">
+      <div><span class="module-code-badge">SIM-100</span></div>
+      <div>
+        <div class="module-name">Student Information Management</div>
+        <div class="module-tagline">The central registry for every learner — ECD through Form 6</div>
+      </div>
+    </div>
+    <div class="module-body">
+      <p>SIM-100 is the foundation of Edupro SMS. Every other module draws its student data from this central registry. It replaces paper registers and scattered spreadsheets with one structured, searchable database.</p>
+      <div class="feature-cols">
+        <div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Full student demographics (name, DOB, national ID, gender, address, nationality, home language)</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Parent/guardian profiles with multiple contact numbers</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Medical records: allergies, chronic conditions, vaccinations</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Academic history: previous schools, transfer records, O-Level results</div></div>
+        </div>
+        <div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Photo ID capture and student ID card printing</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">ZIMSEC registration number storage</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Ministry of Primary & Secondary Education reporting export</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Bulk import from Excel / existing school registers</div></div>
+        </div>
+      </div>
+      <div class="module-tags"><span class="tag">Offline Capable</span><span class="tag">ZIMSEC Ready</span><span class="tag">Cambridge Ready</span><span class="tag">ECD – Form 6</span></div>
+    </div>
+  </div>
+
+  <div class="module-block">
+    <div class="module-header">
+      <div><span class="module-code-badge">ADM-200</span></div>
+      <div>
+        <div class="module-name">Admissions &amp; Enrolment</div>
+        <div class="module-tagline">Digital application processing from enquiry to class placement</div>
+      </div>
+    </div>
+    <div class="module-body">
+      <p>ADM-200 digitises the entire admissions process — from online application forms and document collection through entrance test results to final class placement and registration fee collection.</p>
+      <div class="feature-cols">
+        <div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Online application portal for parents (accessible from any phone)</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Document checklist: birth certificate, immunisation card, O-Level results</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Entrance test scheduling and result recording</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Waiting list management with priority rules</div></div>
+        </div>
+        <div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Class placement with capacity enforcement</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Acceptance letter and offer generation (PDF)</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Registration fee capture linked to FIN-500</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Automatic SIM-100 profile creation on enrolment</div></div>
+        </div>
+      </div>
+      <div class="module-tags"><span class="tag">Online Applications</span><span class="tag">Waiting Lists</span><span class="tag">PDF Letters</span></div>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <span>Edupro SMS — 10 Modules Guide</span>
+    <span>© 2025 Edupro SMS · www.edupro.co.zw</span>
+    <span>Page 2</span>
+  </div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="doc-page">
+  <div class="page-header">
+    <img src="../assets/img/logo.png" alt="Edupro SMS" onerror="this.outerHTML='<span style=\'font-weight:900;font-size:11pt;color:#1a0a0e;\'>Edupro SMS</span>'">
+    <span>Modules — Continued</span>
+  </div>
+
+  <div class="module-block">
+    <div class="module-header">
+      <div><span class="module-code-badge">LMS-200</span></div>
+      <div>
+        <div class="module-name">Moodle Learning Management System</div>
+        <div class="module-tagline">World-class e-learning — offline-capable on your school server</div>
+      </div>
+    </div>
+    <div class="module-body">
+      <p>LMS-200 integrates Moodle — the world's most-used learning platform (400 million+ users) — directly into your Edupro SMS server. Students access lessons, assignments, and quizzes from any device on your school's local network, even without internet.</p>
+      <div class="feature-cols">
+        <div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Course creation for every ZIMSEC and Cambridge subject</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Video lessons, PDFs, quizzes, and assignments — all offline</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Automated grade sync to RPT-800 report cards</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Discussion forums for student-teacher interaction</div></div>
+        </div>
+        <div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Teacher gradebook with ZIMSEC/Cambridge grade mapping</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Student progress dashboards and completion tracking</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Mobile-responsive (works on smartphones &amp; tablets)</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">ZimHPC cloud sync for backup and remote access</div></div>
+        </div>
+      </div>
+      <div class="module-tags"><span class="tag">Moodle Powered</span><span class="tag">400M+ Users Globally</span><span class="tag">Offline-First</span><span class="tag">ZIMSEC Aligned</span></div>
+    </div>
+  </div>
+
+  <div class="module-block">
+    <div class="module-header">
+      <div><span class="module-code-badge">ATT-300</span></div>
+      <div>
+        <div class="module-name">Attendance Management</div>
+        <div class="module-tagline">From daily registers to Ministry attendance reports — automated</div>
+      </div>
+    </div>
+    <div class="module-body">
+      <p>ATT-300 replaces paper attendance registers with a fast digital system. Teachers mark attendance on any device in under 2 minutes per class. Attendance data flows automatically to report cards and parent notifications.</p>
+      <div class="feature-cols">
+        <div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Morning roll call on any browser or tablet</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Period-by-period attendance for secondary schools</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Automatic SMS/WhatsApp to parents on absence (via COM-400)</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Late arrival and early departure logging</div></div>
+        </div>
+        <div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Attendance % per student per term — shown on report cards</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">ZIMSEC 80% attendance threshold alerts</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Class and school-wide attendance analytics</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Ministry R&C form export (attendance summary)</div></div>
+        </div>
+      </div>
+      <div class="module-tags"><span class="tag">Digital Registers</span><span class="tag">Parent Alerts</span><span class="tag">ZIMSEC 80% Rule</span></div>
+    </div>
+  </div>
+
+  <div class="module-block">
+    <div class="module-header">
+      <div><span class="module-code-badge">TTS-300</span></div>
+      <div>
+        <div class="module-name">Timetable &amp; Scheduling</div>
+        <div class="module-tagline">Automated timetable generation — no more manual spreadsheets</div>
+      </div>
+    </div>
+    <div class="module-body">
+      <p>TTS-300 generates conflict-free school timetables automatically, respecting teacher availability, room capacity, subject period requirements, and option block choices for A-Level.</p>
+      <div class="feature-cols">
+        <div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Automated timetable generation from teacher + room constraints</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">A-Level option block management (subject choices)</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Split class and double-period support</div></div>
+        </div>
+        <div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Individual teacher timetable view (printable)</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Substitute teacher assignment for absent staff</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Exam timetable and invigilation scheduling</div></div>
+        </div>
+      </div>
+      <div class="module-tags"><span class="tag">Auto-Generated</span><span class="tag">A-Level Options</span><span class="tag">Exam Timetables</span></div>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <span>Edupro SMS — 10 Modules Guide</span>
+    <span>© 2025 Edupro SMS · www.edupro.co.zw</span>
+    <span>Page 3</span>
+  </div>
+</div>
+
+<!-- PAGE 4 -->
+<div class="doc-page">
+  <div class="page-header">
+    <img src="../assets/img/logo.png" alt="Edupro SMS" onerror="this.outerHTML='<span style=\'font-weight:900;font-size:11pt;color:#1a0a0e;\'>Edupro SMS</span>'">
+    <span>Modules — Continued</span>
+  </div>
+
+  <div class="module-block">
+    <div class="module-header">
+      <div><span class="module-code-badge">COM-400</span></div>
+      <div>
+        <div class="module-name">Communications Portal</div>
+        <div class="module-tagline">SMS, WhatsApp, and email to every parent — from one screen</div>
+      </div>
+    </div>
+    <div class="module-body">
+      <p>COM-400 connects the school to parents through Zimbabwe's most-used channels — WhatsApp, SMS, and email — directly from Edupro SMS. No need for separate messaging apps or manual copying of numbers.</p>
+      <div class="feature-cols">
+        <div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Bulk SMS to all parents, a single class, or individual students</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">WhatsApp message broadcasting (requires WhatsApp Business API)</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Automated fee reminder messages from FIN-500</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Absence notifications triggered by ATT-300</div></div>
+        </div>
+        <div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Report card and invoice delivery via email (PDF attachment)</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">School announcements: term dates, events, closures</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Message delivery reports and read receipts</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Parent opt-out management (POTRAZ compliance)</div></div>
+        </div>
+      </div>
+      <div class="module-tags"><span class="tag">SMS</span><span class="tag">WhatsApp</span><span class="tag">Email</span><span class="tag">Econet/NetOne/Telecel</span></div>
+    </div>
+  </div>
+
+  <div class="module-block">
+    <div class="module-header">
+      <div><span class="module-code-badge">FIN-500</span></div>
+      <div>
+        <div class="module-name">School Fees Management</div>
+        <div class="module-tagline">USD &amp; ZiG · EcoCash · Innbucks · RTGS · Full audit trail</div>
+      </div>
+    </div>
+    <div class="module-body">
+      <p>FIN-500 is the complete bursary system for Zimbabwe schools — handling multi-currency invoicing, all local payment methods, real-time debtor dashboards, and financial reports for school boards.</p>
+      <div class="feature-cols">
+        <div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Per-grade, per-term fee structure with multiple levy types</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">EcoCash, Innbucks, RTGS, USD cash, ZiG cash, bank transfer</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Steward Bank auto-reconciliation integration</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Dual-currency invoicing (USD and ZiG with configurable exchange rate)</div></div>
+        </div>
+        <div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">QR-code receipts with parent verification portal</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Real-time debtor dashboard by class, grade, and school</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Sibling discounts and scholarship/bursary management</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Board-ready reports: arrears ageing, collection rate, bad debt</div></div>
+        </div>
+      </div>
+      <div class="module-tags"><span class="tag">EcoCash Ready</span><span class="tag">USD &amp; ZiG</span><span class="tag">Innbucks</span><span class="tag">RTGS</span><span class="tag">QR Receipts</span></div>
+    </div>
+  </div>
+
+  <div class="module-block">
+    <div class="module-header">
+      <div><span class="module-code-badge">RPT-800</span></div>
+      <div>
+        <div class="module-name">Academic Reporting System</div>
+        <div class="module-tagline">ZIMSEC &amp; Cambridge report cards — generated in bulk in minutes</div>
+      </div>
+    </div>
+    <div class="module-body">
+      <p>RPT-800 eliminates manual report card typing, calculation errors, and unsigned reports going home — by generating professional PDF report cards for every student in one click.</p>
+      <div class="feature-cols">
+        <div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">ZIMSEC O-Level and A-Level grading (grades 1–9, A–U)</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Cambridge IGCSE and AS/A-Level grading</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Primary school competency-based reports (ECD – Grade 7)</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Automatic class position, aggregate, and averages</div></div>
+        </div>
+        <div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Bulk PDF export — entire school in one ZIP file</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Email report cards to parents directly from the system</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Teacher remarks and Head of School comments</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Attendance % from ATT-300 auto-populates each report card</div></div>
+        </div>
+      </div>
+      <div class="module-tags"><span class="tag">ZIMSEC O-Level</span><span class="tag">ZIMSEC A-Level</span><span class="tag">Cambridge</span><span class="tag">Bulk PDF</span></div>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <span>Edupro SMS — 10 Modules Guide</span>
+    <span>© 2025 Edupro SMS · www.edupro.co.zw</span>
+    <span>Page 4</span>
+  </div>
+</div>
+
+<!-- PAGE 5 -->
+<div class="doc-page">
+  <div class="page-header">
+    <img src="../assets/img/logo.png" alt="Edupro SMS" onerror="this.outerHTML='<span style=\'font-weight:900;font-size:11pt;color:#1a0a0e;\'>Edupro SMS</span>'">
+    <span>Modules — Continued</span>
+  </div>
+
+  <div class="module-block">
+    <div class="module-header">
+      <div><span class="module-code-badge">AST-900</span></div>
+      <div>
+        <div class="module-name">Asset Management</div>
+        <div class="module-tagline">Know exactly what your school owns, where it is, and what it's worth</div>
+      </div>
+    </div>
+    <div class="module-body">
+      <p>AST-900 maintains a complete digital register of all school property — from classroom furniture and laboratory equipment to ICT hardware and school vehicles — with depreciation tracking and maintenance scheduling.</p>
+      <div class="feature-cols">
+        <div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Asset register: equipment, furniture, ICT, vehicles, buildings</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Purchase date, cost, supplier, and warranty records</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Asset location tracking (block, classroom, lab)</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Condition ratings: Good / Fair / Needs Repair / Condemned</div></div>
+        </div>
+        <div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Depreciation calculation (straight-line and reducing balance)</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Maintenance schedule and service history log</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Asset disposal and write-off recording</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Board-ready asset valuation report (USD and ZiG)</div></div>
+        </div>
+      </div>
+      <div class="module-tags"><span class="tag">Asset Register</span><span class="tag">Depreciation</span><span class="tag">Maintenance Log</span></div>
+    </div>
+  </div>
+
+  <div class="module-block">
+    <div class="module-header">
+      <div><span class="module-code-badge">TRN-1000</span></div>
+      <div>
+        <div class="module-name">Capacity Building &amp; Training</div>
+        <div class="module-tagline">On-site and remote staff training for full system adoption</div>
+      </div>
+    </div>
+    <div class="module-body">
+      <p>TRN-1000 is not a software module — it is the structured training programme delivered by Edupro SMS specialists to ensure every member of school staff can use the system effectively from day one.</p>
+      <div class="feature-cols">
+        <div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">On-site full-day training for administrators and bursars</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Teacher training: mark entry, Moodle course creation, attendance</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">IT administrator training: server management and backups</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Head of School / Board reporting walkthrough</div></div>
+        </div>
+        <div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Video training library on Moodle (accessible offline)</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Printed quick-reference cards for each staff role</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Remote support via WhatsApp and screen sharing</div></div>
+          <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Annual refresher sessions for new staff</div></div>
+        </div>
+      </div>
+      <div class="module-tags"><span class="tag">On-Site Training</span><span class="tag">Video Library</span><span class="tag">Remote Support</span></div>
+    </div>
+  </div>
+
+  <!-- Integration table -->
+  <h2 style="font-size:15pt;margin-top:10px;margin-bottom:8px;">Module Integration Map</h2>
+  <table class="integration-table">
+    <thead><tr><th>Module</th><th>Feeds Data To</th><th>Receives Data From</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge-red">SIM-100</span> Student Info</td><td>All other modules</td><td>ADM-200 on enrolment</td></tr>
+      <tr><td><span class="badge-red">ADM-200</span> Admissions</td><td>SIM-100, FIN-500</td><td>SIM-100 student records</td></tr>
+      <tr><td><span class="badge-red">ATT-300</span> Attendance</td><td>RPT-800 (report cards), COM-400 (alerts)</td><td>SIM-100 student list</td></tr>
+      <tr><td><span class="badge-red">FIN-500</span> Fees</td><td>COM-400 (reminders), RPT-800 (withhold)</td><td>SIM-100, ADM-200</td></tr>
+      <tr><td><span class="badge-red">LMS-200</span> Moodle</td><td>RPT-800 (continuous assessment grades)</td><td>SIM-100 student accounts</td></tr>
+      <tr><td><span class="badge-red">RPT-800</span> Reporting</td><td>COM-400 (email delivery)</td><td>ATT-300, LMS-200, FIN-500</td></tr>
+    </tbody>
+  </table>
+
+  <div class="doc-footer">
+    <span>Edupro SMS — 10 Modules Guide</span>
+    <span>© 2025 Edupro SMS · www.edupro.co.zw</span>
+    <span>Page 5</span>
+  </div>
+</div>
+
+</body>
+</html>

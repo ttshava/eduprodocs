@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edupro SMS — Pricing Guide</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--red:#FF0527;--dark:#1a0a0e;--red-dark:#c8021e;--red-light:#fff0f2;}
+body{font-family:'Inter',sans-serif;color:#1f2937;background:#fff;font-size:11pt;line-height:1.6;}
+
+.cover{width:210mm;height:297mm;background:linear-gradient(145deg,#1a0a0e 0%,#3d1018 100%);display:flex;flex-direction:column;justify-content:space-between;padding:60px 56px;position:relative;overflow:hidden;page-break-after:always;}
+.cover::before{content:'';position:absolute;top:-80px;right:-80px;width:380px;height:380px;border-radius:50%;background:var(--red);opacity:.15;}
+.cover::after{content:'';position:absolute;bottom:-100px;left:-60px;width:320px;height:320px;border-radius:50%;background:var(--red);opacity:.07;}
+.cover-logo img{width:180px;filter:brightness(10);}
+.cover-tag{display:inline-block;background:var(--red);color:#fff;font-size:8pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:4px;margin-bottom:20px;}
+.cover-title{font-size:38pt;font-weight:900;color:#fff;line-height:1.05;margin-bottom:16px;}
+.cover-title span{color:var(--red);}
+.cover-sub{font-size:11pt;color:rgba(255,255,255,.55);font-weight:300;line-height:1.7;max-width:420px;}
+.cover-pills{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;}
+.cover-pill{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.8);font-size:8.5pt;font-weight:600;padding:5px 14px;border-radius:20px;}
+.cover-footer{color:rgba(255,255,255,.35);font-size:8pt;z-index:1;}
+
+.doc-page{width:210mm;min-height:297mm;padding:48px 52px;page-break-after:always;position:relative;}
+.doc-page:last-child{page-break-after:avoid;}
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:36px;padding-bottom:14px;border-bottom:2px solid #fff0f2;}
+.page-header img{height:26px;}
+.page-header span{font-size:7.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#9ca3af;}
+
+h2{font-size:20pt;font-weight:900;color:var(--dark);margin-bottom:8px;}
+.section-sub{font-size:10pt;color:#6b7280;margin-bottom:28px;line-height:1.65;}
+h3{font-size:12pt;font-weight:800;color:var(--dark);margin:24px 0 10px;}
+p{font-size:10pt;color:#374151;line-height:1.7;margin-bottom:10px;}
+
+/* Pricing cards */
+.price-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0;}
+.price-card{border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;}
+.price-card.featured{border-color:var(--red);box-shadow:0 4px 20px rgba(255,5,39,.15);}
+.price-card-header{padding:20px 22px;background:#f9fafb;}
+.price-card.featured .price-card-header{background:var(--dark);}
+.price-badge{display:inline-block;background:var(--red);color:#fff;font-size:7pt;font-weight:700;padding:2px 8px;border-radius:3px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
+.price-name{font-size:14pt;font-weight:800;color:var(--dark);}
+.price-card.featured .price-name{color:#fff;}
+.price-desc{font-size:8.5pt;color:#6b7280;margin-top:4px;line-height:1.5;}
+.price-card.featured .price-desc{color:rgba(255,255,255,.5);}
+.price-amount{font-size:28pt;font-weight:900;color:var(--red);line-height:1;margin:14px 0 4px;}
+.price-amount sup{font-size:14pt;vertical-align:super;}
+.price-period{font-size:8.5pt;color:#6b7280;margin-bottom:0;}
+.price-card.featured .price-period{color:rgba(255,255,255,.4);}
+.price-body{padding:18px 22px;background:#fff;}
+.price-feature{display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-bottom:1px solid #f9fafb;font-size:8.5pt;color:#374151;line-height:1.5;}
+.price-feature:last-child{border-bottom:none;}
+.check{color:var(--red);font-weight:900;flex-shrink:0;}
+
+/* One-time setup */
+.setup-box{background:var(--dark);border-radius:14px;padding:28px 32px;color:#fff;margin:20px 0;}
+.setup-box-tag{background:var(--red);color:#fff;font-size:7.5pt;font-weight:700;padding:3px 10px;border-radius:3px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;display:inline-block;}
+.setup-box-title{font-size:18pt;font-weight:900;margin-bottom:6px;}
+.setup-box-sub{font-size:9.5pt;color:rgba(255,255,255,.55);margin-bottom:20px;line-height:1.6;}
+.setup-includes{display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;}
+.setup-item{display:flex;gap:8px;align-items:flex-start;font-size:8.5pt;color:rgba(255,255,255,.8);line-height:1.5;}
+.setup-check{color:var(--red);font-weight:900;flex-shrink:0;}
+
+/* Comparison table */
+.comp-table{width:100%;border-collapse:collapse;font-size:8.5pt;margin:16px 0;}
+.comp-table th{background:var(--dark);color:#fff;padding:10px 12px;text-align:center;font-weight:700;font-size:8pt;}
+.comp-table th:first-child{text-align:left;}
+.comp-table td{padding:8px 12px;border:1px solid #e5e7eb;text-align:center;vertical-align:middle;}
+.comp-table td:first-child{text-align:left;font-weight:600;color:#374151;}
+.comp-table tr:nth-child(even) td{background:#fafafa;}
+.yes{color:#10b981;font-weight:800;font-size:11pt;}
+.no{color:#d1d5db;font-size:11pt;}
+.partial{color:#f59e0b;font-weight:700;font-size:9pt;}
+
+/* Payment methods */
+.payment-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0;}
+.payment-chip{border:1px solid #e5e7eb;border-radius:8px;padding:12px 14px;text-align:center;background:#fafafa;}
+.payment-chip .icon{font-size:1.4rem;display:block;margin-bottom:5px;}
+.payment-chip .label{font-size:8pt;font-weight:700;color:var(--dark);}
+.payment-chip .sub{font-size:7.5pt;color:#6b7280;margin-top:2px;}
+
+.callout{border-left:3px solid var(--red);background:var(--red-light);border-radius:0 8px 8px 0;padding:12px 16px;margin:16px 0;font-size:9pt;color:#374151;}
+.callout strong{color:var(--dark);}
+
+.doc-footer{position:absolute;bottom:28px;left:52px;right:52px;display:flex;justify-content:space-between;border-top:1px solid #f3f4f6;padding-top:10px;}
+.doc-footer span{font-size:7.5pt;color:#9ca3af;}
+
+@media print{*{-webkit-print-color-adjust:exact;print-color-adjust:exact;}body{margin:0;}@page{size:A4;margin:0;}}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-logo"><img src="../assets/img/logo.png" alt="Edupro SMS" onerror="this.outerHTML='<span style=\'color:#fff;font-size:18pt;font-weight:900;\'>Edupro SMS</span>'"></div>
+  <div>
+    <div class="cover-tag">Official Pricing Guide 2025</div>
+    <div class="cover-title">Pricing &amp;<br><span>Investment<br>Guide</span></div>
+    <div class="cover-sub">Transparent, Zimbabwe-specific pricing for every school size — from a 200-learner primary school to a 2,000-learner boarding secondary.</div>
+    <div class="cover-pills">
+      <span class="cover-pill">USD Pricing</span>
+      <span class="cover-pill">ZiG Accepted</span>
+      <span class="cover-pill">EcoCash Ready</span>
+      <span class="cover-pill">No Hidden Fees</span>
+    </div>
+  </div>
+  <div class="cover-footer">www.edupro.co.zw · sales@edupro.co.zw · +263 788 111 611<br>Valid: January – December 2025 · Prices in USD unless stated</div>
+</div>
+
+<!-- PAGE 2: Setup Fee + Subscription Plans -->
+<div class="doc-page">
+  <div class="page-header">
+    <img src="../assets/img/logo.png" alt="Edupro SMS" onerror="this.outerHTML='<span style=\'font-weight:900;font-size:11pt;color:#1a0a0e;\'>Edupro SMS</span>'">
+    <span>Pricing Plans</span>
+  </div>
+
+  <h2>Investment Overview</h2>
+  <div class="section-sub">Edupro SMS is priced in two parts: a one-time setup fee covering installation and configuration, and a recurring subscription based on your chosen service level.</div>
+
+  <!-- One-time setup -->
+  <div class="setup-box">
+    <div class="setup-box-tag">One-Time · All Schools</div>
+    <div class="setup-box-title">Setup &amp; Installation Fee — $2,000 USD</div>
+    <div class="setup-box-sub">Paid once before go-live. Covers everything your school needs to get up and running on Edupro SMS — hardware configuration, software installation, data migration, and staff training.</div>
+    <div class="setup-includes">
+      <div class="setup-item"><span class="setup-check">✓</span>Server hardware procurement &amp; configuration</div>
+      <div class="setup-item"><span class="setup-check">✓</span>Edupro SMS software installation &amp; configuration</div>
+      <div class="setup-item"><span class="setup-check">✓</span>Moodle LMS setup and ZIMSEC course templates</div>
+      <div class="setup-item"><span class="setup-check">✓</span>School data migration (existing student records)</div>
+      <div class="setup-item"><span class="setup-check">✓</span>School network (LAN) configuration</div>
+      <div class="setup-item"><span class="setup-check">✓</span>On-site staff training (TRN-1000 — full day)</div>
+      <div class="setup-item"><span class="setup-check">✓</span>First 3 months of support included</div>
+      <div class="setup-item"><span class="setup-check">✓</span>School logo and branding on all templates</div>
+    </div>
+  </div>
+
+  <!-- Subscription plans -->
+  <h3>Subscription Plans</h3>
+  <div class="price-grid">
+    <div class="price-card">
+      <div class="price-card-header">
+        <div class="price-badge">Cloud Add-on</div>
+        <div class="price-name">ZimHPC Cloud Sync</div>
+        <div class="price-desc">Off-site backup &amp; remote access via University of Zimbabwe HPC Centre</div>
+        <div class="price-amount"><sup>$</sup>14</div>
+        <div class="price-period">per month · billed monthly</div>
+      </div>
+      <div class="price-body">
+        <div class="price-feature"><span class="check">✓</span>Nightly encrypted off-site backup to ZimHPC</div>
+        <div class="price-feature"><span class="check">✓</span>Disaster recovery — restore any backup in &lt;4 hours</div>
+        <div class="price-feature"><span class="check">✓</span>Remote access for authorised staff from home</div>
+        <div class="price-feature"><span class="check">✓</span>ZimHPC data sovereignty — data stays in Zimbabwe</div>
+        <div class="price-feature"><span class="check">✓</span>99.5% uptime SLA on backup infrastructure</div>
+      </div>
+    </div>
+
+    <div class="price-card featured">
+      <div class="price-card-header">
+        <div class="price-badge">Most Popular</div>
+        <div class="price-name">Basic Support</div>
+        <div class="price-desc">Essential ongoing support and system maintenance</div>
+        <div class="price-amount"><sup>$</sup>250</div>
+        <div class="price-period">per term · 3 terms per year</div>
+      </div>
+      <div class="price-body">
+        <div class="price-feature"><span class="check">✓</span>Email &amp; WhatsApp support (business hours)</div>
+        <div class="price-feature"><span class="check">✓</span>Software updates and security patches</div>
+        <div class="price-feature"><span class="check">✓</span>Remote troubleshooting via screen share</div>
+        <div class="price-feature"><span class="check">✓</span>1 remote training session per term</div>
+        <div class="price-feature"><span class="check">✓</span>Response within 1 business day</div>
+      </div>
+    </div>
+
+    <div class="price-card" style="grid-column:1/-1;">
+      <div class="price-card-header" style="background:#1a0a0e;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div class="price-badge">Full Package</div>
+          <div class="price-name" style="color:#fff;">Full Support &amp; Maintenance</div>
+          <div class="price-desc" style="color:rgba(255,255,255,.5);">Comprehensive support with on-site visits and priority response</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="price-amount">$400</div>
+          <div class="price-period" style="color:rgba(255,255,255,.4);">per term · 3 terms per year</div>
+        </div>
+      </div>
+      <div class="price-body" style="display:grid;grid-template-columns:1fr 1fr;gap:0 20px;">
+        <div class="price-feature"><span class="check">✓</span>Everything in Basic Support</div>
+        <div class="price-feature"><span class="check">✓</span>Priority 4-hour response time</div>
+        <div class="price-feature"><span class="check">✓</span>1 on-site visit per term (within 100km of Harare/Bulawayo)</div>
+        <div class="price-feature"><span class="check">✓</span>Unlimited remote training sessions</div>
+        <div class="price-feature"><span class="check">✓</span>ZimHPC cloud backup included ($14/mo value)</div>
+        <div class="price-feature"><span class="check">✓</span>Hardware health monitoring and proactive alerts</div>
+        <div class="price-feature"><span class="check">✓</span>New module activations at no extra cost</div>
+        <div class="price-feature"><span class="check">✓</span>End-of-term report run support &amp; verification</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <span>Edupro SMS Pricing Guide 2025</span>
+    <span>© 2025 Edupro SMS · www.edupro.co.zw</span>
+    <span>Page 2</span>
+  </div>
+</div>
+
+<!-- PAGE 3: Comparison + Payment Methods -->
+<div class="doc-page">
+  <div class="page-header">
+    <img src="../assets/img/logo.png" alt="Edupro SMS" onerror="this.outerHTML='<span style=\'font-weight:900;font-size:11pt;color:#1a0a0e;\'>Edupro SMS</span>'">
+    <span>Plan Comparison &amp; Payment</span>
+  </div>
+
+  <h2>Plan Comparison</h2>
+  <div class="section-sub">A full breakdown of what's included in each support plan.</div>
+
+  <table class="comp-table">
+    <thead>
+      <tr>
+        <th style="width:40%;">Feature</th>
+        <th>ZimHPC<br>$14/mo</th>
+        <th>Basic<br>$250/term</th>
+        <th>Full<br>$400/term</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Email &amp; WhatsApp support</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+      <tr><td>Software updates &amp; patches</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+      <tr><td>Remote troubleshooting</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+      <tr><td>Remote training sessions per term</td><td class="no">—</td><td class="partial">1 session</td><td class="yes">Unlimited</td></tr>
+      <tr><td>Response time</td><td class="no">—</td><td class="partial">1 business day</td><td class="yes">4 hours</td></tr>
+      <tr><td>On-site visit per term</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+      <tr><td>ZimHPC cloud backup</td><td class="yes">✓</td><td class="no">—</td><td class="yes">✓ Included</td></tr>
+      <tr><td>Off-site disaster recovery</td><td class="yes">✓</td><td class="no">—</td><td class="yes">✓</td></tr>
+      <tr><td>Hardware health monitoring</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+      <tr><td>New module activations</td><td class="no">—</td><td class="partial">+ cost</td><td class="yes">Included</td></tr>
+      <tr><td>End-of-term report run support</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <strong>💡 Recommended Combination:</strong> Setup Fee ($2,000) + Full Support ($400/term × 3 = $1,200/year) + ZimHPC Cloud ($14/mo × 12 = $168/year) = <strong>$1,368/year total running cost</strong> — less than the salary of one admin clerk.
+  </div>
+
+  <h3>How to Pay — Accepted Payment Methods</h3>
+  <p>Edupro SMS accepts all major Zimbabwe payment methods for both the setup fee and subscriptions.</p>
+
+  <div class="payment-grid">
+    <div class="payment-chip">
+      <span class="icon">📱</span>
+      <div class="label">EcoCash</div>
+      <div class="sub">Econet Mobile Money<br>0772 837 385</div>
+    </div>
+    <div class="payment-chip">
+      <span class="icon">💳</span>
+      <div class="label">Innbucks</div>
+      <div class="sub">InnBucks Mobile Money<br>Merchant account</div>
+    </div>
+    <div class="payment-chip">
+      <span class="icon">🏦</span>
+      <div class="label">RTGS Transfer</div>
+      <div class="sub">ZiG bank transfer<br>Steward Bank / CBZ</div>
+    </div>
+    <div class="payment-chip">
+      <span class="icon">💵</span>
+      <div class="label">USD Cash</div>
+      <div class="sub">Harare &amp; Bulawayo offices<br>By appointment</div>
+    </div>
+    <div class="payment-chip">
+      <span class="icon">🏦</span>
+      <div class="label">USD Bank Transfer</div>
+      <div class="sub">USD account details<br>provided on invoice</div>
+    </div>
+    <div class="payment-chip">
+      <span class="icon">📄</span>
+      <div class="label">LPO / Purchase Order</div>
+      <div class="sub">Government &amp; Mission schools<br>30-day payment terms</div>
+    </div>
+  </div>
+
+  <div class="callout" style="border-color:#10b981;background:#ecfdf5;">
+    <strong>🏫 Government &amp; Mission Schools:</strong> Edupro SMS accepts Local Purchase Orders (LPOs) from government and mission schools under Ministry procurement rules. Contact sales@edupro.co.zw to request a formal quotation for your school's finance department.
+  </div>
+
+  <h3>Annual Cost Summary</h3>
+  <table class="comp-table">
+    <thead><tr><th>Item</th><th>Amount</th><th>Frequency</th><th>Annual Cost</th></tr></thead>
+    <tbody>
+      <tr><td>Setup &amp; Installation</td><td>$2,000</td><td>Once only</td><td>$2,000 (year 1)</td></tr>
+      <tr><td>ZimHPC Cloud Backup</td><td>$14/mo</td><td>Monthly</td><td>$168/year</td></tr>
+      <tr><td>Basic Support</td><td>$250/term</td><td>3× per year</td><td>$750/year</td></tr>
+      <tr><td>Full Support (recommended)</td><td>$400/term</td><td>3× per year</td><td>$1,200/year</td></tr>
+    </tbody>
+  </table>
+
+  <div class="doc-footer">
+    <span>Edupro SMS Pricing Guide 2025</span>
+    <span>© 2025 Edupro SMS · www.edupro.co.zw</span>
+    <span>Page 3</span>
+  </div>
+</div>
+
+<!-- PAGE 4: Contact & Get Started -->
+<div class="doc-page">
+  <div class="page-header">
+    <img src="../assets/img/logo.png" alt="Edupro SMS" onerror="this.outerHTML='<span style=\'font-weight:900;font-size:11pt;color:#1a0a0e;\'>Edupro SMS</span>'">
+    <span>Get Started</span>
+  </div>
+
+  <h2>How to Get Started</h2>
+  <div class="section-sub">The process from first contact to go-live typically takes 2–4 weeks, depending on school readiness.</div>
+
+  <div style="margin:20px 0;">
+    <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:20px;">
+      <div style="min-width:36px;height:36px;background:var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:13pt;flex-shrink:0;">1</div>
+      <div><div style="font-weight:800;font-size:11pt;color:var(--dark);">Contact our sales team</div><div style="font-size:9.5pt;color:#6b7280;margin-top:3px;line-height:1.6;">Call, WhatsApp, or email to schedule a free 30-minute demonstration of the full system. We'll show you live report cards, fee collection, attendance, and the Moodle LMS for your school's specific context.</div></div>
+    </div>
+    <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:20px;">
+      <div style="min-width:36px;height:36px;background:var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:13pt;flex-shrink:0;">2</div>
+      <div><div style="font-weight:800;font-size:11pt;color:var(--dark);">Receive your formal quotation</div><div style="font-size:9.5pt;color:#6b7280;margin-top:3px;line-height:1.6;">We issue a formal quotation in your school's name covering the setup fee, chosen subscription plan, and any optional extras. Suitable for Ministry procurement and LPO approval processes.</div></div>
+    </div>
+    <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:20px;">
+      <div style="min-width:36px;height:36px;background:var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:13pt;flex-shrink:0;">3</div>
+      <div><div style="font-weight:800;font-size:11pt;color:var(--dark);">Pay setup fee &amp; schedule installation</div><div style="font-size:9.5pt;color:#6b7280;margin-top:3px;line-height:1.6;">Once the setup fee is confirmed, our technical team contacts you to schedule the on-site installation. We procure any required hardware and coordinate with your IT staff or caretaker.</div></div>
+    </div>
+    <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:20px;">
+      <div style="min-width:36px;height:36px;background:var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:13pt;flex-shrink:0;">4</div>
+      <div><div style="font-weight:800;font-size:11pt;color:var(--dark);">Installation &amp; staff training</div><div style="font-size:9.5pt;color:#6b7280;margin-top:3px;line-height:1.6;">Our technicians install and configure everything on-site. A full training day covers all roles: Head of School, Bursar, teachers, and the IT administrator. Your school leaves ready to operate independently.</div></div>
+    </div>
+    <div style="display:flex;gap:16px;align-items:flex-start;">
+      <div style="min-width:36px;height:36px;background:var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:13pt;flex-shrink:0;">5</div>
+      <div><div style="font-weight:800;font-size:11pt;color:var(--dark);">Go live — supported from day one</div><div style="font-size:9.5pt;color:#6b7280;margin-top:3px;line-height:1.6;">Your school is live on Edupro SMS. Our support team is available via WhatsApp and email throughout the first term. Most schools are fully self-sufficient within 4–6 weeks of go-live.</div></div>
+    </div>
+  </div>
+
+  <div style="background:var(--dark);border-radius:14px;padding:28px 32px;margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div>
+      <div style="color:var(--red);font-size:8pt;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;">Sales &amp; Enquiries</div>
+      <div style="color:#fff;font-weight:700;font-size:11pt;margin-bottom:6px;">📧 sales@edupro.co.zw</div>
+      <div style="color:rgba(255,255,255,.6);font-size:9pt;margin-bottom:10px;">Quotes, demonstrations, LPO requests</div>
+      <div style="color:#fff;font-weight:700;font-size:11pt;margin-bottom:6px;">💬 WhatsApp: +263 772 837 385</div>
+      <div style="color:rgba(255,255,255,.6);font-size:9pt;">Quick questions &amp; demo scheduling</div>
+    </div>
+    <div>
+      <div style="color:var(--red);font-size:8pt;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;">Support &amp; Technical</div>
+      <div style="color:#fff;font-weight:700;font-size:11pt;margin-bottom:6px;">📧 support@edupro.co.zw</div>
+      <div style="color:rgba(255,255,255,.6);font-size:9pt;margin-bottom:10px;">Existing clients: technical issues</div>
+      <div style="color:#fff;font-weight:700;font-size:11pt;margin-bottom:6px;">📞 +263 788 111 611</div>
+      <div style="color:rgba(255,255,255,.6);font-size:9pt;">Office line · Mon–Fri, 8AM–5PM CAT</div>
+    </div>
+    <div style="grid-column:1/-1;border-top:1px solid rgba(255,255,255,.1);padding-top:16px;text-align:center;">
+      <div style="color:rgba(255,255,255,.5);font-size:9pt;">Register online at <strong style="color:#fff;">www.edupro.co.zw/portal/register.php</strong> · Follow us <strong style="color:#fff;">@eduprozw</strong></div>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <span>Edupro SMS Pricing Guide 2025</span>
+    <span>Prices valid January – December 2025. Subject to change with 30 days notice.</span>
+    <span>Page 4</span>
+  </div>
+</div>
+
+</body>
+</html>

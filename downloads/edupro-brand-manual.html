@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edupro SMS — Brand Manual</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--red:#FF0527;--dark:#1a0a0e;--red-dark:#c8021e;--red-light:#fff0f2;--gray:#f3f4f6;--text:#1f2937;--muted:#6b7280;}
+body{font-family:'Inter',sans-serif;color:var(--text);background:#fff;font-size:11pt;line-height:1.6;}
+
+/* ── Page shell ── */
+.page{width:210mm;min-height:297mm;margin:0 auto;background:#fff;}
+
+/* ── Cover ── */
+.cover{width:210mm;height:297mm;background:var(--dark);display:flex;flex-direction:column;justify-content:space-between;padding:60px 56px;position:relative;overflow:hidden;page-break-after:always;}
+.cover::before{content:'';position:absolute;top:-80px;right:-80px;width:400px;height:400px;border-radius:50%;background:var(--red);opacity:.12;}
+.cover::after{content:'';position:absolute;bottom:-60px;left:-60px;width:300px;height:300px;border-radius:50%;background:var(--red);opacity:.08;}
+.cover-logo{width:180px;}
+.cover-logo img{width:100%;filter:brightness(10);}
+.cover-center{z-index:1;}
+.cover-tag{display:inline-block;background:var(--red);color:#fff;font-size:8pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:4px;margin-bottom:20px;}
+.cover-title{font-size:40pt;font-weight:900;color:#fff;line-height:1.1;margin-bottom:16px;}
+.cover-title span{color:var(--red);}
+.cover-sub{font-size:12pt;color:rgba(255,255,255,.55);font-weight:300;max-width:380px;line-height:1.6;}
+.cover-footer{z-index:1;display:flex;justify-content:space-between;align-items:flex-end;}
+.cover-footer-left{color:rgba(255,255,255,.4);font-size:8pt;}
+.cover-footer-right{color:rgba(255,255,255,.4);font-size:8pt;text-align:right;}
+.cover-version{color:rgba(255,255,255,.3);font-size:8pt;border-top:1px solid rgba(255,255,255,.1);padding-top:14px;}
+
+/* ── Section pages ── */
+.doc-page{width:210mm;min-height:297mm;padding:52px 56px;page-break-after:always;position:relative;}
+.doc-page:last-child{page-break-after:avoid;}
+
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:40px;padding-bottom:16px;border-bottom:2px solid var(--red-light);}
+.page-header-logo{height:28px;}
+.page-header-logo img{height:100%;}
+.page-header-section{font-size:8pt;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);}
+
+.section-label{display:inline-block;background:var(--red);color:#fff;font-size:7.5pt;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:3px;margin-bottom:14px;}
+.section-title{font-size:24pt;font-weight:900;color:var(--dark);line-height:1.15;margin-bottom:10px;}
+.section-intro{font-size:10.5pt;color:var(--muted);line-height:1.75;margin-bottom:36px;max-width:520px;}
+
+h3{font-size:13pt;font-weight:800;color:var(--dark);margin:28px 0 10px;}
+h4{font-size:10.5pt;font-weight:700;color:var(--dark);margin:18px 0 6px;}
+p{font-size:10pt;color:var(--text);line-height:1.7;margin-bottom:10px;}
+ul{padding-left:18px;margin-bottom:12px;}
+li{font-size:10pt;color:var(--text);line-height:1.7;margin-bottom:3px;}
+
+/* ── Colour swatches ── */
+.swatch-row{display:flex;gap:16px;flex-wrap:wrap;margin:20px 0;}
+.swatch{border-radius:10px;overflow:hidden;width:120px;box-shadow:0 2px 8px rgba(0,0,0,.1);}
+.swatch-color{height:90px;}
+.swatch-info{padding:10px 12px;background:#fff;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 10px 10px;}
+.swatch-name{font-size:9pt;font-weight:700;color:var(--dark);}
+.swatch-hex{font-size:8.5pt;color:var(--muted);font-family:monospace;}
+.swatch-use{font-size:7.5pt;color:var(--muted);margin-top:2px;}
+
+/* ── Colour palette extended ── */
+.palette-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0;}
+.palette-chip{border-radius:8px;overflow:hidden;}
+.palette-chip-color{height:60px;}
+.palette-chip-label{padding:7px 10px;background:#f9fafb;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 8px 8px;}
+.palette-chip-name{font-size:8pt;font-weight:700;color:var(--dark);}
+.palette-chip-hex{font-size:7.5pt;color:var(--muted);font-family:monospace;}
+
+/* ── Typography specimens ── */
+.type-specimen{border:1px solid #e5e7eb;border-radius:10px;padding:20px 24px;margin:12px 0;background:#fafafa;}
+.type-specimen-label{font-size:7.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;}
+.type-h1{font-size:28pt;font-weight:900;color:var(--dark);line-height:1.1;}
+.type-h2{font-size:20pt;font-weight:800;color:var(--dark);line-height:1.2;}
+.type-h3{font-size:14pt;font-weight:700;color:var(--dark);}
+.type-body{font-size:11pt;color:var(--text);line-height:1.7;}
+.type-small{font-size:8.5pt;color:var(--muted);line-height:1.6;}
+.type-caption{font-size:7.5pt;text-transform:uppercase;letter-spacing:.1em;font-weight:600;color:var(--muted);}
+
+/* ── Logo variations ── */
+.logo-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0;}
+.logo-box{border-radius:10px;padding:32px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;}
+.logo-box img{height:48px;max-width:160px;object-fit:contain;}
+.logo-box-label{font-size:8pt;font-weight:600;color:var(--muted);text-align:center;}
+.logo-light{background:#fff;border:1px solid #e5e7eb;}
+.logo-dark{background:var(--dark);}
+.logo-red{background:var(--red);}
+.logo-gray{background:#f3f4f6;border:1px solid #e5e7eb;}
+.logo-box.logo-dark .logo-box-label{color:rgba(255,255,255,.5);}
+.logo-box.logo-red .logo-box-label{color:rgba(255,255,255,.7);}
+
+/* ── Spacing / sizing ── */
+.spec-row{display:flex;align-items:center;gap:20px;padding:12px 0;border-bottom:1px solid #f3f4f6;}
+.spec-row:last-child{border-bottom:none;}
+.spec-visual{flex-shrink:0;}
+.spec-label{font-size:9pt;font-weight:700;color:var(--dark);}
+.spec-value{font-size:8.5pt;color:var(--muted);font-family:monospace;}
+
+/* ── Do / Don't ── */
+.do-dont{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0;}
+.do-box,.dont-box{border-radius:10px;overflow:hidden;}
+.do-header,.dont-header{padding:10px 16px;font-size:8.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.08em;}
+.do-header{background:#d1fae5;color:#065f46;}
+.dont-header{background:#fee2e2;color:#991b1b;}
+.do-body,.dont-body{padding:16px;background:#fafafa;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 10px 10px;font-size:9pt;color:var(--text);line-height:1.65;}
+
+/* ── Page footer ── */
+.doc-footer{position:absolute;bottom:32px;left:56px;right:56px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid #f3f4f6;padding-top:10px;}
+.doc-footer span{font-size:7.5pt;color:var(--muted);}
+
+/* ── Print ── */
+@media print{
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  body{margin:0;}
+  .page,.doc-page,.cover{margin:0;box-shadow:none;}
+  @page{size:A4;margin:0;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ COVER ══ -->
+<div class="cover">
+  <div class="cover-logo">
+    <img src="../assets/img/logo.png" alt="Edupro SMS" onerror="this.parentElement.innerHTML='<span style=\'color:#fff;font-size:20pt;font-weight:900;\'>Edupro SMS</span>'">
+  </div>
+  <div class="cover-center">
+    <div class="cover-tag">Official Brand Guidelines</div>
+    <div class="cover-title">Brand<br><span>Manual</span></div>
+    <div class="cover-sub">Colours, typography, logo usage, and design principles for the Edupro SMS brand — Zimbabwe's school management platform.</div>
+  </div>
+  <div class="cover-footer">
+    <div class="cover-footer-left">
+      <div>Edupro SMS</div>
+      <div>www.edupro.co.zw</div>
+      <div class="cover-version" style="margin-top:10px;">Version 1.0 · June 2025</div>
+    </div>
+    <div class="cover-footer-right">
+      <div>For internal use &amp;</div>
+      <div>approved partners only</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PAGE 2: Brand Foundation ══ -->
+<div class="doc-page">
+  <div class="page-header">
+    <img class="page-header-logo" src="../assets/img/logo.png" alt="Edupro SMS" onerror="this.outerHTML='<span style=\'font-weight:900;font-size:11pt;color:#1a0a0e;\'>Edupro SMS</span>'">
+    <span class="page-header-section">Brand Foundation</span>
+  </div>
+
+  <div class="section-label">01 — Brand Foundation</div>
+  <div class="section-title">Who We Are</div>
+  <div class="section-intro">Edupro SMS is Zimbabwe's dedicated school management platform — built for the realities of Zimbabwean education: dual-currency payments, ZIMSEC and Cambridge curricula, unreliable internet, and schools that deserve technology as capable as their teachers.</div>
+
+  <h3>Brand Mission</h3>
+  <p>To make every Zimbabwean school — from a rural primary in Binga to an elite secondary in Borrowdale — run with the efficiency, transparency, and professionalism it deserves through technology built specifically for Zimbabwe.</p>
+
+  <h3>Brand Personality</h3>
+  <ul>
+    <li><strong>Confident:</strong> We know Zimbabwe's schools. We built this for them.</li>
+    <li><strong>Trustworthy:</strong> Schools trust us with their most sensitive data — student records, finances, staff.</li>
+    <li><strong>Accessible:</strong> We speak plainly. No jargon. No complicated tech language.</li>
+    <li><strong>Local:</strong> USD and ZiG. EcoCash and Innbucks. ZIMSEC and Cambridge. Always Zimbabwean.</li>
+    <li><strong>Progressive:</strong> We move Zimbabwean education forward, one school at a time.</li>
+  </ul>
+
+  <h3>Brand Voice</h3>
+  <ul>
+    <li>Speak directly to the Headmaster, Bursar, and IT administrator — not to a generic global audience.</li>
+    <li>Use active voice. Short sentences. No fluff.</li>
+    <li>Reference Zimbabwe specifically: provinces, payment methods, curriculum boards, school types.</li>
+    <li>Positive and empowering — never patronising.</li>
+    <li>Professional but warm. We are a partner, not a vendor.</li>
+  </ul>
+
+  <div class="doc-footer">
+    <span>Edupro SMS Brand Manual v1.0</span>
+    <span>© 2025 Edupro SMS · www.edupro.co.zw</span>
+    <span>Page 2</span>
+  </div>
+</div>
+
+<!-- ══ PAGE 3: Colour Palette ══ -->
+<div class="doc-page">
+  <div class="page-header">
+    <img class="page-header-logo" src="../assets/img/logo.png" alt="Edupro SMS" onerror="this.outerHTML='<span style=\'font-weight:900;font-size:11pt;color:#1a0a0e;\'>Edupro SMS</span>'">
+    <span class="page-header-section">Colour Palette</span>
+  </div>
+
+  <div class="section-label">02 — Colours</div>
+  <div class="section-title">Brand Colour System</div>
+  <div class="section-intro">The Edupro SMS colour palette is anchored by a bold, confident red — evoking passion, urgency, and the Zimbabwean flag. Always use exact hex values. Never approximate.</div>
+
+  <h3>Primary Colours</h3>
+  <div class="swatch-row">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#FF0527;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Edupro Red</div>
+        <div class="swatch-hex">#FF0527</div>
+        <div class="swatch-hex">RGB 255, 5, 39</div>
+        <div class="swatch-hex">CMYK 0, 98, 85, 0</div>
+        <div class="swatch-use">Primary — CTAs, headlines, accents</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#1a0a0e;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Edupro Dark</div>
+        <div class="swatch-hex">#1a0a0e</div>
+        <div class="swatch-hex">RGB 26, 10, 14</div>
+        <div class="swatch-hex">CMYK 0, 62, 46, 90</div>
+        <div class="swatch-use">Primary — backgrounds, body text</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#ffffff;border:1px solid #e5e7eb;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Pure White</div>
+        <div class="swatch-hex">#FFFFFF</div>
+        <div class="swatch-hex">RGB 255, 255, 255</div>
+        <div class="swatch-hex">CMYK 0, 0, 0, 0</div>
+        <div class="swatch-use">Backgrounds, reversed text</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Extended Palette</h3>
+  <div class="palette-grid">
+    <div class="palette-chip">
+      <div class="palette-chip-color" style="background:#c8021e;"></div>
+      <div class="palette-chip-label"><div class="palette-chip-name">Red Dark</div><div class="palette-chip-hex">#c8021e</div></div>
+    </div>
+    <div class="palette-chip">
+      <div class="palette-chip-color" style="background:#fff0f2;"></div>
+      <div class="palette-chip-label"><div class="palette-chip-name">Red Light</div><div class="palette-chip-hex">#fff0f2</div></div>
+    </div>
+    <div class="palette-chip">
+      <div class="palette-chip-color" style="background:#374151;"></div>
+      <div class="palette-chip-label"><div class="palette-chip-name">Body Text</div><div class="palette-chip-hex">#374151</div></div>
+    </div>
+    <div class="palette-chip">
+      <div class="palette-chip-color" style="background:#6b7280;"></div>
+      <div class="palette-chip-label"><div class="palette-chip-name">Muted Text</div><div class="palette-chip-hex">#6b7280</div></div>
+    </div>
+    <div class="palette-chip">
+      <div class="palette-chip-color" style="background:#f3f4f6;"></div>
+      <div class="palette-chip-label"><div class="palette-chip-name">Surface Gray</div><div class="palette-chip-hex">#f3f4f6</div></div>
+    </div>
+    <div class="palette-chip">
+      <div class="palette-chip-color" style="background:#e5e7eb;"></div>
+      <div class="palette-chip-label"><div class="palette-chip-name">Border</div><div class="palette-chip-hex">#e5e7eb</div></div>
+    </div>
+    <div class="palette-chip">
+      <div class="palette-chip-color" style="background:#d1fae5;"></div>
+      <div class="palette-chip-label"><div class="palette-chip-name">Success Light</div><div class="palette-chip-hex">#d1fae5</div></div>
+    </div>
+    <div class="palette-chip">
+      <div class="palette-chip-color" style="background:#065f46;"></div>
+      <div class="palette-chip-label"><div class="palette-chip-name">Success Dark</div><div class="palette-chip-hex">#065f46</div></div>
+    </div>
+  </div>
+
+  <h3>Colour Usage Rules</h3>
+  <div class="do-dont">
+    <div class="do-box">
+      <div class="do-header">✓ Do</div>
+      <div class="do-body">Use Edupro Red (#FF0527) for primary call-to-action buttons, key headlines, and brand accents.<br><br>Use Edupro Dark (#1a0a0e) for dark backgrounds and primary navigation.<br><br>White text on Red or Dark backgrounds always.</div>
+    </div>
+    <div class="dont-box">
+      <div class="dont-header">✗ Don't</div>
+      <div class="dont-body">Never use red text on a red background.<br><br>Never use dark text (#1a0a0e) on Edupro Red — contrast is insufficient.<br><br>Never use approximate reds (orange-red, pink-red). Always use the exact hex value.<br><br>Never use red for error states — use standard semantic red (#dc2626).</div>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <span>Edupro SMS Brand Manual v1.0</span>
+    <span>© 2025 Edupro SMS · www.edupro.co.zw</span>
+    <span>Page 3</span>
+  </div>
+</div>
+
+<!-- ══ PAGE 4: Typography ══ -->
+<div class="doc-page">
+  <div class="page-header">
+    <img class="page-header-logo" src="../assets/img/logo.png" alt="Edupro SMS" onerror="this.outerHTML='<span style=\'font-weight:900;font-size:11pt;color:#1a0a0e;\'>Edupro SMS</span>'">
+    <span class="page-header-section">Typography</span>
+  </div>
+
+  <div class="section-label">03 — Typography</div>
+  <div class="section-title">Type System</div>
+  <div class="section-intro">Edupro SMS uses <strong>Inter</strong> as its primary typeface across all digital and print applications. Inter is a modern, highly legible variable font designed for screens — ideal for school administration software used on a wide range of devices.</div>
+
+  <h3>Primary Typeface: Inter</h3>
+  <p>Download free from: <strong>fonts.google.com/specimen/Inter</strong> · Available in all major design tools (Canva, Figma, Adobe).</p>
+
+  <div class="type-specimen">
+    <div class="type-specimen-label">H1 — Page Title · Inter Black 900 · 28–40pt</div>
+    <div class="type-h1">School Management,<br>Built for Zimbabwe.</div>
+  </div>
+
+  <div class="type-specimen">
+    <div class="type-specimen-label">H2 — Section Heading · Inter ExtraBold 800 · 20–24pt</div>
+    <div class="type-h2">Academic Reporting System</div>
+  </div>
+
+  <div class="type-specimen">
+    <div class="type-specimen-label">H3 — Sub-heading · Inter Bold 700 · 13–16pt</div>
+    <div class="type-h3">ZIMSEC & Cambridge Report Cards</div>
+  </div>
+
+  <div class="type-specimen">
+    <div class="type-specimen-label">Body — Regular 400/500 · 10–11pt · Line height 1.7</div>
+    <div class="type-body">Edupro SMS generates professional PDF report cards in bulk for every student in minutes. The system calculates total marks, subject averages, class positions, and aggregates automatically.</div>
+  </div>
+
+  <div class="type-specimen">
+    <div class="type-specimen-label">Small / Caption · Regular 400 · 8–9pt</div>
+    <div class="type-small">© 2025 Edupro SMS · www.edupro.co.zw · support@edupro.co.zw · +263 788 111 611</div>
+  </div>
+
+  <div class="type-specimen">
+    <div class="type-specimen-label">Label / Tag · SemiBold 600 · 7.5pt · All-caps · Letter-spacing 0.1em</div>
+    <div class="type-caption">Module Reference · RPT-800 · Academic Reporting</div>
+  </div>
+
+  <h3>Font Weights Used</h3>
+  <ul>
+    <li><strong>Inter 900 Black</strong> — Hero titles, cover page headlines only</li>
+    <li><strong>Inter 800 ExtraBold</strong> — Page headings (H1, H2)</li>
+    <li><strong>Inter 700 Bold</strong> — Sub-headings (H3), labels, table headers</li>
+    <li><strong>Inter 600 SemiBold</strong> — Emphasis, navigation, tags</li>
+    <li><strong>Inter 400 Regular</strong> — Body text, descriptions</li>
+    <li><strong>Inter 300 Light</strong> — Sub-text, captions, de-emphasised content</li>
+  </ul>
+
+  <h3>Fallback Font Stack</h3>
+  <p style="font-family:monospace;font-size:9pt;background:#f3f4f6;padding:10px 14px;border-radius:6px;">'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif</p>
+
+  <div class="doc-footer">
+    <span>Edupro SMS Brand Manual v1.0</span>
+    <span>© 2025 Edupro SMS · www.edupro.co.zw</span>
+    <span>Page 4</span>
+  </div>
+</div>
+
+<!-- ══ PAGE 5: Logo Usage ══ -->
+<div class="doc-page">
+  <div class="page-header">
+    <img class="page-header-logo" src="../assets/img/logo.png" alt="Edupro SMS" onerror="this.outerHTML='<span style=\'font-weight:900;font-size:11pt;color:#1a0a0e;\'>Edupro SMS</span>'">
+    <span class="page-header-section">Logo Usage</span>
+  </div>
+
+  <div class="section-label">04 — Logo</div>
+  <div class="section-title">Logo Usage Guidelines</div>
+  <div class="section-intro">The Edupro SMS logo is the single most recognisable element of our brand. Consistent, correct usage builds trust. Never alter, distort, or recolour the logo.</div>
+
+  <h3>Logo on Different Backgrounds</h3>
+  <div class="logo-grid">
+    <div class="logo-box logo-light">
+      <img src="../assets/img/logo.png" alt="Edupro SMS" onerror="this.outerHTML='<span style=\'font-size:14pt;font-weight:900;color:#1a0a0e;\'>Edupro SMS</span>'">
+      <span class="logo-box-label">White / Light background<br><strong>Primary use</strong></span>
+    </div>
+    <div class="logo-box logo-dark">
+      <img src="../assets/img/logo.png" alt="Edupro SMS" style="filter:brightness(10);" onerror="this.outerHTML='<span style=\'font-size:14pt;font-weight:900;color:#fff;\'>Edupro SMS</span>'">
+      <span class="logo-box-label">Dark background<br>White / reversed version</span>
+    </div>
+    <div class="logo-box logo-red">
+      <img src="../assets/img/logo.png" alt="Edupro SMS" style="filter:brightness(10);" onerror="this.outerHTML='<span style=\'font-size:14pt;font-weight:900;color:#fff;\'>Edupro SMS</span>'">
+      <span class="logo-box-label">Red background<br>White version only</span>
+    </div>
+    <div class="logo-box logo-gray">
+      <img src="../assets/img/logo.png" alt="Edupro SMS" onerror="this.outerHTML='<span style=\'font-size:14pt;font-weight:900;color:#1a0a0e;\'>Edupro SMS</span>'">
+      <span class="logo-box-label">Gray / neutral surface<br>Standard version</span>
+    </div>
+  </div>
+
+  <h3>Minimum Clear Space</h3>
+  <p>Always maintain clear space around the logo equal to the height of the letter "E" in "Edupro". No other graphic elements, text, or photos should appear within this zone.</p>
+
+  <h3>Minimum Size</h3>
+  <ul>
+    <li><strong>Print:</strong> No smaller than 25mm wide</li>
+    <li><strong>Digital:</strong> No smaller than 100px wide</li>
+    <li><strong>Social media profile picture:</strong> Use the icon/monogram version at small sizes</li>
+  </ul>
+
+  <div class="do-dont" style="margin-top:20px;">
+    <div class="do-box">
+      <div class="do-header">✓ Do</div>
+      <div class="do-body">Scale proportionally.<br>Use on approved backgrounds only.<br>Use the correct version (light/dark) for the background.<br>Request the original PNG or SVG file from the design team.</div>
+    </div>
+    <div class="dont-box">
+      <div class="dont-header">✗ Don't</div>
+      <div class="dont-body">Stretch or squash the logo.<br>Change the logo colours.<br>Add drop shadows or effects.<br>Place on a busy photograph without a solid colour overlay.<br>Recreate the logo in another font.</div>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <span>Edupro SMS Brand Manual v1.0</span>
+    <span>© 2025 Edupro SMS · www.edupro.co.zw</span>
+    <span>Page 5</span>
+  </div>
+</div>
+
+<!-- ══ PAGE 6: Digital & Print Standards ══ -->
+<div class="doc-page">
+  <div class="page-header">
+    <img class="page-header-logo" src="../assets/img/logo.png" alt="Edupro SMS" onerror="this.outerHTML='<span style=\'font-weight:900;font-size:11pt;color:#1a0a0e;\'>Edupro SMS</span>'">
+    <span class="page-header-section">Design Standards</span>
+  </div>
+
+  <div class="section-label">05 — Design Standards</div>
+  <div class="section-title">Digital &amp; Print Standards</div>
+  <div class="section-intro">Consistent design across all materials — website, documents, social media, and print — reinforces brand trust. Follow these standards for all Edupro SMS communications.</div>
+
+  <h3>Digital Design (Web &amp; App)</h3>
+  <ul>
+    <li><strong>Primary button:</strong> Background #FF0527 · White text · Border-radius 8px · Padding 12px 24px · Font-weight 700</li>
+    <li><strong>Secondary button:</strong> Transparent background · #FF0527 border 2px · #FF0527 text · Same radius/padding</li>
+    <li><strong>Card shadows:</strong> box-shadow: 0 4px 24px rgba(0,0,0,0.08)</li>
+    <li><strong>Border radius:</strong> Cards 12–16px · Inputs 8px · Tags/badges 6px</li>
+    <li><strong>Icon style:</strong> Line icons only (2px stroke) — consistent with Heroicons / Feather Icons style</li>
+    <li><strong>Spacing unit:</strong> 8px base grid (8, 16, 24, 32, 48, 64px)</li>
+  </ul>
+
+  <h3>Print Materials</h3>
+  <ul>
+    <li><strong>Document size:</strong> A4 (210 × 297mm) for all formal documents</li>
+    <li><strong>Safe margin:</strong> 20mm all sides for print-critical content</li>
+    <li><strong>Bleed:</strong> 3mm bleed on all edges for professionally printed materials</li>
+    <li><strong>Resolution:</strong> 300 DPI minimum for print; 150 DPI minimum for large-format banners</li>
+    <li><strong>Colour mode:</strong> CMYK for print files; RGB/Hex for digital</li>
+    <li><strong>Paper stock:</strong> 120gsm for letterheads; 250gsm for business cards; 170gsm for brochures</li>
+  </ul>
+
+  <h3>Social Media Dimensions</h3>
+  <ul>
+    <li><strong>Instagram / LinkedIn post:</strong> 1080 × 1080px (square) or 1080 × 1350px (portrait)</li>
+    <li><strong>Instagram / LinkedIn cover:</strong> 1584 × 396px</li>
+    <li><strong>Facebook cover:</strong> 820 × 312px</li>
+    <li><strong>Twitter/X header:</strong> 1500 × 500px</li>
+    <li><strong>WhatsApp profile:</strong> 500 × 500px</li>
+    <li><strong>YouTube thumbnail:</strong> 1280 × 720px</li>
+  </ul>
+
+  <h3>Email Signature Format</h3>
+  <p style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px;font-size:9pt;font-family:monospace;line-height:2;">
+    <strong>[Full Name]</strong><br>
+    [Job Title] · Edupro SMS<br>
+    📞 +263 788 111 611 &nbsp;|&nbsp; 💬 +263 772 837 385 (WhatsApp)<br>
+    📧 [name]@edupro.co.zw &nbsp;|&nbsp; 🌐 www.edupro.co.zw<br>
+    <em style="font-size:8pt;color:#6b7280;">Zimbabwe's School Management Platform</em>
+  </p>
+
+  <h3>Social Media Handle</h3>
+  <p><strong>@eduprozw</strong> on all platforms — Facebook, LinkedIn, Instagram, TikTok, YouTube. Always use this exact handle in all materials.</p>
+
+  <div class="doc-footer">
+    <span>Edupro SMS Brand Manual v1.0</span>
+    <span>© 2025 Edupro SMS · www.edupro.co.zw</span>
+    <span>Page 6</span>
+  </div>
+</div>
+
+</body>
+</html>
