@@ -25,8 +25,7 @@
   <div class="nav-inner">
 
     <a href="${root}index.html" class="nav-logo">
-      <div class="logo-icon">EP</div>
-      EDUPRO <span>SMS</span>
+      <img src="${root}assets/img/logo.png" alt="Edupro SMS" class="nav-logo-img">
     </a>
 
     <div class="nav-links">
@@ -199,8 +198,7 @@
 <div class="mobile-nav" id="mobileNav" role="dialog" aria-label="Mobile navigation">
   <div class="mobile-nav-header">
     <a href="${root}index.html" class="nav-logo">
-      <div class="logo-icon">EP</div>
-      EDUPRO <span>SMS</span>
+      <img src="${root}assets/img/logo.png" alt="Edupro SMS" class="nav-logo-img">
     </a>
     <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
