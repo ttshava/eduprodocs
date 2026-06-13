@@ -172,7 +172,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.6a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 10a16 16 0 0 0 6 6l.81-.81a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         Call
       </a>
-      <a href="${root}getting-started.html" class="btn-nav-solid">Get Started</a>
+      <a href="${root}register.php" class="btn-nav-solid">Register School</a>
     </div>
 
     <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false">
@@ -197,6 +197,7 @@
       <div class="mobile-nav-section-title">Main</div>
       <a href="${root}index.html" class="mobile-nav-link">Home</a>
       <a href="${root}getting-started.html" class="mobile-nav-link">Get Started</a>
+      <a href="${root}register.php" class="mobile-nav-link" style="color:var(--red);font-weight:700;">Register Your School</a>
       <a href="${root}docs.html" class="mobile-nav-link">Documentation</a>
       <a href="${root}subjects.html" class="mobile-nav-link">Subjects / Curriculum</a>
       <a href="${root}index.html#contact" class="mobile-nav-link">Contact</a>
@@ -217,7 +218,7 @@
   </div>
   <div class="mobile-nav-footer">
     <a href="tel:+263788111611" class="btn-nav-ghost">Call Us</a>
-    <a href="${root}getting-started.html" class="btn-nav-solid">Get Started</a>
+    <a href="${root}register.php" class="btn-nav-solid">Register School</a>
   </div>
 </div>
 `;
