@@ -10,17 +10,6 @@
 
   /* ─── NAV HTML ─── */
   const navHTML = `
-<div class="topbar">
-  <div class="topbar-inner">
-    <span>Zimbabwe's Premier Offline-First School Management System &nbsp;·&nbsp; ZIMSEC &amp; Cambridge Compliant</span>
-    <div class="topbar-links">
-      <a href="tel:+263788111611">📞 +263 788 111 611</a>
-      <a href="mailto:info@edupro.co.zw">✉ info@edupro.co.zw</a>
-      <a href="${root}getting-started.html" style="background:var(--red);color:white;padding:3px 12px;border-radius:20px;font-weight:600;">Get Started Free →</a>
-    </div>
-  </div>
-</div>
-
 <nav class="navbar" role="navigation" aria-label="Main navigation">
   <div class="nav-inner">
 

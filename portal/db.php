@@ -70,6 +70,9 @@ function migrate(PDO $pdo): void {
         password_hash   TEXT,
         is_active       INTEGER DEFAULT 0,    -- 1 = account verified & active
         is_seeded       INTEGER DEFAULT 1,    -- 1 = from national DB, 0 = self-registered
+        email_verified  INTEGER DEFAULT 0,    -- 1 = email confirmed
+        verify_token    TEXT,
+        verify_expires  TEXT,
         -- Subscription
         subscription_plan TEXT DEFAULT 'none', -- none/basic/full
         subscription_start TEXT,
@@ -140,6 +143,18 @@ function migrate(PDO $pdo): void {
         created_at  TEXT DEFAULT (datetime('now'))
     );
     ");
+
+    // Safe migrations for existing databases
+    $cols = array_column($pdo->query("PRAGMA table_info(schools)")->fetchAll(PDO::FETCH_ASSOC), 'name');
+    foreach ([
+        'email_verified' => "INTEGER DEFAULT 0",
+        'verify_token'   => "TEXT",
+        'verify_expires' => "TEXT",
+    ] as $col => $def) {
+        if (!in_array($col, $cols)) {
+            $pdo->exec("ALTER TABLE schools ADD COLUMN $col $def");
+        }
+    }
 }
 
 // ── Helpers ────────────────────────────────────────────────
