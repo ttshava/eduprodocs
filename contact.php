@@ -98,6 +98,7 @@
 <script src="assets/js/components.js"></script>
 
 <?php
+require_once __DIR__ . '/includes/mailer.php';
 $success = false;
 $error   = '';
 $old     = [];
@@ -131,19 +132,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $body .= "Message:\r\n{$old['message']}\r\n\r\n";
     $body .= "Submitted: " . date('Y-m-d H:i:s T') . "\r\n";
 
-    $headers  = "From: no-reply@edupro.co.zw\r\n";
-    $headers .= "Reply-To: {$old['email']}\r\n";
-    $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
-
     $subject = "[{$dept_label}] {$old['subject']} — {$old['name']}";
 
-    if (mail('support@edupro.co.zw', $subject, $body, $headers)) {
+    if (mail_support('support@edupro.co.zw', $subject, $body, $old['email'])) {
       $rb  = "Dear {$old['name']},\r\n\r\nThank you for contacting Edupro SMS.\r\n\r\n";
       $rb .= "We have received your message and will respond within 4 hours during school hours.\r\n\r\n";
       $rb .= "Your reference: " . strtoupper(substr(md5(microtime()),0,8)) . "\r\n\r\n";
-      $rb .= "For urgent matters, call +263 788 111 611.\r\n\r\nRegards,\r\nEdupro SMS Support\r\nsupport@edupro.co.zw";
-      $rh  = "From: Edupro SMS <support@edupro.co.zw>\r\nContent-Type: text/plain; charset=UTF-8\r\n";
-      mail($old['email'], "We received your message — Edupro SMS", $rb, $rh);
+      $rb .= "For urgent matters, call +263 788 111 611 or WhatsApp +263 772 837 385.\r\n\r\nRegards,\r\nEdupro SMS Support\r\nsupport@edupro.co.zw";
+      mail_support($old['email'], "We received your message — Edupro SMS", $rb);
       $success = true; $old = [];
     } else {
       $error = 'Message could not be sent. Please call +263 788 111 611 or email support@edupro.co.zw.';

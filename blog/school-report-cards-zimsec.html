@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en-ZW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generating ZIMSEC-Compliant Report Cards Automatically | Edupro SMS Blog</title>
+<meta name="description" content="Learn how Edupro SMS automates ZIMSEC and Cambridge report card generation — saving hours of manual work each term and eliminating errors on official student reports.">
+<link rel="stylesheet" href="../assets/css/style.css">
+<style>
+  .article-hero {
+    background:linear-gradient(135deg,#1a0a0e,#4d1520);
+    padding:72px 0 56px; text-align:center; color:#fff;
+  }
+  .article-hero h1 { font-size:clamp(1.6rem,4vw,2.6rem); font-weight:800; max-width:740px; margin:0 auto 16px; line-height:1.25; }
+  .article-meta { font-size:.9rem; color:rgba(255,255,255,.6); }
+  .article-meta span { margin:0 8px; }
+
+  .article-layout { padding:56px 0 80px; background:var(--gray-50); }
+  .article-grid { display:grid; grid-template-columns:1fr 300px; gap:48px; align-items:start; }
+  @media(max-width:960px){ .article-grid{ grid-template-columns:1fr; } }
+
+  .article-body { background:#fff; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); padding:48px; }
+  @media(max-width:600px){ .article-body{ padding:24px 20px; } }
+
+  .article-tag { font-size:.75rem; font-weight:700; color:var(--red); text-transform:uppercase; letter-spacing:.07em; margin-bottom:16px; display:block; }
+  .article-body h2 { font-size:1.4rem; font-weight:800; margin:36px 0 14px; color:var(--gray-900); }
+  .article-body h3 { font-size:1.1rem; font-weight:700; margin:28px 0 10px; color:var(--gray-900); }
+  .article-body p { font-size:1rem; color:var(--gray-600); line-height:1.8; margin-bottom:18px; }
+  .article-body ul, .article-body ol { padding-left:20px; margin-bottom:18px; }
+  .article-body li { font-size:1rem; color:var(--gray-600); line-height:1.7; margin-bottom:8px; }
+  .article-body strong { color:var(--gray-900); }
+
+  .tip-box {
+    background:var(--red-light); border-left:4px solid var(--red);
+    border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+    padding:18px 20px; margin:24px 0;
+  }
+  .tip-box p { margin:0; color:var(--gray-800); }
+  .tip-box strong { color:var(--red); }
+
+  .process-steps { margin:28px 0; }
+  .process-step { display:flex; gap:20px; align-items:flex-start; padding:20px 0; border-bottom:1px solid var(--gray-100); }
+  .process-step:last-child { border-bottom:none; }
+  .step-num { width:36px; height:36px; min-width:36px; background:var(--red); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:.9rem; }
+  .process-step h4 { font-size:1rem; font-weight:700; margin:0 0 6px; color:var(--gray-900); }
+  .process-step p { font-size:.9rem; margin:0; color:var(--gray-600); line-height:1.6; }
+
+  .compare-table { width:100%; border-collapse:collapse; margin:24px 0; font-size:.9rem; }
+  .compare-table th { background:var(--gray-900); color:#fff; padding:12px 14px; text-align:left; }
+  .compare-table td { padding:11px 14px; border-bottom:1px solid var(--gray-100); vertical-align:top; }
+  .compare-table tr:nth-child(even) td { background:var(--gray-50); }
+  .compare-table .bad { color:#c0392b; }
+  .compare-table .good { color:#27ae60; font-weight:600; }
+
+  .article-sidebar { display:flex; flex-direction:column; gap:20px; position:sticky; top:90px; }
+  .sidebar-box { background:#fff; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); padding:24px; }
+  .sidebar-box h3 { font-size:.9rem; font-weight:700; margin-bottom:14px; }
+  .related-link { display:flex; flex-direction:column; gap:4px; padding:10px 0; border-bottom:1px solid var(--gray-100); text-decoration:none; }
+  .related-link:last-child { border-bottom:none; }
+  .related-link span { font-size:.8rem; color:var(--gray-400); }
+  .related-link strong { font-size:.875rem; color:var(--gray-800); line-height:1.4; }
+  .related-link:hover strong { color:var(--red); }
+</style>
+</head>
+<body>
+<script src="../assets/js/components.js"></script>
+
+<section class="article-hero">
+  <div class="container">
+    <div style="margin-bottom:16px;"><a href="index.html" style="color:rgba(255,255,255,.6);font-size:.875rem;">← Blog</a></div>
+    <span class="module-code badge badge-red" style="margin-bottom:16px;">Academic</span>
+    <h1>Generating ZIMSEC-Compliant Report Cards Automatically</h1>
+    <div class="article-meta">
+      <span>May 2026</span>·<span>6 min read</span>·<span>RPT-800 Reports &amp; Analytics</span>
+    </div>
+  </div>
+</section>
+
+<section class="article-layout">
+  <div class="container">
+    <div class="article-grid">
+
+      <article class="article-body">
+        <span class="article-tag">Academic &amp; Reporting</span>
+
+        <p>Ask any class teacher or deputy head in Zimbabwe about the last week of term, and you will hear the same story: six days of staying late to fill in report cards, correcting grade entries, chasing teachers for marks, and praying the photocopier does not break down. For a school with 600 learners, the report production process can consume 200+ staff-hours every single term.</p>
+
+        <p>Edupro SMS RPT-800 changes this completely. Instead of manually filling in rows and columns on a paper-based or Excel template, the system generates every learner's report card automatically — pulling marks directly from teacher entries, applying the correct ZIMSEC or Cambridge grading scale, calculating class positions, and printing a professional PDF in seconds.</p>
+
+        <h2>The Problem with Manual Report Generation</h2>
+
+        <table class="compare-table">
+          <tr>
+            <th>Manual Process</th>
+            <th>Edupro SMS RPT-800</th>
+          </tr>
+          <tr>
+            <td class="bad">Teachers enter marks in subject registers, then re-enter them onto report templates</td>
+            <td class="good">Marks entered once in the system — appear on all reports automatically</td>
+          </tr>
+          <tr>
+            <td class="bad">Grade boundaries applied manually — different teachers may apply different thresholds</td>
+            <td class="good">ZIMSEC &amp; Cambridge grade boundaries built in — applied consistently across all classes</td>
+          </tr>
+          <tr>
+            <td class="bad">Class positions calculated by hand from a sorted list</td>
+            <td class="good">Positions calculated automatically, updated instantly when any mark is corrected</td>
+          </tr>
+          <tr>
+            <td class="bad">Head's comments typed individually for every learner</td>
+            <td class="good">Comment templates by performance band — auto-applied, editable per learner</td>
+          </tr>
+          <tr>
+            <td class="bad">Reports printed, sorted, and physically distributed to parents</td>
+            <td class="good">PDF reports sent to parents via WhatsApp (COM-400) instantly</td>
+          </tr>
+          <tr>
+            <td class="bad">Errors discovered after reports reach parents cause embarrassment and re-prints</td>
+            <td class="good">Validation checks flag impossible entries before batch print</td>
+          </tr>
+        </table>
+
+        <h2>How RPT-800 Works</h2>
+
+        <div class="process-steps">
+          <div class="process-step">
+            <div class="step-num">1</div>
+            <div>
+              <h4>Teachers Enter Marks During Term</h4>
+              <p>Subject teachers record continuous assessment marks, test scores, and exam marks throughout the term — either on a school computer or via the teacher portal. Each entry is timestamped and attributed to the teacher who entered it.</p>
+            </div>
+          </div>
+          <div class="process-step">
+            <div class="step-num">2</div>
+            <div>
+              <h4>Deputy Head Reviews and Locks Marks</h4>
+              <p>At end of term, the deputy head reviews the mark entry dashboard — a single screen showing which subjects have incomplete marks, flagging outliers (unusually high or low averages). Once satisfied, they lock the term's marks to prevent further changes.</p>
+            </div>
+          </div>
+          <div class="process-step">
+            <div class="step-num">3</div>
+            <div>
+              <h4>System Calculates Grades and Positions</h4>
+              <p>RPT-800 applies the selected grading scheme (ZIMSEC 7-point scale, Cambridge A*–G, or a custom school scale) to every learner's marks. Class and grade-level positions are calculated automatically. Subject averages are computed for comparison.</p>
+            </div>
+          </div>
+          <div class="process-step">
+            <div class="step-num">4</div>
+            <div>
+              <h4>Comments Are Applied</h4>
+              <p>The system assigns teacher comments based on the learner's aggregate performance band. Class teachers and subject teachers can review and personalise any comment before the batch is finalised. The head's signature block is pulled from the school profile.</p>
+            </div>
+          </div>
+          <div class="process-step">
+            <div class="step-num">5</div>
+            <div>
+              <h4>Reports Generated and Distributed</h4>
+              <p>A single click generates PDF reports for every learner in the school. Reports can be printed in bulk, or sent directly to parent contacts via COM-400 WhatsApp integration. Parents receive a professional, branded report card without a single envelope.</p>
+            </div>
+          </div>
+        </div>
+
+        <h2>ZIMSEC Grading Built In</h2>
+
+        <p>RPT-800 ships with the current ZIMSEC grading scale for Primary (Grade 1–7) and Secondary (Form 1–6) pre-loaded. This includes:</p>
+
+        <ul>
+          <li><strong>Primary:</strong> Numerical grades 1–5 with corresponding performance descriptors (Excellent, Very Good, Good, Satisfactory, Unsatisfactory)</li>
+          <li><strong>O Level:</strong> 7-point letter grades (A–E, U) with percentage band boundaries</li>
+          <li><strong>A Level:</strong> 5-point scale (A–E, U) with UCAS point equivalents for further education</li>
+          <li><strong>Cambridge IGCSE:</strong> A*–G scale with Cambridge International descriptors</li>
+        </ul>
+
+        <p>Schools that use their own internal grading scale alongside ZIMSEC can configure a secondary scale that appears in parallel — useful for schools that track internal continuous assessment separately from external examination marks.</p>
+
+        <div class="tip-box">
+          <p><strong>Dual curriculum support:</strong> Schools that offer both ZIMSEC and Cambridge streams configure RPT-800 once for each stream. Learners in the ZIMSEC stream receive ZIMSEC-formatted reports; Cambridge learners receive Cambridge-formatted reports. The school can run both from a single system simultaneously.</p>
+        </div>
+
+        <h2>Class Position and Subject Ranking</h2>
+
+        <p>One of the most time-consuming tasks in manual report production is calculating class positions — ranking every learner by aggregate mark, then entering that position on each individual report. For a class of 40 learners with 10 subjects, that means 400 position lookups, every term.</p>
+
+        <p>RPT-800 handles this instantly. Class positions are computed by aggregate mark and updated in real time. If a teacher corrects a mark after initial calculation, all affected positions update automatically. The system also generates:</p>
+
+        <ul>
+          <li>Class position (overall aggregate within the class)</li>
+          <li>Grade position (ranking within all learners in the same form/year)</li>
+          <li>Subject position (ranking within the subject cohort)</li>
+          <li>Term-on-term trend (whether performance improved or declined vs. the previous term)</li>
+        </ul>
+
+        <h2>Attendance on Reports</h2>
+
+        <p>ATT-300 attendance data feeds directly into RPT-800. Every report card shows the learner's total days present, days absent, and absence percentage for the term. If absences exceed the ZIMSEC minimum attendance threshold (70%), the system flags the report with a warning automatically — without the deputy head having to cross-reference attendance registers by hand.</p>
+
+        <h2>Sending Reports to Parents via WhatsApp</h2>
+
+        <p>Once reports are generated, COM-400 enables instant delivery. Each learner's PDF report is sent to their primary parent/guardian contact via WhatsApp. The delivery confirmation is logged, so teachers can see which parents have received their child's report and follow up with those who haven't.</p>
+
+        <p>For boarding schools or where parents are difficult to reach, reports can also be printed in a single batch print run — sorted by class, ready for collection.</p>
+
+        <h2>Historical Reports and Academic Archive</h2>
+
+        <p>Every report generated is stored permanently in the learner's academic profile. When a learner transfers schools, the receiving institution can be given a printed or digital archive of all previous term reports. When a learner re-enrols after a gap, their historical performance is immediately visible to teachers — no hunting through filing cabinets.</p>
+
+        <p>This historical view is also powerful for the school's own analysis. RPT-800 compares term-on-term and year-on-year performance trends at class, grade, and school level, giving leadership data to make informed academic decisions.</p>
+
+        <p>If your school is still spending the last week of term filling in report cards by hand, <a href="../demo.php" style="color:var(--red);font-weight:600;">book a demo</a> and see how RPT-800 cuts that process from days to minutes.</p>
+
+      </article>
+
+      <aside class="article-sidebar">
+        <div class="sidebar-box">
+          <h3>Related Articles</h3>
+          <a href="zimsec-attendance-requirements.html" class="related-link">
+            <span>Compliance</span>
+            <strong>ZIMSEC Attendance Requirements: What School Heads Must Know</strong>
+          </a>
+          <a href="moodle-for-zimbabwe-schools.html" class="related-link">
+            <span>LMS</span>
+            <strong>How Moodle Transforms Learning at Zimbabwean Schools</strong>
+          </a>
+          <a href="improve-fee-collection.html" class="related-link">
+            <span>Finance</span>
+            <strong>5 Ways Schools Can Improve Fee Collection This Term</strong>
+          </a>
+        </div>
+        <div class="sidebar-box">
+          <h3>RPT-800 Module</h3>
+          <p style="font-size:.875rem;color:var(--gray-600);margin-bottom:14px;">Automated ZIMSEC &amp; Cambridge report cards — generated in seconds, delivered via WhatsApp.</p>
+          <a href="../modules/rpt-800.html" class="btn btn-primary btn-sm" style="width:100%;text-align:center;">Explore RPT-800</a>
+        </div>
+        <div class="sidebar-box">
+          <h3>Book a Demo</h3>
+          <p style="font-size:.875rem;color:var(--gray-600);margin-bottom:14px;">See automatic report generation live for your school's curriculum.</p>
+          <a href="../demo.php" class="btn btn-outline btn-sm" style="width:100%;text-align:center;">Book Demo</a>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+<section style="background:#fff;padding:48px 0;border-top:1px solid var(--gray-100);">
+  <div class="container" style="text-align:center;">
+    <h2 style="font-size:1.5rem;margin-bottom:12px;">Eliminate manual report production this term</h2>
+    <p style="color:var(--gray-600);margin-bottom:24px;">RPT-800 generates every learner's report card automatically — ZIMSEC, Cambridge, or both.</p>
+    <a href="../demo.php" class="btn btn-primary">Book a Free Demo</a>
+    <a href="../register.php" class="btn btn-outline" style="margin-left:12px;">Register Your School</a>
+  </div>
+</section>
+</body>
+</html>
