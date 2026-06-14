@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Admission – Edupro SMS</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Arial, sans-serif; background: #f0f0f0; }
+
+.top-bar {
+  background: #1a0a0e; color: #fff;
+  padding: 0 24px; height: 48px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.top-bar-left { display: flex; align-items: center; gap: 12px; }
+.top-bar-brand { font-size: 17px; font-weight: bold; }
+.top-bar-nav { font-size: 13px; color: #bbb; }
+.top-bar-nav a { color: #bbb; text-decoration: none; }
+.top-bar-nav a:hover { color: #fff; }
+
+.status-bar {
+  background: #fff; padding: 10px 24px;
+  border-bottom: 2px solid #FF0527;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 13px; color: #555;
+}
+
+.layout { display: grid; grid-template-columns: 380px 1fr; gap: 20px; padding: 20px 24px; }
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+
+/* ── FORM CARD ── */
+.form-card {
+  background: #fff; border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.1); overflow: hidden;
+}
+.form-card-header {
+  background: #1a0a0e; color: #fff;
+  padding: 12px 18px; font-size: 14px; font-weight: bold;
+}
+.form-body { padding: 18px; }
+.form-group { margin-bottom: 14px; }
+.form-group label {
+  display: block; font-size: 12px; font-weight: bold;
+  color: #333; margin-bottom: 4px;
+}
+.form-group label .req { color: #FF0527; }
+.form-group input, .form-group select {
+  width: 100%; padding: 9px 11px;
+  border: 1px solid #ddd; border-radius: 5px;
+  font-size: 13px; color: #333;
+}
+.form-group input:focus, .form-group select:focus {
+  outline: none; border-color: #FF0527;
+  box-shadow: 0 0 0 2px rgba(255,5,39,.1);
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.section-title {
+  font-size: 12px; font-weight: bold; color: #FF0527;
+  text-transform: uppercase; letter-spacing: 1px;
+  margin: 18px 0 10px; padding-bottom: 5px;
+  border-bottom: 1px solid #eee;
+}
+.btn-primary {
+  width: 100%; padding: 11px; background: #FF0527; color: #fff;
+  border: none; border-radius: 5px; font-size: 14px; font-weight: bold;
+  cursor: pointer; margin-top: 6px;
+}
+.btn-primary:hover { background: #c8021e; }
+.btn-primary:disabled { background: #999; cursor: not-allowed; }
+
+/* ── STUDENT LIST ── */
+.list-card {
+  background: #fff; border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.1); overflow: hidden;
+}
+.list-card-header {
+  background: #1a0a0e; color: #fff;
+  padding: 12px 18px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.list-card-header span { font-size: 14px; font-weight: bold; }
+.search-bar {
+  display: flex; gap: 8px; padding: 12px 18px;
+  border-bottom: 1px solid #eee;
+}
+.search-bar input {
+  flex: 1; padding: 8px 11px; border: 1px solid #ddd;
+  border-radius: 5px; font-size: 13px;
+}
+.search-bar select {
+  padding: 8px 11px; border: 1px solid #ddd;
+  border-radius: 5px; font-size: 13px; min-width: 160px;
+}
+.search-bar button {
+  padding: 8px 16px; background: #FF0527; color: #fff;
+  border: none; border-radius: 5px; font-size: 13px;
+  font-weight: bold; cursor: pointer; white-space: nowrap;
+}
+
+.student-table { width: 100%; border-collapse: collapse; }
+.student-table th {
+  background: #f5f5f5; padding: 10px 14px;
+  font-size: 12px; text-align: left; border-bottom: 2px solid #eee;
+  font-weight: bold; color: #555;
+}
+.student-table td {
+  padding: 10px 14px; font-size: 13px;
+  border-bottom: 1px solid #f0f0f0; color: #333;
+}
+.student-table tr:hover td { background: #fff8f8; }
+.badge {
+  padding: 3px 8px; border-radius: 10px; font-size: 11px; font-weight: bold;
+}
+.badge-blue { background: #cce5ff; color: #004085; }
+.badge-green { background: #d4edda; color: #155724; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 24px; right: 24px;
+  padding: 14px 20px; border-radius: 8px;
+  font-size: 13px; font-weight: bold; color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,.2);
+  transform: translateY(100px); opacity: 0;
+  transition: all .3s ease; z-index: 1000;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.success { background: #28a745; }
+.toast.error   { background: #dc3545; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,.5); z-index: 500;
+  align-items: center; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: #fff; border-radius: 10px; padding: 24px;
+  width: 420px; max-width: 95vw;
+  box-shadow: 0 8px 30px rgba(0,0,0,.2);
+}
+.modal h3 { font-size: 16px; margin-bottom: 16px; color: #1a0a0e; }
+.modal-body { font-size: 13px; line-height: 1.8; }
+.modal-body b { color: #1a0a0e; }
+.modal-footer { margin-top: 20px; display: flex; gap: 10px; justify-content: flex-end; }
+.btn-close { padding: 8px 20px; border: 1px solid #ddd; border-radius: 5px;
+  background: #fff; cursor: pointer; font-size: 13px; }
+.btn-print { padding: 8px 20px; background: #1a0a0e; color: #fff;
+  border: none; border-radius: 5px; cursor: pointer; font-size: 13px; font-weight: bold; }
+
+.placeholder-msg { text-align: center; padding: 50px 20px; color: #aaa; font-size: 14px; }
+.spinner { display: inline-block; width: 20px; height: 20px; border: 3px solid #eee;
+  border-top-color: #FF0527; border-radius: 50%; animation: spin .6s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="top-bar-left">
+    <span class="top-bar-brand">Edupro SMS</span>
+    <span class="top-bar-nav">
+      / <a href="/parent-portal">Portal</a> / Student Admission
+    </span>
+  </div>
+  <span style="font-size:13px;color:#bbb" id="top-user"></span>
+</div>
+
+<div class="status-bar">
+  <span id="status-msg">Student Admission &amp; Enrollment — Academic Year <strong>2026</strong></span>
+  <span id="status-count" style="color:#555"></span>
+</div>
+
+<div class="layout">
+
+  <!-- ── ENROLLMENT FORM ── -->
+  <div class="form-card">
+    <div class="form-card-header">➕ Enroll New Student</div>
+    <div class="form-body">
+
+      <div class="section-title">Student Details</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name <span class="req">*</span></label>
+          <input type="text" id="f-first" placeholder="e.g. Tatenda">
+        </div>
+        <div class="form-group">
+          <label>Last Name <span class="req">*</span></label>
+          <input type="text" id="f-last" placeholder="e.g. Muzorewa">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Gender <span class="req">*</span></label>
+          <select id="f-gender">
+            <option value="">— Select —</option>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Date of Birth <span class="req">*</span></label>
+          <input type="date" id="f-dob">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Assign to Class <span class="req">*</span></label>
+        <select id="f-class">
+          <option value="">— Loading classes… —</option>
+        </select>
+      </div>
+
+      <div class="section-title">Parent / Guardian</div>
+      <div class="form-group">
+        <label>Guardian Full Name</label>
+        <input type="text" id="f-gname" placeholder="e.g. Mr John Muzorewa">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" id="f-gphone" placeholder="0771 234 567">
+        </div>
+        <div class="form-group">
+          <label>Relation</label>
+          <select id="f-grel">
+            <option>Father</option>
+            <option>Mother</option>
+            <option>Guardian</option>
+            <option>Grandparent</option>
+            <option>Sibling</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="f-gemail" placeholder="parent@example.com">
+      </div>
+
+      <button class="btn-primary" id="enroll-btn" onclick="enrollStudent()">
+        Enroll Student
+      </button>
+    </div>
+  </div>
+
+  <!-- ── STUDENT LIST ── -->
+  <div class="list-card">
+    <div class="list-card-header">
+      <span>Enrolled Students — 2026</span>
+      <span id="list-count" style="font-size:12px;color:#bbb"></span>
+    </div>
+    <div class="search-bar">
+      <input type="text" id="search-input" placeholder="Search by name or ID…"
+             oninput="debounceSearch()">
+      <select id="filter-class" onchange="loadStudents()">
+        <option value="">All Classes</option>
+      </select>
+      <button onclick="loadStudents()">Search</button>
+    </div>
+    <div id="student-list">
+      <div class="placeholder-msg"><div class="spinner"></div><br>Loading students…</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Success Modal -->
+<div class="modal-overlay" id="success-modal">
+  <div class="modal">
+    <h3>✅ Student Enrolled Successfully</h3>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn-close" onclick="closeModal()">Close</button>
+      <button class="btn-print" onclick="printEnrollment()">🖨 Print Enrollment Card</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const BASE = window.location.origin;
+let CSRF_TOKEN = "";
+let _lastEnrolled = null;
+let _searchTimer = null;
+
+async function getCsrf() {
+  if (CSRF_TOKEN) return CSRF_TOKEN;
+  const r = await fetch(`${BASE}/api/method/education.api.parent_portal.get_csrf_token`);
+  CSRF_TOKEN = (await r.json()).message || "";
+  return CSRF_TOKEN;
+}
+
+async function api(method, params = {}) {
+  const csrf = await getCsrf();
+  const qs = new URLSearchParams(params).toString();
+  const res = await fetch(`${BASE}/api/method/${method}?${qs}`,
+    { headers: { "X-Frappe-CSRF-Token": csrf } });
+  if (res.status === 401 || res.status === 403) {
+    window.location.href = `/login?redirect-to=/student-admission`; return null;
+  }
+  const data = await res.json();
+  if (data.exc) throw new Error(data._server_messages || data.exc);
+  return data.message;
+}
+
+async function apiPost(method, body) {
+  const csrf = await getCsrf();
+  const res = await fetch(`${BASE}/api/method/${method}`, {
+    method: "POST",
+    headers: { "X-Frappe-CSRF-Token": csrf, "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  if (res.status === 401 || res.status === 403) {
+    window.location.href = `/login?redirect-to=/student-admission`; return null;
+  }
+  const data = await res.json();
+  if (data.exc) throw new Error(data._server_messages || data.exc);
+  return data.message;
+}
+
+function toast(msg, type = "success") {
+  const el = document.getElementById("toast");
+  el.textContent = msg;
+  el.className = `toast ${type} show`;
+  setTimeout(() => el.className = "toast", 3500);
+}
+
+async function init() {
+  const classes = await api("education.api.admission.get_classes", { year: "2026" });
+  const sel = document.getElementById("f-class");
+  const fsel = document.getElementById("filter-class");
+  sel.innerHTML = '<option value="">— Select Class —</option>';
+  (classes || []).forEach(c => {
+    sel.add(new Option(c.label, c.id));
+    fsel.add(new Option(c.label, c.id));
+  });
+  await loadStudents();
+}
+
+async function loadStudents() {
+  const search = document.getElementById("search-input").value.trim();
+  const group  = document.getElementById("filter-class").value;
+  document.getElementById("student-list").innerHTML =
+    '<div class="placeholder-msg"><div class="spinner"></div><br>Loading…</div>';
+  try {
+    const rows = await api("education.api.admission.get_students",
+      { year: "2026", group, search });
+    renderList(rows || []);
+  } catch(e) {
+    document.getElementById("student-list").innerHTML =
+      `<div class="placeholder-msg" style="color:#c00">Error: ${e.message}</div>`;
+  }
+}
+
+function debounceSearch() {
+  clearTimeout(_searchTimer);
+  _searchTimer = setTimeout(loadStudents, 400);
+}
+
+function renderList(rows) {
+  document.getElementById("list-count").textContent = `${rows.length} student(s)`;
+  if (!rows.length) {
+    document.getElementById("student-list").innerHTML =
+      '<div class="placeholder-msg">No students found.</div>';
+    return;
+  }
+  const tbody = rows.map((r, i) => `<tr>
+    <td>${i + 1}</td>
+    <td><b>${r.student_name}</b><br><span style="font-size:11px;color:#888">${r.name}</span></td>
+    <td>${r.class_name || '—'}</td>
+    <td>${r.dob || '—'}</td>
+    <td><span class="badge badge-${r.gender==='Male'?'blue':'green'}">${r.gender || '—'}</span></td>
+  </tr>`).join("");
+
+  document.getElementById("student-list").innerHTML = `
+    <table class="student-table">
+      <thead><tr>
+        <th>#</th><th>Student</th><th>Class</th><th>Date of Birth</th><th>Gender</th>
+      </tr></thead>
+      <tbody>${tbody}</tbody>
+    </table>`;
+  document.getElementById("list-count").textContent = `${rows.length} student(s)`;
+}
+
+async function enrollStudent() {
+  const first   = document.getElementById("f-first").value.trim();
+  const last    = document.getElementById("f-last").value.trim();
+  const gender  = document.getElementById("f-gender").value;
+  const dob     = document.getElementById("f-dob").value;
+  const groupId = document.getElementById("f-class").value;
+
+  if (!first || !last || !gender || !dob || !groupId) {
+    toast("Please fill in all required fields (*)", "error"); return;
+  }
+
+  const btn = document.getElementById("enroll-btn");
+  btn.disabled = true; btn.textContent = "Enrolling…";
+
+  try {
+    const result = await apiPost("education.api.admission.enroll_student", {
+      first_name:        first,
+      last_name:         last,
+      gender,
+      date_of_birth:     dob,
+      group_id:          groupId,
+      year:              "2026",
+      guardian_name:     document.getElementById("f-gname").value.trim(),
+      guardian_phone:    document.getElementById("f-gphone").value.trim(),
+      guardian_email:    document.getElementById("f-gemail").value.trim(),
+      guardian_relation: document.getElementById("f-grel").value,
+    });
+
+    _lastEnrolled = result;
+    document.getElementById("modal-body").innerHTML = `
+      <b>Name:</b> ${result.student_name}<br>
+      <b>Student ID:</b> ${result.student_id}<br>
+      <b>Class:</b> ${groupId}<br>
+      <b>Academic Year:</b> 2026<br>
+      <b>Status:</b> Enrolled ✅
+    `;
+    document.getElementById("success-modal").classList.add("open");
+
+    // Reset form
+    ["f-first","f-last","f-dob","f-gname","f-gphone","f-gemail"].forEach(id =>
+      document.getElementById(id).value = "");
+    document.getElementById("f-gender").value = "";
+    document.getElementById("f-class").value = "";
+
+    await loadStudents();
+  } catch(e) {
+    toast(`Error: ${e.message}`, "error");
+  } finally {
+    btn.disabled = false; btn.textContent = "Enroll Student";
+  }
+}
+
+function closeModal() {
+  document.getElementById("success-modal").classList.remove("open");
+}
+
+function printEnrollment() {
+  if (!_lastEnrolled) return;
+  const w = window.open("", "_blank");
+  w.document.write(`<!DOCTYPE html><html><head><title>Enrollment Card</title>
+  <style>body{font-family:'Times New Roman',serif;padding:30px}
+  h2{text-align:center;border-bottom:3px double #000;padding-bottom:8px}
+  table{width:100%;border-collapse:collapse;margin-top:20px}
+  td{padding:8px 12px;border:1px solid #000;font-size:14px}
+  td:first-child{font-weight:bold;width:40%;background:#f5f5f5}
+  .footer{margin-top:40px;display:flex;justify-content:space-between}
+  .sig-line{border-top:1px solid #000;width:160px;text-align:center;padding-top:4px;font-size:12px}
+  </style></head><body>
+  <h2>Sunshine Primary School<br><small style="font-size:14px">Student Enrollment Card — 2026</small></h2>
+  <table>
+    <tr><td>Student Name</td><td>${_lastEnrolled.student_name}</td></tr>
+    <tr><td>Student ID</td><td>${_lastEnrolled.student_id}</td></tr>
+    <tr><td>Class Assigned</td><td>${_lastEnrolled.group_id}</td></tr>
+    <tr><td>Academic Year</td><td>2026</td></tr>
+    <tr><td>Enrollment Date</td><td>${new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'})}</td></tr>
+  </table>
+  <div class="footer">
+    <div class="sig-line">Parent/Guardian</div>
+    <div class="sig-line">School Registrar</div>
+    <div class="sig-line">Principal</div>
+  </div>
+  <p style="font-size:10px;text-align:center;margin-top:30px;font-style:italic">
+    ISSUED WITHOUT ALTERATIONS — Sunshine Primary School</p>
+  <script>window.print();window.close();<\/script>
+  </body></html>`);
+}
+
+init();
+</script>
+</body>
+</html>
