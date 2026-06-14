@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Fees Statement – Sunshine Primary School</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Arial, sans-serif; background: #f0f0f0; }
+
+.top-bar {
+  background: #1a0a0e; color: #fff;
+  padding: 14px 24px;
+  display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap;
+}
+.top-bar label { font-size: 11px; color: #bbb; display: block; margin-bottom: 3px; }
+.top-bar select {
+  padding: 7px 10px; border-radius: 5px; border: none;
+  font-size: 13px; min-width: 180px; background: #fff;
+}
+.top-bar button {
+  background: #FF0527; color: #fff; border: none;
+  padding: 9px 22px; border-radius: 5px; cursor: pointer;
+  font-size: 13px; font-weight: 700;
+}
+.top-bar button:hover { background: #c8021e; }
+.top-bar .print-btn { background: #444; }
+.top-bar .print-btn:hover { background: #666; }
+
+.status-bar {
+  background: #fff; padding: 10px 24px;
+  font-size: 13px; color: #555; border-bottom: 2px solid #FF0527;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.status-bar strong { color: #1a0a0e; }
+
+#statements { padding: 24px; }
+.placeholder {
+  text-align: center; padding: 80px 20px; color: #999; font-size: 16px;
+}
+
+/* ══ FEES STATEMENT ═════════════════════════════════════════════ */
+.fees-statement {
+  background: #fff;
+  border: 2px solid #000;
+  width: 700px;
+  margin: 0 auto 32px;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 11.5px;
+  page-break-after: always;
+  break-after: page;
+}
+
+/* Header */
+.fs-hdr {
+  border-bottom: 3px double #000;
+  padding: 8px 14px 6px;
+}
+.fs-hdr-inner {
+  display: flex; align-items: center; gap: 12px;
+}
+.fs-logo {
+  width: 58px; height: 58px; border: 1px solid #888;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; color: #555; text-align: center; flex-shrink: 0;
+}
+.fs-hdr-text { flex: 1; text-align: center; }
+.fs-ministry { font-size: 9px; color: #444; }
+.fs-school { font-size: 19px; font-weight: bold; font-family: 'Palatino Linotype', serif; letter-spacing: 1px; }
+.fs-address { font-size: 10.5px; margin: 2px 0; }
+.fs-type { font-size: 14px; font-weight: bold; letter-spacing: 3px; margin-top: 4px; text-decoration: underline; }
+
+/* Student info */
+.fs-info {
+  border-bottom: 1px solid #000;
+  padding: 5px 14px;
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 5px 10px;
+}
+.fs-field {
+  display: flex; gap: 4px; align-items: baseline; font-size: 11px;
+}
+.fs-field b { white-space: nowrap; }
+.fs-line {
+  border-bottom: 1px solid #000;
+  flex: 1; min-width: 40px;
+  padding: 0 2px; text-align: center;
+}
+
+/* Summary row */
+.fs-summary {
+  border-bottom: 1px solid #000;
+  padding: 5px 14px;
+  display: flex; gap: 20px; font-size: 11px; flex-wrap: wrap;
+}
+.fs-summary .badge {
+  padding: 2px 8px; border-radius: 3px; font-weight: bold; font-size: 11px;
+}
+.badge-paid    { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.badge-partial { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+.badge-unpaid  { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+/* Per-term section */
+.fs-term-section { border-bottom: 1px solid #ccc; }
+.fs-term-title {
+  background: #ebebeb; border-bottom: 1px solid #000;
+  padding: 4px 14px; font-size: 11px; font-weight: bold;
+  display: flex; justify-content: space-between; align-items: center;
+}
+
+/* Components table */
+.fs-table { width: 100%; border-collapse: collapse; }
+.fs-table th {
+  background: #f5f5f5; border: 1px solid #000;
+  padding: 4px 8px; font-size: 10.5px; text-align: left; font-weight: bold;
+}
+.fs-table th.right { text-align: right; }
+.fs-table td { border: 1px solid #000; padding: 3px 8px; font-size: 11px; }
+.fs-table td.right { text-align: right; }
+.fs-table tr.subtotal td { font-weight: bold; background: #f9f9f9; }
+.fs-table tr.grand td { font-weight: bold; background: #ebebeb; font-size: 11.5px; }
+.fs-table tr.outstanding td { color: #a00; }
+
+/* Footer */
+.fs-footer {
+  padding: 8px 14px;
+  display: flex; gap: 16px; align-items: flex-start;
+}
+.fs-footer-left { flex: 1; }
+.fs-fline { display: flex; gap: 6px; align-items: baseline; margin-bottom: 6px; font-size: 11px; }
+.fs-fline b { white-space: nowrap; }
+.fs-fval { border-bottom: 1px solid #000; flex: 1; padding: 0 2px; }
+.fs-stamp {
+  border: 2px solid #000; width: 120px; height: 80px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: bold; text-align: center; font-size: 11px; flex-shrink: 0;
+}
+.fs-issued { font-size: 9px; font-style: italic; margin-top: 6px; }
+
+/* ══ PRINT ══════════════════════════════════════════════════════ */
+@media print {
+  body { background: #fff; }
+  .top-bar, .status-bar { display: none !important; }
+  #statements { padding: 0; }
+  .fees-statement { width: 100%; border: 2px solid #000; margin: 0; box-shadow: none; }
+  @page { size: A4 portrait; margin: 8mm; }
+}
+</style>
+</head>
+<body>
+
+<!-- Controls -->
+<div class="top-bar">
+  <div>
+    <label>Academic Year</label>
+    <select id="sel-year"></select>
+  </div>
+  <div>
+    <label>Class / Student Group</label>
+    <select id="sel-group"></select>
+  </div>
+  <div>
+    <label>Student</label>
+    <select id="sel-student"><option value="">— Select Student —</option></select>
+  </div>
+  <button onclick="loadStatement()">Generate Statement</button>
+  <button class="print-btn" onclick="window.print()">🖨 Print</button>
+</div>
+
+<div class="status-bar" id="status-bar">
+  <span id="status-msg">Select a class and student, then click Generate.</span>
+</div>
+
+<div id="statements">
+  <div class="placeholder">
+    Select a class and student above, then click <strong>Generate Statement</strong>.
+  </div>
+</div>
+
+<script>
+const BASE = window.location.origin;
+const SCHOOL = "Sunshine Primary School";
+const SCHOOL_ADDR = "P.O. Box 101, Harare &nbsp;|&nbsp; Tel: 0242-700000";
+
+async function api(method, params = {}) {
+  const qs = new URLSearchParams(params).toString();
+  const url = `${BASE}/api/method/${method}?${qs}`;
+  const res = await fetch(url, { headers: { "X-Frappe-CSRF-Token": "{{ csrf_token }}" } });
+  const data = await res.json();
+  return data.message;
+}
+
+async function init() {
+  const years = await api("education.api.fees_statement.get_years");
+  const selYear = document.getElementById("sel-year");
+  (years || ["2026"]).forEach(y => selYear.add(new Option(y, y)));
+  await loadGroups();
+}
+
+async function loadGroups() {
+  const year = document.getElementById("sel-year").value || "2026";
+  const groups = await api("education.api.fees_statement.get_groups", { year });
+  const sel = document.getElementById("sel-group");
+  sel.innerHTML = '<option value="">— Select Class —</option>';
+  (groups || []).forEach(g => sel.add(new Option(g, g)));
+  document.getElementById("sel-student").innerHTML = '<option value="">— Select Student —</option>';
+}
+
+async function loadStudents() {
+  const group = document.getElementById("sel-group").value;
+  if (!group) return;
+  const students = await api("education.api.fees_statement.get_students_in_group", { group });
+  const sel = document.getElementById("sel-student");
+  sel.innerHTML = '<option value="">— Select Student —</option>';
+  (students || []).forEach(s => sel.add(new Option(s.name, s.id)));
+}
+
+document.getElementById("sel-year").addEventListener("change", loadGroups);
+document.getElementById("sel-group").addEventListener("change", loadStudents);
+
+async function loadStatement() {
+  const student_id = document.getElementById("sel-student").value;
+  const year = document.getElementById("sel-year").value;
+  if (!student_id) { alert("Please select a student first."); return; }
+
+  document.getElementById("status-msg").textContent = "Loading…";
+  document.getElementById("statements").innerHTML = "<div class='placeholder'>Loading fees statement…</div>";
+
+  try {
+    const data = await api("education.api.fees_statement.get_student_fees", { student_id, year });
+    if (!data) {
+      document.getElementById("statements").innerHTML = "<div class='placeholder'>No data found.</div>";
+      document.getElementById("status-msg").textContent = "No results.";
+      return;
+    }
+    renderStatement(data);
+    const statusBadge = data.total_outstanding === 0 ? "✅ Fully Paid"
+      : data.total_paid > 0 ? "⚠ Partially Paid"
+      : "❌ Unpaid";
+    document.getElementById("status-msg").innerHTML =
+      `<strong>${data.student_name}</strong> &nbsp;|&nbsp; ${data.class} &nbsp;|&nbsp;
+       Billed: $${data.total_billed.toFixed(2)} &nbsp;|&nbsp;
+       Paid: $${data.total_paid.toFixed(2)} &nbsp;|&nbsp;
+       Outstanding: $${data.total_outstanding.toFixed(2)} &nbsp;|&nbsp; ${statusBadge}`;
+  } catch(e) {
+    document.getElementById("statements").innerHTML = `<div class='placeholder'>Error: ${e.message}</div>`;
+  }
+}
+
+function statusBadge(status) {
+  const cls = status === "Paid" ? "badge-paid" : status === "Partial" ? "badge-partial" : "badge-unpaid";
+  return `<span class="badge ${cls}">${status}</span>`;
+}
+
+function renderStatement(data) {
+  const container = document.getElementById("statements");
+  const today = new Date().toLocaleDateString("en-GB", { day:"2-digit", month:"long", year:"numeric" });
+
+  const termRows = data.statement.map(t => {
+    const compRows = t.components.map(c => `
+      <tr>
+        <td>${c.category}</td>
+        <td class="right">$${c.amount.toFixed(2)}</td>
+        <td class="right">—</td>
+        <td class="right">—</td>
+      </tr>`).join("");
+
+    return `
+    <div class="fs-term-section">
+      <div class="fs-term-title">
+        <span>${t.term}</span>
+        <span>Due: ${t.due_date} &nbsp; ${statusBadge(t.status)}</span>
+      </div>
+      <table class="fs-table">
+        <thead>
+          <tr>
+            <th style="width:45%">Fee Description</th>
+            <th class="right" style="width:18%">Billed ($)</th>
+            <th class="right" style="width:18%">Paid ($)</th>
+            <th class="right" style="width:19%">Outstanding ($)</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${compRows}
+          <tr class="subtotal">
+            <td><b>Term Total</b></td>
+            <td class="right"><b>${t.grand_total.toFixed(2)}</b></td>
+            <td class="right"><b>${t.paid.toFixed(2)}</b></td>
+            <td class="right"><b>${t.outstanding.toFixed(2)}</b></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>`;
+  }).join("");
+
+  const overallStatus = data.total_outstanding === 0 ? "Paid"
+    : data.total_paid > 0 ? "Partial" : "Unpaid";
+
+  container.innerHTML = `
+<div class="fees-statement">
+
+  <!-- HEADER -->
+  <div class="fs-hdr">
+    <div class="fs-hdr-inner">
+      <div class="fs-logo">ZIMB<br>COAT<br>OF ARMS</div>
+      <div class="fs-hdr-text">
+        <div class="fs-ministry">MINISTRY OF PRIMARY &amp; SECONDARY EDUCATION</div>
+        <div class="fs-school">${SCHOOL}</div>
+        <div class="fs-address">${SCHOOL_ADDR}</div>
+        <div class="fs-type">FEES STATEMENT</div>
+      </div>
+      <div class="fs-logo">SCHOOL<br>CREST</div>
+    </div>
+  </div>
+
+  <!-- STUDENT INFO -->
+  <div class="fs-info">
+    <div class="fs-field"><b>NAME:</b><span class="fs-line">${data.student_name}</span></div>
+    <div class="fs-field"><b>GRADE:</b><span class="fs-line">${data.grade}</span></div>
+    <div class="fs-field"><b>CLASS:</b><span class="fs-line">${data.class}</span></div>
+    <div class="fs-field"><b>STUDENT ID:</b><span class="fs-line">${data.student_id}</span></div>
+    <div class="fs-field"><b>YEAR:</b><span class="fs-line">${data.year}</span></div>
+    <div class="fs-field"><b>DATE:</b><span class="fs-line">${today}</span></div>
+  </div>
+
+  <!-- ACCOUNT SUMMARY -->
+  <div class="fs-summary">
+    <div class="fs-field"><b>TOTAL BILLED:</b>&nbsp;<span>$${data.total_billed.toFixed(2)}</span></div>
+    <div class="fs-field"><b>TOTAL PAID:</b>&nbsp;<span>$${data.total_paid.toFixed(2)}</span></div>
+    <div class="fs-field"><b>BALANCE DUE:</b>&nbsp;<span style="color:${data.total_outstanding>0?'#a00':'#155724'};font-weight:bold">$${data.total_outstanding.toFixed(2)}</span></div>
+    <div class="fs-field"><b>STATUS:</b>&nbsp;${statusBadge(overallStatus)}</div>
+  </div>
+
+  <!-- PER-TERM FEE BREAKDOWN -->
+  ${termRows}
+
+  <!-- GRAND TOTAL -->
+  <table class="fs-table" style="border-top:2px solid #000">
+    <tbody>
+      <tr class="grand">
+        <td style="width:45%"><b>GRAND TOTAL</b></td>
+        <td class="right" style="width:18%"><b>$${data.total_billed.toFixed(2)}</b></td>
+        <td class="right" style="width:18%"><b>$${data.total_paid.toFixed(2)}</b></td>
+        <td class="right" style="width:19%"><b>$${data.total_outstanding.toFixed(2)}</b></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- FOOTER -->
+  <div class="fs-footer">
+    <div class="fs-footer-left">
+      <div class="fs-fline"><b>Payment Method:</b><span class="fs-fval"></span></div>
+      <div class="fs-fline"><b>Receipt No:</b><span class="fs-fval"></span></div>
+      <div class="fs-fline"><b>Parent/Guardian's Signature</b><span class="fs-fval"></span></div>
+      <div class="fs-issued">ISSUED WITHOUT ALTERATIONS &nbsp;|&nbsp; THIS IS A COMPUTER-GENERATED STATEMENT</div>
+    </div>
+    <div class="fs-stamp">School<br>Stamp</div>
+  </div>
+
+</div>`;
+}
+
+init();
+</script>
+</body>
+</html>
