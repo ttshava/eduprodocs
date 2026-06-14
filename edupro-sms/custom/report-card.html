@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Report Card – Sunshine Primary School</title>
+<style>
+/* ══ SCREEN UI ══════════════════════════════════════════════════ */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Arial, sans-serif; background: #f0f0f0; }
+
+.top-bar {
+  background: #1a0a0e; color: #fff;
+  padding: 14px 24px;
+  display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap;
+}
+.top-bar label { font-size: 11px; color: #bbb; display: block; margin-bottom: 3px; }
+.top-bar select {
+  padding: 7px 10px; border-radius: 5px; border: none;
+  font-size: 13px; min-width: 200px; background: #fff;
+}
+.top-bar button {
+  background: #FF0527; color: #fff; border: none;
+  padding: 9px 22px; border-radius: 5px; cursor: pointer;
+  font-size: 13px; font-weight: 700;
+}
+.top-bar button:hover { background: #c8021e; }
+.top-bar .print-btn { background: #444; }
+.top-bar .print-btn:hover { background: #666; }
+
+.status-bar {
+  background: #fff; padding: 10px 24px;
+  font-size: 13px; color: #555; border-bottom: 2px solid #FF0527;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.status-bar strong { color: #1a0a0e; }
+
+#cards { padding: 24px; }
+.placeholder {
+  text-align: center; padding: 80px 20px; color: #999;
+  font-size: 16px;
+}
+
+/* ══ REPORT CARD ════════════════════════════════════════════════ */
+.report-card {
+  background: #fff;
+  border: 2px solid #000;
+  width: 700px;
+  margin: 0 auto 32px;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 11.5px;
+  page-break-after: always;
+  break-after: page;
+}
+
+/* Header */
+.rc-hdr {
+  border-bottom: 3px double #000;
+  padding: 8px 14px 6px;
+}
+.rc-hdr-inner {
+  display: flex; align-items: center; gap: 12px;
+}
+.rc-logo {
+  width: 58px; height: 58px; border: 1px solid #888;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; color: #555; text-align: center; flex-shrink: 0;
+}
+.rc-hdr-text { flex: 1; text-align: center; }
+.rc-ministry { font-size: 9px; color: #444; }
+.rc-school { font-size: 19px; font-weight: bold; font-family: 'Palatino Linotype', serif; letter-spacing: 1px; }
+.rc-address { font-size: 10.5px; margin: 2px 0; }
+.rc-type { font-size: 14px; font-weight: bold; letter-spacing: 3px; margin-top: 4px; text-decoration: underline; }
+
+/* Info row */
+.rc-info {
+  border-bottom: 1px solid #000;
+  padding: 5px 14px;
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 5px 10px;
+}
+.rc-field {
+  display: flex; gap: 4px; align-items: baseline; font-size: 11px;
+}
+.rc-field b { white-space: nowrap; }
+.rc-line {
+  border-bottom: 1px solid #000;
+  flex: 1; min-width: 50px;
+  padding: 0 2px; text-align: center;
+}
+
+/* Position row */
+.rc-pos {
+  border-bottom: 1px solid #000;
+  padding: 4px 14px;
+  display: flex; gap: 24px; font-size: 11px;
+}
+
+/* Marks table */
+.rc-marks { width: 100%; border-collapse: collapse; }
+.rc-marks th {
+  background: #ebebeb; border: 1px solid #000;
+  padding: 4px 5px; font-size: 10.5px; text-align: center;
+  font-weight: bold; line-height: 1.2;
+}
+.rc-marks td { border: 1px solid #000; padding: 3px 6px; font-size: 11px; }
+.rc-marks td.center { text-align: center; }
+.rc-marks tr.grand td { font-weight: bold; background: #f5f5f5; }
+
+/* Comments */
+.rc-comments { padding: 8px 14px; border-top: 1px solid #000; }
+.rc-cmt { display: flex; gap: 6px; align-items: baseline; margin-bottom: 10px; }
+.rc-cmt b { white-space: nowrap; font-size: 11px; }
+.rc-cmt-line { flex: 1; border-bottom: 1px solid #000; }
+.rc-sign { display: flex; gap: 4px; align-items: baseline; justify-content: flex-end; margin-top: 2px; margin-bottom: 8px; }
+.rc-sign b { font-size: 11px; }
+.rc-sign-line { border-bottom: 1px solid #000; width: 170px; }
+
+/* Footer */
+.rc-footer {
+  border-top: 1px solid #000;
+  padding: 8px 14px;
+  display: flex; gap: 16px; align-items: flex-start;
+}
+.rc-footer-left { flex: 1; }
+.rc-fline { display: flex; gap: 6px; align-items: baseline; margin-bottom: 6px; font-size: 11px; }
+.rc-fline b { white-space: nowrap; }
+.rc-fval { border-bottom: 1px solid #000; flex: 1; padding: 0 2px; }
+.rc-stamp {
+  border: 2px solid #000; width: 120px; height: 80px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: bold; text-align: center; font-size: 11px; flex-shrink: 0;
+}
+.rc-issued { font-size: 9px; font-style: italic; margin-top: 6px; }
+
+/* ══ PRINT ══════════════════════════════════════════════════════ */
+@media print {
+  body { background: #fff; }
+  .top-bar, .status-bar { display: none !important; }
+  #cards { padding: 0; }
+  .report-card { width: 100%; border: 2px solid #000; margin: 0; box-shadow: none; }
+  @page { size: A4 portrait; margin: 8mm; }
+}
+</style>
+</head>
+<body>
+
+<!-- Controls -->
+<div class="top-bar">
+  <div>
+    <label>Academic Year</label>
+    <select id="sel-year"></select>
+  </div>
+  <div>
+    <label>Class / Student Group</label>
+    <select id="sel-group"></select>
+  </div>
+  <button onclick="loadCards()">Generate Report Cards</button>
+  <button class="print-btn" onclick="window.print()">🖨 Print</button>
+</div>
+
+<div class="status-bar" id="status-bar">
+  <span id="status-msg">Select a class and click Generate.</span>
+</div>
+
+<div id="cards">
+  <div class="placeholder">
+    Select a class above and click <strong>Generate Report Cards</strong>.
+  </div>
+</div>
+
+<script>
+const BASE = window.location.origin;
+const SCHOOL = "Sunshine Primary School";
+const SCHOOL_ADDR = "P.O. Box 101, Harare &nbsp;|&nbsp; Tel: 0242-700000";
+
+async function api(method, params = {}) {
+  const qs = new URLSearchParams(params).toString();
+  const url = `${BASE}/api/method/${method}?${qs}`;
+  const res = await fetch(url, { headers: { "X-Frappe-CSRF-Token": "{{ csrf_token }}" } });
+  const data = await res.json();
+  return data.message;
+}
+
+async function init() {
+  const years = await api("education.api.report_card.get_years");
+  const selYear = document.getElementById("sel-year");
+  (years || ["2026"]).forEach(y => {
+    const o = new Option(y, y); selYear.add(o);
+  });
+  await loadGroups();
+}
+
+async function loadGroups() {
+  const year = document.getElementById("sel-year").value || "2026";
+  const groups = await api("education.api.report_card.get_groups", { year });
+  const sel = document.getElementById("sel-group");
+  sel.innerHTML = '<option value="">— Select Class —</option>';
+  (groups || []).forEach(g => sel.add(new Option(g, g)));
+}
+
+document.getElementById("sel-year").addEventListener("change", loadGroups);
+
+async function loadCards() {
+  const group = document.getElementById("sel-group").value;
+  const year  = document.getElementById("sel-year").value;
+  if (!group) { alert("Please select a class first."); return; }
+
+  document.getElementById("status-msg").textContent = "Loading…";
+  document.getElementById("cards").innerHTML = "<div class='placeholder'>Loading report cards…</div>";
+
+  try {
+    const data = await api("education.api.report_card.get_report_card_data", { group, year });
+    if (!data || !data.students || !data.students.length) {
+      document.getElementById("cards").innerHTML = "<div class='placeholder'>No data found for this class.</div>";
+      document.getElementById("status-msg").textContent = "No results.";
+      return;
+    }
+    renderCards(data.students, group, year);
+    document.getElementById("status-msg").innerHTML =
+      `<strong>${SCHOOL}</strong> &nbsp;|&nbsp; ${group} &nbsp;|&nbsp; Year ${year} &nbsp;|&nbsp; ${data.students.length} student(s)`;
+  } catch(e) {
+    document.getElementById("cards").innerHTML = `<div class='placeholder'>Error: ${e.message}</div>`;
+  }
+}
+
+function gradeComment(g) {
+  const map = { A:"Excellent work", B:"Very Good", C:"Good", D:"Satisfactory", E:"Needs improvement",
+                "1":"Distinction", "2":"Merit", "3":"Credit", "4":"Pass", "5":"Pass",
+                "6":"Needs to improve", "7":"Below expectations", U:"Needs to improve" };
+  return map[g] || "";
+}
+
+function nextTermDate(year) {
+  return `13 January ${parseInt(year)+1}`;
+}
+
+function renderCards(students, group, year) {
+  const container = document.getElementById("cards");
+  container.innerHTML = "";
+
+  students.forEach((s, idx) => {
+    const termLabel = `${year} (Term 1)`;
+    const nextTerm = nextTermDate(year);
+    const subjectRows = s.subjects.map(sub => `
+      <tr>
+        <td><b>${sub.course}</b></td>
+        <td class="center">${sub.score}</td>
+        <td class="center">${sub.score}</td>
+        <td class="center">${sub.grade}</td>
+        <td>${gradeComment(sub.grade)}</td>
+      </tr>`).join("");
+
+    container.innerHTML += `
+<div class="report-card">
+
+  <!-- HEADER -->
+  <div class="rc-hdr">
+    <div class="rc-hdr-inner">
+      <div class="rc-logo">ZIMB<br>COAT<br>OF ARMS</div>
+      <div class="rc-hdr-text">
+        <div class="rc-ministry">MINISTRY OF PRIMARY &amp; SECONDARY EDUCATION</div>
+        <div class="rc-school">${SCHOOL}</div>
+        <div class="rc-address">${SCHOOL_ADDR}</div>
+        <div class="rc-type">${s.report_type}</div>
+      </div>
+      <div class="rc-logo">SCHOOL<br>CREST</div>
+    </div>
+  </div>
+
+  <!-- STUDENT INFO -->
+  <div class="rc-info">
+    <div class="rc-field"><b>NAME:</b><span class="rc-line">${s.name}</span></div>
+    <div class="rc-field"><b>GRADE:</b><span class="rc-line">${s.grade}</span></div>
+    <div class="rc-field"><b>CLASS:</b><span class="rc-line">${s.stream}</span></div>
+    <div class="rc-field"><b>TERM:</b><span class="rc-line">${termLabel}</span></div>
+    <div class="rc-field"><b>YEAR:</b><span class="rc-line">${year}</span></div>
+    <div class="rc-field"><b>ROLL NO:</b><span class="rc-line">${idx + 1}</span></div>
+  </div>
+
+  <!-- POSITION -->
+  <div class="rc-pos">
+    <div class="rc-field"><b>POSITION IN CLASS:</b><span class="rc-line">${s.position}</span><b style="margin-left:8px">OUT OF:</b><span class="rc-line">${s.class_size}</span></div>
+    <div class="rc-field"><b>AVERAGE MARK:</b><span class="rc-line">${s.avg}%</span></div>
+  </div>
+
+  <!-- MARKS TABLE -->
+  <table class="rc-marks">
+    <thead>
+      <tr>
+        <th style="width:38%;text-align:left">SUBJECT</th>
+        <th style="width:11%">EXAM<br>MARK</th>
+        <th style="width:11%">AVE<br>MARK</th>
+        <th style="width:10%">GRADE/<br>UNITS</th>
+        <th>COMMENTS</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${subjectRows}
+      <tr class="grand">
+        <td><b>GRAND TOTAL</b></td>
+        <td class="center"><b>${s.total}</b></td>
+        <td class="center"><b>${s.avg}%</b></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- TEACHER COMMENTS -->
+  <div class="rc-comments">
+    <div class="rc-cmt"><b>CLASS TEACHER'S COMMENTS:</b><span class="rc-cmt-line"></span></div>
+    <div class="rc-cmt" style="margin-top:-7px"><span class="rc-cmt-line"></span></div>
+    <div class="rc-sign"><b>SIGN</b><span class="rc-sign-line"></span></div>
+
+    <div class="rc-cmt"><b>HEAD / D-HEAD'S COMMENTS:</b><span class="rc-cmt-line"></span></div>
+    <div class="rc-cmt" style="margin-top:-7px"><span class="rc-cmt-line"></span></div>
+    <div class="rc-sign"><b>SIGN</b><span class="rc-sign-line"></span></div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="rc-footer">
+    <div class="rc-footer-left">
+      <div class="rc-fline"><b>Next Term Begins on</b><span class="rc-fval">${nextTerm}</span></div>
+      <div class="rc-fline"><b>Next Term Fees $</b><span class="rc-fval">60.00</span></div>
+      <div class="rc-fline"><b>Parent/Guardian's Signature</b><span class="rc-fval"></span></div>
+      <div class="rc-issued">ISSUED WITHOUT ALTERATIONS</div>
+    </div>
+    <div class="rc-stamp">School<br>Stamp</div>
+  </div>
+
+</div>`;
+  });
+}
+
+init();
+</script>
+</body>
+</html>
