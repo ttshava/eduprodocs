@@ -1,0 +1,10 @@
+--- a/esbuild/utils.js
++++ b/esbuild/utils.js
+@@ -8,6 +8,9 @@ if (process.env.FRAPPE_BENCH_ROOT) {
+ 	const frappe_path = path.resolve(__dirname, "..");
+ 	bench_path = path.resolve(frappe_path, "..", "..");
+ }
++// Resolve any symlinks so all paths are consistent (avoids path.relative issues with spaces)
++try { bench_path = fs.realpathSync(bench_path); } catch(e) {}
++
+ const apps_path = path.resolve(bench_path, "apps");
