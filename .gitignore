@@ -157,3 +157,4 @@ cython_debug/
 # Allow downloads folder for PDF source documents
 !downloads/
 !downloads/*.html
+dump.rdb
