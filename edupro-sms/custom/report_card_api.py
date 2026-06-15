@@ -1,7 +1,24 @@
 import frappe
 
-@frappe.whitelist(allow_guest=True)
+# Roles that can view report card data
+_ALLOWED_ROLES = {"Administrator", "School Admin", "Academics User",
+                  "Education Manager", "Instructor"}
+
+
+def _require_staff():
+    """Raise PermissionError if current user is not authenticated staff."""
+    user = frappe.session.user
+    if not user or user == "Guest":
+        frappe.throw("Please log in to access report cards.", frappe.AuthenticationError)
+    user_roles = set(frappe.get_roles(user))
+    if not (user_roles & _ALLOWED_ROLES):
+        frappe.throw("You do not have permission to view report cards.", frappe.PermissionError)
+
+
+@frappe.whitelist()
 def get_report_card_data(group, year="2026"):
+    _require_staff()
+
     student_rows = frappe.db.sql(
         "SELECT student FROM `tabStudent Group Student` WHERE parent=%s ORDER BY idx", group)
     student_ids = [r[0] for r in student_rows]
@@ -21,12 +38,13 @@ def get_report_card_data(group, year="2026"):
         GROUP BY ar.student ORDER BY grand_total DESC
     """, (year, group), as_dict=True)
 
-    position_map = {r.student: (i+1) for i, r in enumerate(class_totals)}
+    position_map = {r.student: (i + 1) for i, r in enumerate(class_totals)}
     class_size = len(class_totals)
 
     students = []
     for sid in student_ids:
-        stu = frappe.db.sql("SELECT name, student_name FROM `tabStudent` WHERE name=%s", sid, as_dict=True)
+        stu = frappe.db.sql(
+            "SELECT name, student_name FROM `tabStudent` WHERE name=%s", sid, as_dict=True)
         if not stu:
             continue
         stu = stu[0]
@@ -36,7 +54,8 @@ def get_report_card_data(group, year="2026"):
             WHERE student=%s AND academic_year=%s AND student_group=%s ORDER BY course
         """, (sid, year, group), as_dict=True)
 
-        subjects = [{"course": r.course, "score": int(r.total_score or 0), "grade": r.grade or ""} for r in results]
+        subjects = [{"course": r.course, "score": int(r.total_score or 0),
+                     "grade": r.grade or ""} for r in results]
         total = sum(s["score"] for s in subjects)
         avg = round(total / len(subjects), 1) if subjects else 0
 
@@ -55,12 +74,18 @@ def get_report_card_data(group, year="2026"):
 
     return {"students": students, "group": group, "year": year}
 
-@frappe.whitelist(allow_guest=True)
+
+@frappe.whitelist()
 def get_groups(year="2026"):
-    rows = frappe.db.sql("SELECT name FROM `tabStudent Group` WHERE academic_year=%s ORDER BY name", year)
+    _require_staff()
+    rows = frappe.db.sql(
+        "SELECT name FROM `tabStudent Group` WHERE academic_year=%s ORDER BY name", year)
     return [r[0] for r in rows]
 
-@frappe.whitelist(allow_guest=True)
+
+@frappe.whitelist()
 def get_years():
-    rows = frappe.db.sql("SELECT academic_year_name FROM `tabAcademic Year` ORDER BY academic_year_name DESC")
+    _require_staff()
+    rows = frappe.db.sql(
+        "SELECT academic_year_name FROM `tabAcademic Year` ORDER BY academic_year_name DESC")
     return [r[0] for r in rows]

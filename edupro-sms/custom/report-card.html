@@ -171,18 +171,37 @@ body { font-family: Arial, sans-serif; background: #f0f0f0; }
 
 <script>
 const BASE = window.location.origin;
-const SCHOOL = "Sunshine Primary School";
-const SCHOOL_ADDR = "P.O. Box 101, Harare &nbsp;|&nbsp; Tel: 0242-700000";
+let SCHOOL = "Sunshine Primary School";
+let SCHOOL_ADDR = "P.O. Box 101, Harare &nbsp;|&nbsp; Tel: 0242-700000";
+let CSRF_TOKEN = "";
+
+async function getCsrfToken() {
+  try {
+    const res = await fetch(`${BASE}/api/method/education.api.parent_portal.get_csrf_token`);
+    const data = await res.json();
+    return data.message || "";
+  } catch (e) { return ""; }
+}
 
 async function api(method, params = {}) {
+  if (!CSRF_TOKEN) CSRF_TOKEN = await getCsrfToken();
   const qs = new URLSearchParams(params).toString();
   const url = `${BASE}/api/method/${method}?${qs}`;
-  const res = await fetch(url, { headers: { "X-Frappe-CSRF-Token": "{{ csrf_token }}" } });
+  const res = await fetch(url, { headers: { "X-Frappe-CSRF-Token": CSRF_TOKEN } });
+  if (res.status === 401 || res.status === 403) {
+    window.location.href = `/login?redirect-to=${encodeURIComponent(window.location.pathname)}`;
+    return null;
+  }
   const data = await res.json();
+  if (data.exc) throw new Error(data.exc);
   return data.message;
 }
 
 async function init() {
+  // Load school config from server (not hardcoded)
+  const cfg = await api("education.api.parent_portal.get_school_config");
+  if (cfg) { SCHOOL = cfg.school_name; SCHOOL_ADDR = cfg.school_address; }
+
   const years = await api("education.api.report_card.get_years");
   const selYear = document.getElementById("sel-year");
   (years || ["2026"]).forEach(y => {

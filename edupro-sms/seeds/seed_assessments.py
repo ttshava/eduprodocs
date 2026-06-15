@@ -1,9 +1,11 @@
 import mysql.connector
 import random
 import uuid
+import subprocess
+import sys
+import os
 
 random.seed(99)
-DB = "_3e3709f667afeebb"
 NOW = "2026-06-14 08:15:00"
 
 SUBJECTS_ALL = [
@@ -26,7 +28,69 @@ def get_grade(score, is_g7):
             return g
     return scale[-1][1]
 
-conn = mysql.connector.connect(user='root', password='edupro2025', database=DB)
+
+def get_db_name(site="edupro.local", bench_path="/home/frappe/edupro-sms"):
+    """Read the database name from Frappe's site config — works on any installation."""
+    import json
+    site_config = os.path.join(bench_path, "sites", site, "site_config.json")
+    if os.path.exists(site_config):
+        with open(site_config) as f:
+            cfg = json.load(f)
+        db = cfg.get("db_name")
+        if db:
+            return db
+    # Fallback: ask bench
+    try:
+        result = subprocess.check_output(
+            ["env/bin/python", "-c",
+             f"import frappe; frappe.init('{site}'); print(frappe.conf.db_name)"],
+            cwd=bench_path, text=True
+        ).strip()
+        if result:
+            return result
+    except Exception:
+        pass
+    raise RuntimeError(
+        f"Cannot determine database name for site '{site}'.\n"
+        f"Pass --db <name> or ensure {site_config} exists."
+    )
+
+
+def get_db_password(bench_path="/home/frappe/edupro-sms", site="edupro.local"):
+    """Read db_password from site_config if set, else fall back to argument."""
+    import json
+    site_config = os.path.join(bench_path, "sites", site, "site_config.json")
+    if os.path.exists(site_config):
+        with open(site_config) as f:
+            cfg = json.load(f)
+        pw = cfg.get("db_password")
+        if pw:
+            return pw
+    return None
+
+
+# ── CLI argument parsing ─────────────────────────────────────────
+import argparse
+parser = argparse.ArgumentParser(description="Seed assessment data for Edupro SMS")
+parser.add_argument("--site",     default="edupro.local",          help="Frappe site name")
+parser.add_argument("--bench",    default="/home/frappe/edupro-sms", help="Bench path")
+parser.add_argument("--db-user",  default="root",                   help="MariaDB user")
+parser.add_argument("--db-pass",  default=None,                     help="MariaDB password (reads site_config if omitted)")
+parser.add_argument("--db-host",  default="127.0.0.1",              help="MariaDB host")
+parser.add_argument("--db-port",  default=3306, type=int,           help="MariaDB port")
+parser.add_argument("--db",       default=None,                     help="Database name (reads site_config if omitted)")
+args = parser.parse_args()
+
+DB       = args.db       or get_db_name(args.site, args.bench)
+DB_PASS  = args.db_pass  or get_db_password(args.bench, args.site) or "edupro2025"
+
+print(f"Connecting to database: {DB} @ {args.db_host}:{args.db_port}")
+
+conn = mysql.connector.connect(
+    host=args.db_host, port=args.db_port,
+    user=args.db_user, password=DB_PASS,
+    database=DB
+)
 cur = conn.cursor()
 
 cur.execute("SELECT name, program FROM `tabStudent Group` WHERE academic_year='2026' ORDER BY name")
@@ -38,70 +102,60 @@ ar_count = 0
 for sg_name, program in groups:
     is_g7 = program == "Grade 7"
     subjects = SUBJECTS_G7 if is_g7 else SUBJECTS_ALL
-    grading_scale = "ZIMSEC Grade 7" if is_g7 else "ZIMSEC Primary (Grades 1-6)"
 
-    cur.execute("SELECT student FROM `tabStudent Group Student` WHERE parent=%s", (sg_name,))
+    ap_name  = f"AP-{sg_name}"
+    ap_exists = cur.execute("SELECT 1 FROM `tabAssessment Plan` WHERE name=%s", (ap_name,)) or cur.fetchone()
+    if ap_exists:
+        continue
+
+    # Insert Assessment Plan
+    cur.execute("""
+        INSERT IGNORE INTO `tabAssessment Plan`
+        (name, creation, modified, modified_by, owner, docstatus,
+         student_group, academic_year, academic_term, assessment_group, schedule_date)
+        VALUES (%s,%s,%s,'Administrator','Administrator',1,
+                %s,'2026','2026 (Term 1)','Term Exams','2026-04-10')
+    """, (ap_name, NOW, NOW, sg_name))
+    ap_count += 1
+
+    # Insert criteria rows
+    for idx, subj in enumerate(subjects, 1):
+        cname = f"{ap_name}-C-{idx}"
+        cur.execute("""
+            INSERT IGNORE INTO `tabAssessment Plan Criteria`
+            (name, creation, modified, modified_by, owner, docstatus, idx,
+             assessment_criteria, maximum_score,
+             parent, parentfield, parenttype)
+            VALUES (%s,%s,%s,'Administrator','Administrator',1,%s,
+                    %s,100,%s,'assessment_criteria','Assessment Plan')
+        """, (cname, NOW, NOW, idx, subj, ap_name))
+
+    # Insert Assessment Results per student
+    cur.execute(
+        "SELECT student FROM `tabStudent Group Student` WHERE parent=%s ORDER BY idx",
+        (sg_name,))
     students = [r[0] for r in cur.fetchall()]
 
-    for subj in subjects:
-        ap_name = subj + " " + sg_name + " T1"
-
-        cur.execute("SELECT name FROM `tabAssessment Plan` WHERE name=%s", (ap_name,))
-        if not cur.fetchone():
-            cur.execute(
-                "INSERT INTO `tabAssessment Plan` "
-                "(name,creation,modified,modified_by,owner,docstatus,idx,"
-                " assessment_name,course,student_group,academic_year,academic_term,"
-                " grading_scale,maximum_assessment_score,assessment_group,schedule_date) "
-                "VALUES (%s,%s,%s,'Administrator','Administrator',0,0,"
-                "        %s,%s,%s,'2026','2026 (Term 1)',%s,100,'Term Exams','2026-04-05')",
-                (ap_name, NOW, NOW, ap_name, subj, sg_name, grading_scale)
-            )
-            crit_name = uuid.uuid4().hex[:20]
-            cur.execute(
-                "INSERT INTO `tabAssessment Plan Criteria` "
-                "(name,creation,modified,modified_by,owner,docstatus,idx,"
-                " parent,parenttype,parentfield,assessment_criteria,maximum_score) "
-                "VALUES (%s,%s,%s,'Administrator','Administrator',0,1,"
-                "        %s,'Assessment Plan','assessment_criteria','Exam',100)",
-                (crit_name, NOW, NOW, ap_name)
-            )
-            conn.commit()
-            ap_count += 1
-
-        for sid in students:
-            cur.execute("SELECT name FROM `tabAssessment Result` WHERE student=%s AND assessment_plan=%s", (sid, ap_name))
-            if cur.fetchone():
-                continue
-            score = random.randint(35, 98)
+    for stu in students:
+        for subj in subjects:
+            score = random.randint(30, 95)
             grade = get_grade(score, is_g7)
-            ar_name = "EDU-RES-2026-%05d" % (ar_count + 1)
-            cur.execute(
-                "INSERT INTO `tabAssessment Result` "
-                "(name,creation,modified,modified_by,owner,docstatus,idx,"
-                " student,assessment_plan,student_group,course,"
-                " academic_year,academic_term,total_score,grade) "
-                "VALUES (%s,%s,%s,'Administrator','Administrator',0,0,"
-                "        %s,%s,%s,%s,'2026','2026 (Term 1)',%s,%s)",
-                (ar_name, NOW, NOW, sid, ap_name, sg_name, subj, score, grade)
-            )
-            detail_name = uuid.uuid4().hex[:20]
-            cur.execute(
-                "INSERT INTO `tabAssessment Result Detail` "
-                "(name,creation,modified,modified_by,owner,docstatus,idx,"
-                " parent,parenttype,parentfield,"
-                " assessment_criteria,maximum_score,score,grade) "
-                "VALUES (%s,%s,%s,'Administrator','Administrator',0,1,"
-                "        %s,'Assessment Result','details','Exam',100,%s,%s)",
-                (detail_name, NOW, NOW, ar_name, score, grade)
-            )
-            conn.commit()
+            ar_name = f"AR-{sg_name}-{stu}-{subj[:8]}"
+            cur.execute("""
+                INSERT IGNORE INTO `tabAssessment Result`
+                (name, creation, modified, modified_by, owner, docstatus,
+                 student, student_group, academic_year, academic_term,
+                 assessment_plan, course, total_score, grade)
+                VALUES (%s,%s,%s,'Administrator','Administrator',1,
+                        %s,%s,'2026','2026 (Term 1)',%s,%s,%s,%s)
+            """, (ar_name, NOW, NOW,
+                  stu, sg_name, ap_name, subj, score, grade))
             ar_count += 1
 
+conn.commit()
+print(f"Seeded {ap_count} Assessment Plans, {ar_count} Assessment Results.")
 cur.execute("SELECT COUNT(*) FROM `tabAssessment Plan`")
-print("Assessment Plans   :", cur.fetchone()[0])
+print("Total Assessment Plans in DB:", cur.fetchone()[0])
 cur.execute("SELECT COUNT(*) FROM `tabAssessment Result`")
-print("Assessment Results :", cur.fetchone()[0])
-cur.execute("SELECT COUNT(*) FROM `tabStudent`")
-print("Total Students     :", cur.fetchone()[0])
+print("Total Assessment Results in DB:", cur.fetchone()[0])
 conn.close()
