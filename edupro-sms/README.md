@@ -17,6 +17,31 @@ Edupro SMS is a complete school management platform built for Zimbabwe primary s
 
 ---
 
+## Demo Login Credentials
+
+> **URL:** `http://edupro.local:8000/login`
+
+### Staff Accounts
+
+| Role | Full Name | Email | Password | Access |
+|------|-----------|-------|----------|--------|
+| **School Administrator** | Tadiwanashe Sibanda | `admin@sunshine.ac.zw` | `Admin@2026` | Full system access — students, reports, fees, settings |
+| **Head Teacher** | Chipo Makoni | `headteacher@sunshine.ac.zw` | `Head@2026` | Academic management, report cards, class oversight |
+| **Bursar** | Takudzwa Moyo | `bursar@sunshine.ac.zw` | `Bursar@2026` | Fees management, payment receipting, financial reports |
+| **Class Teacher (ECD A)** | Diana Chaneta | `diana1@sunshine.ac.zw` | `Teacher@2026` | Enter marks for ECD A class, view report cards |
+| **Class Teacher (Grade 4A)** | Chiedza Mavhundutse | `chiedza11@sunshine.ac.zw` | `Teacher@2026` | Enter marks for Grade 4A class, view report cards |
+| **Class Teacher (Grade 7A)** | Natasha Gondo | `natasha27@sunshine.ac.zw` | `Teacher@2026` | Enter marks for Grade 7A class, view report cards |
+
+### Parent Account
+
+| Role | Name | Email | Password | Access |
+|------|------|-------|----------|--------|
+| **Parent / Guardian** | Mr & Mrs Muzorewa | `parent@sunshine.ac.zw` | `Parent@2026` | View report card and fees statement for Tatenda Muzorewa (Grade 7A) |
+
+> All other 27 class teachers share the password `Teacher@2026` and have email addresses in the format `firstname{N}@sunshine.ac.zw` (e.g. `rumbidzai2@sunshine.ac.zw`).
+
+---
+
 ## Features
 
 - **Students & Classes** — ECD A/B through Grade 7, 3 streams per grade (A/B/C)
