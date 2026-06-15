@@ -14,6 +14,34 @@ const { Server } = require('socket.io');
 const mediasoup  = require('mediasoup');
 const QRCode     = require('qrcode');
 
+// ── Auto-build client bundles if missing ─────────────────────────────────────
+async function buildClientBundles() {
+  const boardOut  = path.join(__dirname, 'public', 'board-client.js');
+  const tabletOut = path.join(__dirname, 'public', 'tablet-client.js');
+  if (fs.existsSync(boardOut) && fs.existsSync(tabletOut)) return;
+
+  console.log('⚙   Building client bundles (first run)…');
+  try {
+    const esbuild = require('esbuild');
+    await esbuild.build({
+      entryPoints: [
+        path.join(__dirname, 'src', 'board-client.js'),
+        path.join(__dirname, 'src', 'tablet-client.js'),
+      ],
+      bundle:   true,
+      outdir:   path.join(__dirname, 'public'),
+      platform: 'browser',
+      minify:   true,
+      define:   { 'process.env.NODE_ENV': '"production"' },
+    });
+    console.log('✅  Client bundles built');
+  } catch (e) {
+    console.error('❌  Bundle build failed:', e.message);
+    console.error('    Run: npm run build');
+    process.exit(1);
+  }
+}
+
 // ── Config ────────────────────────────────────────────────────────────────────
 const SERVER_IP   = '192.168.100.176';
 const SERVER_PORT = 3000;
@@ -284,6 +312,7 @@ function broadcastStatus() {
 
 // ── Boot ─────────────────────────────────────────────────────────────────────
 (async () => {
+  await buildClientBundles();
   await startMediasoup();
   httpsServer.listen(SERVER_PORT, '0.0.0.0', () => {
     console.log('');

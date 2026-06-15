@@ -3,98 +3,336 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EduPro Classroom</title>
+<title>EduPro Classroom — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#f1f5f9;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
-.logo{font-size:48px;margin-bottom:8px;text-align:center}
-h1{font-size:1.8rem;font-weight:800;text-align:center;margin-bottom:6px}
-.sub{font-size:.95rem;color:#94a3b8;text-align:center;margin-bottom:40px}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:680px;width:100%}
-.card{background:#1e293b;border-radius:16px;padding:32px 24px;text-align:center;text-decoration:none;color:inherit;border:2px solid transparent;transition:all .2s}
-.card:hover{border-color:#FF0527;transform:translateY(-2px)}
-.card-icon{font-size:56px;margin-bottom:16px;display:block}
-.card-title{font-size:1.2rem;font-weight:700;margin-bottom:8px}
-.card-desc{font-size:.85rem;color:#94a3b8;line-height:1.5}
-.board-card{border-color:#FF052733}
-.tablet-card{border-color:#10b98133}
-.status-bar{margin-top:32px;background:#1e293b;border-radius:12px;padding:14px 24px;display:flex;align-items:center;gap:16px;font-size:.85rem;max-width:680px;width:100%}
-.dot{width:10px;height:10px;border-radius:50%;background:#374151;flex-shrink:0}
-.dot.live{background:#22c55e;box-shadow:0 0 8px #22c55e80;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-.status-text{color:#94a3b8}
-.status-text span{font-weight:700;color:#f1f5f9}
-.qr-section{margin-top:24px;text-align:center;max-width:680px;width:100%}
-.qr-section h3{font-size:.9rem;font-weight:600;color:#94a3b8;margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em}
-.qr-wrap{background:#fff;border-radius:12px;padding:16px;display:inline-block}
-.qr-url{margin-top:10px;font-size:.8rem;color:#64748b;font-family:monospace}
-@media(max-width:500px){.cards{grid-template-columns:1fr}}
+:root{
+  --red:#FF0527;--red-dark:#c8021e;--red-light:rgba(255,5,39,.1);
+  --navy:#0f172a;--navy2:#1e293b;--navy3:#334155;
+  --slate:#64748b;--muted:#94a3b8;--light:#f1f5f9;
+  --white:#fff;--green:#22c55e;
+}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--navy);color:var(--light);
+  min-height:100vh;display:flex;flex-direction:column;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── TOPBAR ── */
+.topbar{
+  height:60px;background:var(--navy2);
+  border-bottom:1px solid var(--navy3);
+  display:flex;align-items:center;padding:0 28px;
+  box-shadow:0 1px 12px rgba(0,0,0,.3);
+  flex-shrink:0;
+}
+.topbar-logo img{height:32px;width:auto;display:block}
+
+/* ── HERO ── */
+.hero{
+  padding:60px 28px 48px;
+  background:linear-gradient(135deg, var(--navy) 0%, #1a0a10 50%, #200a0a 100%);
+  border-bottom:1px solid var(--navy3);
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-80px;right:-80px;
+  width:320px;height:320px;border-radius:50%;
+  background:radial-gradient(circle, rgba(255,5,39,.12) 0%, transparent 70%);
+  pointer-events:none;
+}
+.hero-inner{max-width:900px;margin:0 auto}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,5,39,.12);border:1px solid rgba(255,5,39,.25);
+  border-radius:20px;padding:4px 14px;
+  font-size:.75rem;font-weight:700;letter-spacing:.06em;
+  color:rgba(255,120,120,.9);text-transform:uppercase;margin-bottom:16px;
+}
+.hero-eyebrow svg{width:12px;height:12px}
+.hero h1{
+  font-size:clamp(1.8rem, 4vw, 2.8rem);
+  font-weight:800;letter-spacing:-.03em;line-height:1.1;
+  margin-bottom:10px;
+}
+.hero h1 span{color:var(--red)}
+.hero-sub{font-size:1rem;color:var(--muted);max-width:520px;line-height:1.65;margin-bottom:28px}
+.hero-stats{
+  display:flex;gap:28px;flex-wrap:wrap;
+  padding-top:24px;border-top:1px solid rgba(255,255,255,.07);
+}
+.hero-stat strong{display:block;font-size:1.5rem;font-weight:800;color:var(--white);line-height:1;margin-bottom:3px}
+.hero-stat span{font-size:.8rem;color:var(--muted)}
+
+/* ── MAIN ── */
+.main{flex:1;padding:36px 28px;max-width:960px;margin:0 auto;width:100%}
+
+/* ── SECTION TITLE ── */
+.section-title{
+  font-size:.72rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--slate);margin-bottom:16px;
+  display:flex;align-items:center;gap:8px;
+}
+.section-title::after{content:'';flex:1;height:1px;background:var(--navy3)}
+
+/* ── ROLE CARDS ── */
+.role-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:36px}
+.role-card{
+  background:var(--navy2);border:1px solid var(--navy3);border-radius:16px;
+  padding:28px;text-decoration:none;color:inherit;
+  transition:all .18s;display:flex;flex-direction:column;gap:16px;
+  position:relative;overflow:hidden;
+}
+.role-card:hover{border-color:var(--red);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.role-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--card-accent,var(--navy3));transition:background .18s;
+}
+.role-card:hover::before{background:var(--red)}
+.board-card{--card-accent:rgba(255,5,39,.5)}
+.tablet-card{--card-accent:rgba(34,197,94,.4)}
+
+.role-icon{
+  width:52px;height:52px;border-radius:14px;
+  background:var(--icon-bg, rgba(255,5,39,.12));
+  border:1px solid var(--icon-border, rgba(255,5,39,.2));
+  display:flex;align-items:center;justify-content:center;
+  color:var(--icon-color, var(--red));
+}
+.role-icon svg{width:26px;height:26px}
+.board-card .role-icon{--icon-bg:rgba(255,5,39,.12);--icon-border:rgba(255,5,39,.25);--icon-color:var(--red)}
+.tablet-card .role-icon{--icon-bg:rgba(34,197,94,.1);--icon-border:rgba(34,197,94,.2);--icon-color:var(--green)}
+
+.role-card-title{font-size:1.1rem;font-weight:700;margin-bottom:4px}
+.role-card-desc{font-size:.85rem;color:var(--muted);line-height:1.55}
+.role-card-footer{
+  display:flex;align-items:center;gap:6px;
+  font-size:.82rem;font-weight:600;margin-top:4px;
+}
+.board-card .role-card-footer{color:var(--red)}
+.tablet-card .role-card-footer{color:var(--green)}
+.role-card-footer svg{width:14px;height:14px;transition:transform .15s}
+.role-card:hover .role-card-footer svg{transform:translateX(3px)}
+
+/* ── STATUS PANEL ── */
+.status-panel{
+  background:var(--navy2);border:1px solid var(--navy3);border-radius:14px;
+  padding:20px 24px;margin-bottom:36px;
+  display:flex;align-items:center;gap:16px;
+}
+.status-indicator{
+  width:12px;height:12px;border-radius:50%;
+  background:var(--navy3);flex-shrink:0;transition:all .3s;
+}
+.status-indicator.live{
+  background:var(--green);
+  box-shadow:0 0 12px rgba(34,197,94,.5);
+  animation:glow 2s ease-in-out infinite;
+}
+@keyframes glow{0%,100%{box-shadow:0 0 8px rgba(34,197,94,.4)}50%{box-shadow:0 0 20px rgba(34,197,94,.7)}}
+.status-info{flex:1}
+.status-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--slate);margin-bottom:2px}
+#status-text{font-size:.9rem;color:var(--muted)}
+#status-text strong{color:var(--light);font-weight:600}
+.status-viewers{
+  background:var(--navy3);border-radius:8px;padding:8px 16px;
+  text-align:center;flex-shrink:0;
+}
+.status-viewers .num{font-size:1.4rem;font-weight:800;color:var(--light);display:block}
+.status-viewers .lbl{font-size:.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+
+/* ── QR SECTION ── */
+.qr-section{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap}
+.qr-box{
+  background:var(--navy2);border:1px solid var(--navy3);border-radius:14px;
+  padding:20px;display:flex;flex-direction:column;align-items:center;gap:12px;
+  flex-shrink:0;
+}
+.qr-wrap{background:#fff;border-radius:10px;padding:12px;display:inline-block}
+.qr-box img{display:block}
+.qr-url{
+  font-size:.78rem;font-family:'Courier New',monospace;
+  color:var(--slate);background:var(--navy3);
+  border-radius:6px;padding:6px 12px;letter-spacing:.02em;
+}
+.qr-instructions{
+  flex:1;min-width:200px;display:flex;flex-direction:column;gap:12px;
+}
+.qr-step{
+  display:flex;gap:12px;align-items:flex-start;
+  background:var(--navy2);border:1px solid var(--navy3);border-radius:12px;
+  padding:14px 16px;
+}
+.qr-step-num{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--red);color:#fff;font-size:.8rem;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.qr-step-text strong{display:block;font-size:.88rem;font-weight:600;color:var(--light);margin-bottom:2px}
+.qr-step-text span{font-size:.8rem;color:var(--muted)}
+
+@media(max-width:580px){
+  .role-cards{grid-template-columns:1fr}
+  .status-panel{flex-wrap:wrap}
+  .hero{padding:40px 20px 32px}
+  .main{padding:24px 20px}
+}
 </style>
 </head>
 <body>
-<div class="logo">🎓</div>
-<h1>EduPro Classroom</h1>
-<p class="sub">Screen sharing · 1 board → 40 tablets · Offline LAN</p>
 
-<div class="cards">
-  <a class="card board-card" href="/board">
-    <span class="card-icon">📡</span>
-    <div class="card-title">Interactive Board</div>
-    <div class="card-desc">Open on the classroom board or teacher's computer to broadcast the screen to all tablets.</div>
-  </a>
-  <a class="card tablet-card" href="/tablet">
-    <span class="card-icon">📱</span>
-    <div class="card-title">Student Tablet</div>
-    <div class="card-desc">Open on each student tablet to view the board's screen in real time. Scans the QR code below.</div>
-  </a>
+<!-- TOP BAR -->
+<div class="topbar">
+  <img src="/img/logo.svg" alt="Edupro SMS" style="height:32px;width:auto">
 </div>
 
-<div class="status-bar">
-  <div class="dot" id="status-dot"></div>
-  <div class="status-text" id="status-text">Connecting to server…</div>
-</div>
-
-<div class="qr-section">
-  <h3>Scan to connect tablet</h3>
-  <div class="qr-wrap">
-    <img src="/qr" width="200" height="200" alt="QR Code for tablet URL">
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+      EduPro Classroom
+    </div>
+    <h1>Screen Sharing<br><span>Offline LAN</span></h1>
+    <p class="hero-sub">Broadcast your screen from the board to up to 40 student tablets — no internet required. Works entirely on your local school network.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><strong>40</strong><span>Max tablets</span></div>
+      <div class="hero-stat"><strong>LAN</strong><span>Offline only</span></div>
+      <div class="hero-stat"><strong>&lt;1s</strong><span>Latency</span></div>
+      <div class="hero-stat"><strong>HD</strong><span>1080p video</span></div>
+    </div>
   </div>
-  <div class="qr-url">https://192.168.100.176:3000/tablet</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- ROLE CARDS -->
+  <div class="section-title">Choose your role</div>
+  <div class="role-cards">
+    <a class="role-card board-card" href="/board">
+      <div class="role-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="3" width="20" height="14" rx="2"/>
+          <line x1="8" y1="21" x2="16" y2="21"/>
+          <line x1="12" y1="17" x2="12" y2="21"/>
+        </svg>
+      </div>
+      <div>
+        <div class="role-card-title">Interactive Board</div>
+        <div class="role-card-desc">Open on the classroom board or teacher's computer. Broadcast your screen to all student tablets.</div>
+      </div>
+      <div class="role-card-footer">
+        Open Board
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    <a class="role-card tablet-card" href="/tablet">
+      <div class="role-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="5" y="2" width="14" height="20" rx="2"/>
+          <line x1="9" y1="6" x2="15" y2="6"/>
+          <circle cx="12" cy="17" r="1" fill="currentColor"/>
+        </svg>
+      </div>
+      <div>
+        <div class="role-card-title">Student Tablet</div>
+        <div class="role-card-desc">Open on each student tablet to view the board's screen in real time. Scan the QR code below.</div>
+      </div>
+      <div class="role-card-footer" style="color:var(--green)">
+        Open Tablet View
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+  </div>
+
+  <!-- SERVER STATUS -->
+  <div class="section-title">Server status</div>
+  <div class="status-panel">
+    <div class="status-indicator" id="status-dot"></div>
+    <div class="status-info">
+      <div class="status-label">Live Status</div>
+      <div id="status-text">Connecting to server…</div>
+    </div>
+    <div class="status-viewers">
+      <span class="num" id="viewer-count">0</span>
+      <span class="lbl">Tablets</span>
+    </div>
+  </div>
+
+  <!-- QR CODE -->
+  <div class="section-title">Connect tablets</div>
+  <div class="qr-section">
+    <div class="qr-box">
+      <div class="qr-wrap">
+        <img src="/qr" width="180" height="180" alt="QR Code for tablet URL">
+      </div>
+      <div class="qr-url">https://192.168.100.176:3000/tablet</div>
+    </div>
+    <div class="qr-instructions">
+      <div class="qr-step">
+        <div class="qr-step-num">1</div>
+        <div class="qr-step-text">
+          <strong>Connect to school WiFi</strong>
+          <span>Ensure tablets are on the same LAN as this server (192.168.100.176)</span>
+        </div>
+      </div>
+      <div class="qr-step">
+        <div class="qr-step-num">2</div>
+        <div class="qr-step-text">
+          <strong>Scan QR code or open URL</strong>
+          <span>Open the camera app and scan, or type the URL in any browser</span>
+        </div>
+      </div>
+      <div class="qr-step">
+        <div class="qr-step-num">3</div>
+        <div class="qr-step-text">
+          <strong>Accept SSL certificate</strong>
+          <span>Tap "Advanced" → "Proceed" on the SSL warning (self-signed, one-time only)</span>
+        </div>
+      </div>
+      <div class="qr-step">
+        <div class="qr-step-num">4</div>
+        <div class="qr-step-text">
+          <strong>Start broadcasting</strong>
+          <span>On the board, click "Start Broadcasting" — all tablets receive instantly</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
 const socket = io();
-const dot  = document.getElementById('status-dot');
-const text = document.getElementById('status-text');
+const dot    = document.getElementById('status-dot');
+const text   = document.getElementById('status-text');
+const count  = document.getElementById('viewer-count');
 
 socket.on('connect', () => {
   dot.classList.remove('live');
-  text.innerHTML = 'Server connected — <span>waiting for broadcast</span>';
-  pollStatus();
+  text.innerHTML = 'Server ready — <strong>waiting for broadcast</strong>';
+  fetch('/api/status').then(r => r.json()).then(updateStatus).catch(() => {});
 });
 socket.on('disconnect', () => {
   dot.classList.remove('live');
-  text.textContent = 'Disconnected from server — retrying…';
+  text.innerHTML = '<strong>Disconnected</strong> — reconnecting…';
 });
 socket.on('server:status', updateStatus);
 
 function updateStatus(s) {
+  count.textContent = s.viewers;
   if (s.broadcasting) {
     dot.classList.add('live');
-    text.innerHTML = `🔴 <span>Live</span> — ${s.viewers} tablet${s.viewers!==1?'s':''} watching`;
+    text.innerHTML = '<strong>Live</strong> — board is broadcasting to ' + s.viewers + ' tablet' + (s.viewers !== 1 ? 's' : '');
   } else {
     dot.classList.remove('live');
-    text.innerHTML = `Server ready — <span>Board not broadcasting yet</span> · ${s.viewers} tablet${s.viewers!==1?'s':''} connected`;
+    text.innerHTML = 'Server ready — <strong>board not broadcasting</strong>';
   }
-}
-
-async function pollStatus() {
-  try {
-    const r = await fetch('/api/status');
-    const s = await r.json();
-    updateStatus(s);
-  } catch(e) {}
 }
 </script>
 </body>

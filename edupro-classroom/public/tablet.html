@@ -4,106 +4,203 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>EduPro — Student Tablet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{width:100%;height:100%;overflow:hidden;background:#000}
+:root{
+  --red:#FF0527;--navy:#0f172a;--navy2:#1e293b;--navy3:#334155;
+  --muted:#94a3b8;--light:#f1f5f9;--green:#22c55e;
+}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 
-/* VIDEO — fills entire screen */
+/* VIDEO — fills screen */
 #screen{
   width:100vw;height:100vh;
-  object-fit:contain;
-  background:#000;
-  display:none;
+  object-fit:contain;background:#000;display:none;
 }
 
-/* OVERLAY — shown when not receiving */
+/* OVERLAY */
 #overlay{
   position:fixed;inset:0;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  background:#0f172a;color:#f1f5f9;
-  gap:16px;padding:24px;text-align:center;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:var(--navy);color:var(--light);
+  gap:20px;padding:32px;text-align:center;
   transition:opacity .5s;
 }
 #overlay.hidden{opacity:0;pointer-events:none}
-.ov-logo{font-size:56px}
-.ov-title{font-size:1.2rem;font-weight:700}
-.ov-status{font-size:.9rem;color:#94a3b8;max-width:280px;line-height:1.5}
-.spinner{width:32px;height:32px;border:3px solid #334155;border-top-color:#FF0527;border-radius:50%;animation:spin 1s linear infinite}
-@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 
-/* Status bar (top) — shows when live */
+.ov-logo{
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:8px;
+}
+.ov-logo img{height:40px;width:auto}
+
+.ov-icon{
+  width:80px;height:80px;border-radius:20px;
+  background:var(--navy2);border:1px solid var(--navy3);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:4px;
+}
+.ov-icon svg{width:40px;height:40px;color:var(--red)}
+
+.ov-title{font-size:1.3rem;font-weight:800;letter-spacing:-.02em}
+.ov-sub{font-size:.88rem;font-weight:500;color:var(--red);letter-spacing:.05em;text-transform:uppercase;margin-top:-12px}
+
+/* Spinner ring */
+.spinner-ring{
+  width:44px;height:44px;
+  border:3px solid var(--navy3);
+  border-top-color:var(--red);
+  border-radius:50%;
+  animation:spin 0.9s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.ov-status{
+  font-size:.93rem;color:var(--muted);
+  max-width:300px;line-height:1.6;
+}
+
+/* Waiting card */
+.ov-card{
+  background:var(--navy2);border:1px solid var(--navy3);border-radius:14px;
+  padding:18px 24px;max-width:320px;width:100%;
+  display:flex;flex-direction:column;gap:10px;
+}
+.ov-card-row{display:flex;align-items:center;gap:10px;font-size:.85rem;color:var(--muted)}
+.ov-card-row svg{width:16px;height:16px;color:var(--red);flex-shrink:0}
+
+/* STATUS BAR (top, shown when live) */
 #statusbar{
   position:fixed;top:0;left:0;right:0;
-  height:40px;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);
+  height:44px;background:rgba(0,0,0,.65);backdrop-filter:blur(12px);
   display:none;align-items:center;justify-content:space-between;
-  padding:0 16px;font-size:.8rem;color:rgba(255,255,255,.7);
-  z-index:10;
+  padding:0 18px;font-size:.8rem;color:rgba(255,255,255,.75);
+  z-index:20;border-bottom:1px solid rgba(255,255,255,.08);
 }
 #statusbar.show{display:flex}
-.live-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;
-  box-shadow:0 0 6px #22c55e;animation:glow 2s ease-in-out infinite;margin-right:6px;display:inline-block}
-@keyframes glow{0%,100%{opacity:1}50%{opacity:.5}}
+.live-badge{
+  display:flex;align-items:center;gap:7px;
+  background:rgba(220,38,38,.25);
+  border:1px solid rgba(220,38,38,.4);
+  border-radius:20px;padding:3px 12px;
+  font-size:.73rem;font-weight:700;letter-spacing:.06em;color:#fca5a5;
+}
+.live-badge-dot{
+  width:7px;height:7px;border-radius:50%;background:#ef4444;
+  animation:pulseDot 1.5s ease-in-out infinite;
+}
+@keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.5}}
 
-/* Fullscreen prompt */
+#sb-brand{
+  display:flex;align-items:center;gap:6px;
+  font-weight:600;font-size:.78rem;color:rgba(255,255,255,.5);
+}
+#sb-brand img{height:18px;width:auto;opacity:.6}
+
+/* FULLSCREEN BTN */
 #fs-btn{
   position:fixed;bottom:20px;right:20px;
-  background:rgba(0,0,0,.5);backdrop-filter:blur(8px);
-  border:1px solid rgba(255,255,255,.2);border-radius:8px;
-  color:white;padding:8px 14px;font-size:.75rem;cursor:pointer;
-  z-index:20;display:none;
+  background:rgba(0,0,0,.55);backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.2);border-radius:10px;
+  color:white;padding:10px 16px;
+  font-size:.8rem;font-weight:600;font-family:inherit;
+  cursor:pointer;z-index:30;display:none;
+  display:none;align-items:center;gap:7px;transition:background .15s;
 }
+#fs-btn svg{width:16px;height:16px}
+#fs-btn:hover{background:rgba(0,0,0,.75)}
 </style>
 </head>
 <body>
 
 <video id="screen" autoplay playsinline></video>
 
-<div id="overlay">
-  <div class="ov-logo">📱</div>
-  <div class="ov-title">EduPro Student Tablet</div>
-  <div class="spinner" id="spinner"></div>
-  <div class="ov-status" id="ov-status">Connecting to classroom server…</div>
-</div>
-
+<!-- STATUS BAR (visible when live) -->
 <div id="statusbar">
-  <div><span class="live-dot"></span> LIVE</div>
-  <div id="sb-viewers">0 watching</div>
-  <div style="opacity:.5">EduPro Classroom</div>
+  <div class="live-badge">
+    <span class="live-badge-dot"></span> LIVE
+  </div>
+  <div id="sb-viewers" style="font-size:.8rem;color:rgba(255,255,255,.55)"></div>
+  <div id="sb-brand">
+    <img src="/img/logo.svg" alt="Edupro">
+    Classroom
+  </div>
 </div>
 
-<button id="fs-btn" onclick="goFullscreen()">⛶ Fullscreen</button>
+<!-- WAITING OVERLAY -->
+<div id="overlay">
+  <div class="ov-logo">
+    <img src="/img/logo.svg" alt="Edupro SMS">
+  </div>
+
+  <div class="ov-icon">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="5" y="2" width="14" height="20" rx="2"/>
+      <line x1="9" y1="6" x2="15" y2="6"/>
+      <circle cx="12" cy="17" r="1" fill="currentColor"/>
+    </svg>
+  </div>
+
+  <div>
+    <div class="ov-title">Student Tablet</div>
+    <div class="ov-sub">EduPro Classroom</div>
+  </div>
+
+  <div class="spinner-ring" id="spinner"></div>
+  <div class="ov-status" id="ov-status">Connecting to classroom server…</div>
+
+  <div class="ov-card" id="ov-card" style="display:none">
+    <div class="ov-card-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+      <span>Waiting for your teacher to start broadcasting…</span>
+    </div>
+    <div class="ov-card-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg>
+      <span>Stay on this screen</span>
+    </div>
+  </div>
+</div>
+
+<!-- FULLSCREEN BUTTON -->
+<button id="fs-btn" onclick="goFullscreen()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
+    <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+  </svg>
+  Fullscreen
+</button>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/tablet-client.js"></script>
 <script>
-const SERVER = location.origin;
-const socket = io(SERVER);
+const socket = io(location.origin);
 
 let device, consumerTransport, consumer;
-let connected = false;
 
-const videoEl    = document.getElementById('screen');
-const overlay    = document.getElementById('overlay');
-const ovStatus   = document.getElementById('ov-status');
-const spinner    = document.getElementById('spinner');
-const statusbar  = document.getElementById('statusbar');
-const sbViewers  = document.getElementById('sb-viewers');
-const fsBtn      = document.getElementById('fs-btn');
+const videoEl   = document.getElementById('screen');
+const overlay   = document.getElementById('overlay');
+const ovStatus  = document.getElementById('ov-status');
+const spinner   = document.getElementById('spinner');
+const ovCard    = document.getElementById('ov-card');
+const statusbar = document.getElementById('statusbar');
+const sbViewers = document.getElementById('sb-viewers');
+const fsBtn     = document.getElementById('fs-btn');
 
 function setStatus(msg, showSpinner = true) {
   ovStatus.textContent = msg;
   spinner.style.display = showSpinner ? 'block' : 'none';
+  ovCard.style.display  = showSpinner ? 'none'  : 'flex';
 }
 
-// ── Socket events ────────────────────────────────────────────────────────────
 socket.on('connect', async () => {
-  setStatus('Connected — waiting for board to start…');
+  setStatus('Connected — setting up…');
   await initTransport();
 });
 
 socket.on('disconnect', () => {
-  showOverlay('Lost connection to server — reconnecting…');
+  showOverlay('Connection lost — reconnecting…');
 });
 
 socket.on('board:newProducer', async () => {
@@ -112,53 +209,54 @@ socket.on('board:newProducer', async () => {
 });
 
 socket.on('board:stopped', () => {
-  showOverlay('Board has stopped broadcasting.', false);
-  if (videoEl.srcObject) { videoEl.srcObject.getTracks().forEach(t => t.stop()); videoEl.srcObject = null; }
+  showOverlay('Teacher has stopped broadcasting.', false);
+  if (videoEl.srcObject) {
+    videoEl.srcObject.getTracks().forEach(t => t.stop());
+    videoEl.srcObject = null;
+  }
   videoEl.style.display = 'none';
   statusbar.classList.remove('show');
   fsBtn.style.display = 'none';
 });
 
-socket.on('server:status', (s) => {
-  sbViewers.textContent = s.viewers + ' watching';
+socket.on('server:status', s => {
+  sbViewers.textContent = s.viewers + ' student' + (s.viewers !== 1 ? 's' : '') + ' viewing';
 });
 
-// ── Init transport ───────────────────────────────────────────────────────────
 async function initTransport() {
   try {
-    const params = await createConsumerTransport();
+    const params = await new Promise((res, rej) => {
+      socket.emit('tablet:createTransport', {}, d => d.ok ? res(d) : rej(new Error(d.error)));
+    });
 
     device = new mediasoupClient.Device();
     await device.load({ routerRtpCapabilities: params.rtpCapabilities });
 
     consumerTransport = device.createRecvTransport(params);
-
     consumerTransport.on('connect', ({ dtlsParameters }, cb, errCb) => {
-      socket.emit('tablet:connectTransport', { dtlsParameters }, (res) => {
-        res.ok ? cb() : errCb(new Error(res.error));
-      });
+      socket.emit('tablet:connectTransport', { dtlsParameters }, r => r.ok ? cb() : errCb(new Error(r.error)));
     });
 
-    // If board is already broadcasting, start consuming immediately
     if (params.producerExists) {
       await startConsuming();
     } else {
-      setStatus('Waiting for teacher to start the board broadcast…', false);
+      setStatus('Waiting for teacher to start broadcasting…', false);
     }
-
   } catch (err) {
-    console.error('initTransport error:', err);
-    setStatus('⚠ Setup error: ' + err.message);
+    console.error('initTransport:', err);
+    setStatus('Setup error: ' + err.message);
   }
 }
 
-// ── Start consuming ──────────────────────────────────────────────────────────
 async function startConsuming() {
   try {
     setStatus('Loading board stream…');
 
-    const params = await consume();
-    consumer = consumerTransport.consume(params);
+    const params = await new Promise((res, rej) => {
+      socket.emit('tablet:consume', { rtpCapabilities: device.rtpCapabilities }, d => d.ok ? res(d) : rej(new Error(d.error)));
+    });
+
+    consumer = await consumerTransport.consume(params);
 
     const stream = new MediaStream([consumer.track]);
     videoEl.srcObject = stream;
@@ -167,13 +265,12 @@ async function startConsuming() {
       videoEl.style.display = 'block';
       overlay.classList.add('hidden');
       statusbar.classList.add('show');
-      fsBtn.style.display = 'block';
+      fsBtn.style.display = 'flex';
       videoEl.play().catch(() => {});
     };
-
   } catch (err) {
-    console.error('startConsuming error:', err);
-    setStatus('Could not receive board stream: ' + err.message);
+    console.error('startConsuming:', err);
+    setStatus('Could not receive stream: ' + err.message);
   }
 }
 
@@ -182,34 +279,16 @@ function showOverlay(msg, spin = true) {
   setStatus(msg, spin);
 }
 
-// ── Signaling helpers ────────────────────────────────────────────────────────
-function createConsumerTransport() {
-  return new Promise((res, rej) => {
-    socket.emit('tablet:createTransport', {}, (data) => {
-      if (data.ok) res(data);
-      else rej(new Error(data.error));
-    });
-  });
-}
-
-function consume() {
-  return new Promise((res, rej) => {
-    socket.emit('tablet:consume', { rtpCapabilities: device.rtpCapabilities }, (data) => {
-      if (data.ok) res(data);
-      else rej(new Error(data.error));
-    });
-  });
-}
-
-// ── Fullscreen ───────────────────────────────────────────────────────────────
 function goFullscreen() {
   const el = document.documentElement;
-  if (el.requestFullscreen) el.requestFullscreen();
+  if (el.requestFullscreen)       el.requestFullscreen();
   else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
 }
 
-// Auto fullscreen on first tap (required by mobile browsers)
-document.addEventListener('click', () => { if (!document.fullscreenElement) goFullscreen(); }, { once: true });
+// Auto-fullscreen on first tap
+document.addEventListener('click', () => {
+  if (!document.fullscreenElement) goFullscreen();
+}, { once: true });
 </script>
 </body>
 </html>
