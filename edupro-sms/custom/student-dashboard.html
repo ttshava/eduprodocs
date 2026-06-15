@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Dashboard | Edupro SMS</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#1a1a2e}
+a{text-decoration:none;color:inherit}
+#sidebar{position:fixed;left:0;top:0;width:220px;height:100vh;background:#1a1a2e;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+#main{margin-left:220px;min-height:100vh;display:flex;flex-direction:column}
+#topbar{height:52px;background:#fff;border-bottom:1px solid #eee;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+#content{padding:24px;flex:1}
+.sb-brand{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.1)}
+.sb-brand-name{font-size:17px;font-weight:800;color:#fff}
+.sb-brand-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px}
+.sb-nav{padding:8px 0;flex:1}
+.sb-link{display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:13px;color:rgba(255,255,255,.72);border-left:3px solid transparent;transition:all .15s}
+.sb-link:hover{background:rgba(255,255,255,.07);color:#fff}
+.sb-link.active{background:rgba(192,57,43,.25);border-left-color:#c0392b;color:#fff;font-weight:600}
+.sb-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0}
+.sb-footer{padding:14px 16px;border-top:1px solid rgba(255,255,255,.1)}
+.sb-user{font-size:12px;color:rgba(255,255,255,.5)}
+.sb-logout{font-size:12px;color:rgba(192,57,43,.8);margin-top:4px;cursor:pointer}
+.tb-left{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:#555}
+.tb-right{display:flex;align-items:center;gap:10px}
+.term-pill{padding:5px 12px;background:#f0f0f0;border-radius:20px;font-size:12px;font-weight:600;color:#555}
+.avatar{width:34px;height:34px;border-radius:50%;background:#2563eb;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.card{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:20px}
+.card-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#888;margin-bottom:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.grid-1{margin-bottom:20px}
+.kpi{display:flex;align-items:center;gap:14px}
+.kpi-icon{width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.kpi-val{font-size:20px;font-weight:800;line-height:1.2}
+.kpi-lbl{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-top:4px}
+.kpi-tile{border-left:4px solid}
+/* Hero banner */
+.hero{border-radius:12px;padding:24px 28px;margin-bottom:20px;background:linear-gradient(135deg,#1a1a2e 0%,#c0392b 100%);color:#fff;display:flex;justify-content:space-between;align-items:center}
+.hero-name{font-size:22px;font-weight:800;margin-bottom:4px}
+.hero-class{font-size:14px;opacity:.85;margin-bottom:4px}
+.hero-motto{font-size:13px;opacity:.65;font-style:italic}
+.hero-right{text-align:right}
+.stu-id-badge{display:inline-block;background:rgba(255,255,255,.15);padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;margin-bottom:6px}
+.hero-date{font-size:12px;opacity:.65}
+/* Portal cards */
+.portal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+.portal-card{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:20px;text-align:center;cursor:pointer;transition:all .2s;border:2px solid transparent}
+.portal-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.12);border-color:#f5c6c2}
+.portal-card.disabled{opacity:.6;cursor:default}
+.portal-card.disabled:hover{transform:none;box-shadow:0 2px 8px rgba(0,0,0,.08);border-color:transparent}
+.pc-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 12px}
+.pc-title{font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:4px}
+.pc-desc{font-size:12px;color:#888}
+.pc-btn{display:inline-block;margin-top:12px;padding:7px 16px;border-radius:7px;font-size:12px;font-weight:700;background:#c0392b;color:#fff;border:none;cursor:pointer;transition:background .15s}
+.pc-btn:hover{background:#a93226}
+.pc-btn.grey{background:#e0e0e0;color:#888;cursor:default}
+.pc-badge{display:inline-block;margin-top:8px;padding:2px 8px;background:#f0f0f0;color:#888;border-radius:10px;font-size:10px;font-weight:600}
+/* Table */
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{background:#f8f9fa;padding:9px 12px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:#666;border-bottom:2px solid #eee}
+.tbl td{padding:9px 12px;border-bottom:1px solid #f5f5f5;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:#fef5f5}
+.tbl tfoot td{font-weight:700;background:#f8f9fa;border-top:2px solid #eee}
+.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.grade-A,.grade-1{background:#dcfce7;color:#15803d}
+.grade-B,.grade-2{background:#dbeafe;color:#1d4ed8}
+.grade-C,.grade-3{background:#ede9fe;color:#7c3aed}
+.grade-D,.grade-4{background:#fef9c3;color:#854d0e}
+.grade-E,.grade-5{background:#ffedd5;color:#c2410c}
+.grade-U,.grade-6,.grade-7{background:#fee2e2;color:#991b1b}
+.badge-green{background:#dcfce7;color:#166534}
+.badge-red{background:#fee2e2;color:#991b1b}
+.badge-orange{background:#ffedd5;color:#c2410c}
+/* Notices */
+.notice-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid #f5f5f5}
+.notice-item:last-child{border-bottom:none}
+.notice-dot{width:10px;height:10px;border-radius:50%;background:#c0392b;margin-top:4px;flex-shrink:0}
+.notice-text{font-size:13px;color:#1a1a2e;flex:1}
+.notice-date{font-size:11px;color:#aaa;white-space:nowrap;flex-shrink:0}
+/* Fee status */
+.fee-status-ok{color:#16a34a;font-weight:700}
+.fee-status-due{color:#c0392b;font-weight:700}
+.hamburger{display:none;background:none;border:none;font-size:22px;cursor:pointer;margin-right:10px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99}
+@media(max-width:768px){
+  #sidebar{transform:translateX(-100%);transition:transform .25s}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  .hamburger{display:block}
+  .grid-4,.portal-grid{grid-template-columns:1fr 1fr}
+  .grid-2{grid-template-columns:1fr}
+  .hero{flex-direction:column;gap:14px;text-align:center}
+  .hero-right{text-align:center}
+  .overlay.show{display:block}
+}
+@media(max-width:480px){.grid-4,.portal-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="sidebar">
+  <div class="sb-brand"><div class="sb-brand-name">Edupro SMS</div><div class="sb-brand-sub">Student Portal</div></div>
+  <nav class="sb-nav" id="sb-nav"></nav>
+  <div class="sb-footer"><div class="sb-user" id="sb-user">Loading…</div><div class="sb-logout" onclick="location.href='/logout'">Sign out</div></div>
+</div>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<div id="main">
+  <div id="topbar">
+    <div class="tb-left">
+      <button class="hamburger" onclick="toggleSidebar()">☰</button>
+      <span>🎓 Student Dashboard</span>
+    </div>
+    <div class="tb-right">
+      <div class="term-pill" id="term-pill">Term 2 · 2026</div>
+      <div class="avatar" id="top-avatar">S</div>
+    </div>
+  </div>
+
+  <div id="content">
+    <!-- Hero -->
+    <div class="hero">
+      <div>
+        <div class="hero-name" id="hero-name">Hello, Student! 👋</div>
+        <div class="hero-class" id="hero-class">Loading class info…</div>
+        <div class="hero-motto">Keep up the great work this term!</div>
+      </div>
+      <div class="hero-right">
+        <div class="stu-id-badge" id="hero-id">Student ID</div>
+        <div class="hero-date" id="hero-date"></div>
+      </div>
+    </div>
+
+    <!-- KPI -->
+    <div class="grid-4">
+      <div class="card kpi-tile" style="border-left-color:#2563eb">
+        <div class="kpi"><div class="kpi-icon" style="background:#dbeafe">🏫</div>
+          <div><div class="kpi-val" id="kpi-class">—</div><div class="kpi-lbl">My Class</div></div></div>
+      </div>
+      <div class="card kpi-tile" style="border-left-color:#7c3aed">
+        <div class="kpi"><div class="kpi-icon" style="background:#ede9fe">📚</div>
+          <div><div class="kpi-val" id="kpi-subjects">—</div><div class="kpi-lbl">Subjects</div></div></div>
+      </div>
+      <div class="card kpi-tile" style="border-left-color:#16a34a">
+        <div class="kpi"><div class="kpi-icon" style="background:#dcfce7">📊</div>
+          <div><div class="kpi-val" id="kpi-avg">—</div><div class="kpi-lbl">Latest Average</div></div></div>
+      </div>
+      <div class="card kpi-tile" id="kpi-fee-tile" style="border-left-color:#16a34a">
+        <div class="kpi"><div class="kpi-icon" id="kpi-fee-icon" style="background:#dcfce7">💰</div>
+          <div><div class="kpi-val" id="kpi-fees">—</div><div class="kpi-lbl">Fee Balance</div></div></div>
+      </div>
+    </div>
+
+    <!-- Portal cards -->
+    <div class="portal-grid">
+      <div class="portal-card" onclick="location.href='/report-card'">
+        <div class="pc-icon" style="background:#fee2e2">📋</div>
+        <div class="pc-title">Report Card</div>
+        <div class="pc-desc">View grades and teacher remarks</div>
+        <button class="pc-btn">View Report Card</button>
+      </div>
+      <div class="portal-card" onclick="location.href='/student-marks'">
+        <div class="pc-icon" style="background:#ede9fe">📊</div>
+        <div class="pc-title">My Marks</div>
+        <div class="pc-desc">Scores by subject this term</div>
+        <button class="pc-btn">View Marks</button>
+      </div>
+      <div class="portal-card" onclick="location.href='/fees-statement'">
+        <div class="pc-icon" style="background:#dcfce7">💰</div>
+        <div class="pc-title">Fees Statement</div>
+        <div class="pc-desc">Billing and payment history</div>
+        <button class="pc-btn">View Statement</button>
+      </div>
+      <div class="portal-card disabled">
+        <div class="pc-icon" style="background:#f0f0f0">📆</div>
+        <div class="pc-title">Attendance</div>
+        <div class="pc-desc">Your attendance record</div>
+        <div class="pc-badge">Coming Soon</div>
+      </div>
+    </div>
+
+    <!-- Marks + Fees -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">My Marks This Term</div>
+        <table class="tbl">
+          <thead><tr><th>Subject</th><th>Score</th><th>Grade</th><th>Remarks</th></tr></thead>
+          <tbody id="marks-table"><tr><td colspan="4" style="text-align:center;color:#aaa;padding:20px">Loading marks…</td></tr></tbody>
+        </table>
+        <div style="margin-top:12px;text-align:right">
+          <a href="/report-card" style="font-size:12px;color:#c0392b;font-weight:600">Download Report Card →</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Fee Summary</div>
+        <table class="tbl">
+          <thead><tr><th>Term</th><th>Billed</th><th>Paid</th><th>Outstanding</th><th>Status</th></tr></thead>
+          <tbody id="fees-table"><tr><td colspan="5" style="text-align:center;color:#aaa;padding:20px">Loading fees…</td></tr></tbody>
+          <tfoot><tr><td><strong>Total</strong></td><td id="ft-billed">—</td><td id="ft-paid">—</td><td id="ft-out" style="color:#c0392b">—</td><td></td></tr></tfoot>
+        </table>
+        <div style="margin-top:12px;text-align:right">
+          <a href="/fees-statement" style="font-size:12px;color:#c0392b;font-weight:600">View full statement →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notices -->
+    <div class="card grid-1">
+      <div class="card-title">📢 School Notices</div>
+      <div id="notices-list">
+        <div class="notice-item"><div class="notice-dot"></div><div class="notice-text">Term 2 examinations begin 4 August 2026</div><div class="notice-date">Jun 2026</div></div>
+        <div class="notice-item"><div class="notice-dot" style="background:#2563eb"></div><div class="notice-text">Sports Day: 25 July 2026 — All students must participate</div><div class="notice-date">Jun 2026</div></div>
+        <div class="notice-item"><div class="notice-dot" style="background:#d97706"></div><div class="notice-text">School fees deadline for Term 2: 30 June 2026</div><div class="notice-date">Jun 2026</div></div>
+        <div class="notice-item"><div class="notice-dot" style="background:#7c3aed"></div><div class="notice-text">Term 2 parent-teacher meetings: 18 July 2026</div><div class="notice-date">Jun 2026</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const NAV=[
+  {id:'dashboard',icon:'🏠',label:'Dashboard',href:'/student-dashboard'},
+  {id:'reportcard',icon:'📋',label:'My Report Card',href:'/report-card'},
+  {id:'marks',icon:'📊',label:'My Marks',href:'/student-marks'},
+  {id:'fees',icon:'💰',label:'Fees Statement',href:'/fees-statement'},
+  {id:'attendance',icon:'📆',label:'My Attendance',href:'/student-attendance'},
+  {id:'notices',icon:'📢',label:'Notices Board',href:'/student-notices'},
+  {id:'profile',icon:'👤',label:'My Profile',href:'/student-profile'},
+];
+function renderSidebar(active){
+  document.getElementById('sb-nav').innerHTML=NAV.map(n=>
+    `<a href="${n.href}" class="sb-link${n.id===active?' active':''}"><span class="sb-icon">${n.icon}</span>${n.label}</a>`
+  ).join('');
+}
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
+let _csrf='';
+async function getCSRF(){if(_csrf)return _csrf;const r=await fetch('/api/method/education.api.parent_portal.get_csrf_token');_csrf=(await r.json()).message||'';return _csrf;}
+async function apiGet(m,p={}){const r=await fetch(`/api/method/${m}?${new URLSearchParams(p)}`,{headers:{'X-Frappe-CSRF-Token':await getCSRF()}});if(r.status===401||r.status===403){location.href='/login';return null;}const j=await r.json();if(j.exc_type)throw new Error(j.exception||j.exc_type);return j.message;}
+function fmt(n){return'$'+parseFloat(n||0).toFixed(2);}
+const REMARKS={A:'Excellent',B:'Very Good',C:'Good',D:'Satisfactory',E:'Needs Improvement',U:'Unsatisfactory',1:'Distinction',2:'Merit',3:'Credit',4:'Pass',5:'Pass',6:'Needs Improvement',7:'Below Expectations'};
+
+async function initPage(){
+  document.getElementById('hero-date').textContent=new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+  let studentId=null, groupId=null;
+  try{
+    const u=await apiGet('frappe.auth.get_logged_user');
+    if(u){
+      const parts=(u||'').split('@')[0].split('.');
+      const name=parts.map(p=>p[0]?.toUpperCase()+p.slice(1)).join(' ');
+      document.getElementById('sb-user').textContent=name;
+      document.getElementById('top-avatar').textContent=name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    }
+  }catch(e){}
+
+  try{
+    // Try to get student data via parent portal
+    const students=await apiGet('education.api.parent_portal.get_my_students',{year:'2026'});
+    if(students&&students.length){
+      const s=students[0];
+      studentId=s.student_id||s.name;
+      groupId=s.group_id;
+      document.getElementById('hero-name').textContent=`Hello, ${s.student_name||s.name}! 👋`;
+      document.getElementById('hero-class').textContent=`${s.class_name||''} · Academic Year 2026`;
+      document.getElementById('hero-id').textContent=studentId;
+      document.getElementById('kpi-class').textContent=s.class_name||'—';
+      document.getElementById('sb-user').textContent=s.student_name||s.name;
+    }
+  }catch(e){}
+
+  if(groupId){
+    try{
+      const sheet=await apiGet('education.api.marks_entry.get_marks_sheet',{group:groupId,year:'2026',term:'2026 (Term 2)'});
+      if(sheet){
+        document.getElementById('kpi-subjects').textContent=sheet.subjects.length;
+        const student=sheet.students.find(s=>s.id===studentId)||sheet.students[0];
+        if(student&&sheet.subjects.length){
+          let total=0,count=0;
+          const rows=sheet.subjects.map(sub=>{
+            const sc=student.scores[sub]||{};
+            const score=sc.score!==undefined?sc.score:'—';
+            const grade=sc.grade||'—';
+            if(score!=='—'){total+=score;count++;}
+            return`<tr>
+              <td>${sub}</td>
+              <td><strong>${score}</strong></td>
+              <td><span class="badge grade-${grade}">${grade}</span></td>
+              <td style="color:#888">${REMARKS[grade]||'—'}</td>
+            </tr>`;
+          }).join('');
+          document.getElementById('marks-table').innerHTML=rows;
+          if(count>0){
+            const avg=(total/count).toFixed(1);
+            document.getElementById('kpi-avg').textContent=avg+'%';
+          }
+        } else {
+          document.getElementById('marks-table').innerHTML='<tr><td colspan="4" style="text-align:center;color:#aaa;padding:20px">Marks not yet available for this term.</td></tr>';
+        }
+      }
+    }catch(e){
+      document.getElementById('marks-table').innerHTML='<tr><td colspan="4" style="text-align:center;color:#aaa;padding:20px">Could not load marks.</td></tr>';
+    }
+  } else {
+    document.getElementById('marks-table').innerHTML='<tr><td colspan="4" style="text-align:center;color:#aaa;padding:20px">Log in to view your marks.</td></tr>';
+  }
+
+  if(studentId){
+    try{
+      const info=await apiGet('education.api.parent_portal.get_student_info',{student_id:studentId,year:'2026'});
+      if(info&&info.fees){
+        const fees=info.fees;
+        let totB=0,totP=0,totO=0;
+        document.getElementById('fees-table').innerHTML=fees.terms.map(t=>{
+          totB+=t.grand_total||0;totP+=t.paid||0;totO+=t.outstanding||0;
+          const badge=t.status==='Paid'?'badge-green':t.status==='Partial'?'badge-orange':'badge-red';
+          return`<tr><td>${t.term}</td><td>${fmt(t.grand_total)}</td><td>${fmt(t.paid)}</td>
+            <td>${fmt(t.outstanding)}</td><td><span class="badge ${badge}">${t.status}</span></td></tr>`;
+        }).join('');
+        document.getElementById('ft-billed').textContent=fmt(totB);
+        document.getElementById('ft-paid').textContent=fmt(totP);
+        document.getElementById('ft-out').textContent=fmt(totO);
+        document.getElementById('kpi-fees').textContent=fmt(totO);
+        if(totO>0){
+          document.getElementById('kpi-fee-tile').style.borderLeftColor='#c0392b';
+          document.getElementById('kpi-fee-icon').style.background='#fee2e2';
+          document.getElementById('kpi-fee-icon').textContent='⚠️';
+        }
+      }
+    }catch(e){}
+  }
+}
+
+renderSidebar('dashboard');
+initPage();
+</script>
+</body>
+</html>

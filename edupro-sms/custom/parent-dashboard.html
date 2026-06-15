@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parent Dashboard | Edupro SMS</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#1a1a2e}
+a{text-decoration:none;color:inherit}
+#sidebar{position:fixed;left:0;top:0;width:220px;height:100vh;background:#1a1a2e;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+#main{margin-left:220px;min-height:100vh;display:flex;flex-direction:column}
+#topbar{height:52px;background:#fff;border-bottom:1px solid #eee;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+#content{padding:24px;flex:1}
+.sb-brand{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.1)}
+.sb-brand-name{font-size:17px;font-weight:800;color:#fff}
+.sb-brand-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px}
+.sb-nav{padding:8px 0;flex:1}
+.sb-link{display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:13px;color:rgba(255,255,255,.72);border-left:3px solid transparent;transition:all .15s}
+.sb-link:hover{background:rgba(255,255,255,.07);color:#fff}
+.sb-link.active{background:rgba(192,57,43,.25);border-left-color:#c0392b;color:#fff;font-weight:600}
+.sb-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0}
+.sb-footer{padding:14px 16px;border-top:1px solid rgba(255,255,255,.1)}
+.sb-user{font-size:12px;color:rgba(255,255,255,.5)}
+.sb-logout{font-size:12px;color:rgba(192,57,43,.8);margin-top:4px;cursor:pointer}
+.tb-left{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:#555}
+.tb-right{display:flex;align-items:center;gap:10px}
+.tb-select{padding:6px 10px;border:1px solid #ddd;border-radius:7px;font-size:12px;outline:none}
+.tb-select:focus{border-color:#c0392b}
+.avatar{width:34px;height:34px;border-radius:50%;background:#0d9488;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.card{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:20px}
+.card-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#888;margin-bottom:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.grid-1{margin-bottom:20px}
+.kpi{display:flex;align-items:center;gap:14px}
+.kpi-icon{width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.kpi-val{font-size:20px;font-weight:800;line-height:1.2}
+.kpi-lbl{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-top:4px}
+.kpi-tile{border-left:4px solid}
+/* Demo banner */
+.demo-banner{background:#fef9c3;border:1px solid #fde047;border-radius:10px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:10px;font-size:13px;color:#854d0e}
+.demo-banner a{color:#c0392b;font-weight:700}
+/* Child profile banner */
+.child-banner{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;gap:20px}
+.child-avatar{width:72px;height:72px;border-radius:50%;background:#c0392b;color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;flex-shrink:0}
+.child-info{flex:1}
+.child-name{font-size:22px;font-weight:800;color:#1a1a2e}
+.child-class{font-size:14px;color:#777;margin-top:3px}
+.child-id{font-size:12px;color:#aaa;margin-top:3px}
+.child-fee-pill{padding:7px 16px;border-radius:20px;font-size:13px;font-weight:700}
+.fee-ok{background:#dcfce7;color:#166534}
+.fee-due{background:#fee2e2;color:#991b1b}
+/* Portal cards */
+.portal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+.portal-card{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:22px;text-align:center;cursor:pointer;transition:all .2s}
+.portal-card:hover:not(.disabled){transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.portal-card.disabled{opacity:.55;cursor:default}
+.pc-icon{width:60px;height:60px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 14px}
+.pc-title{font-size:15px;font-weight:700;margin-bottom:5px}
+.pc-desc{font-size:12px;color:#888;margin-bottom:12px}
+.pc-btn{display:inline-block;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;background:#c0392b;color:#fff;border:none;cursor:pointer;width:100%}
+.pc-btn:hover{background:#a93226}
+.pc-btn.grey{background:#e0e0e0;color:#999;cursor:default}
+.pc-soon{font-size:11px;color:#aaa;margin-top:6px;display:block}
+/* Table */
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{background:#f8f9fa;padding:9px 12px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:#666;border-bottom:2px solid #eee}
+.tbl td{padding:9px 12px;border-bottom:1px solid #f5f5f5;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:#fef5f5}
+.tbl tfoot td{font-weight:700;background:#f8f9fa;border-top:2px solid #eee}
+.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.badge-green{background:#dcfce7;color:#166534}
+.badge-orange{background:#ffedd5;color:#c2410c}
+.badge-red{background:#fee2e2;color:#991b1b}
+/* Timeline */
+.timeline{list-style:none;padding:0;position:relative}
+.timeline::before{content:'';position:absolute;left:12px;top:0;bottom:0;width:2px;background:#f0f0f0}
+.tl-item{display:flex;gap:14px;padding:0 0 14px 0;position:relative}
+.tl-item:last-child{padding-bottom:0}
+.tl-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;z-index:1;margin-top:1px}
+.tl-body{flex:1}
+.tl-text{font-size:13px;color:#1a1a2e}
+.tl-date{font-size:11px;color:#aaa;margin-top:3px}
+/* Term progress */
+.term-prog{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #f5f5f5}
+.term-prog:last-child{border-bottom:none}
+.tp-lbl{width:60px;font-size:13px;color:#555;flex-shrink:0}
+.tp-bar{flex:1;height:8px;background:#f0f0f0;border-radius:4px;overflow:hidden}
+.tp-fill{height:100%;background:#c0392b;border-radius:4px;transition:width .6s}
+.tp-pct{width:35px;font-size:12px;color:#888;text-align:right;flex-shrink:0}
+.hamburger{display:none;background:none;border:none;font-size:22px;cursor:pointer;margin-right:10px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99}
+@media(max-width:768px){
+  #sidebar{transform:translateX(-100%);transition:transform .25s}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  .hamburger{display:block}
+  .grid-4,.portal-grid{grid-template-columns:1fr 1fr}
+  .grid-2{grid-template-columns:1fr}
+  .child-banner{flex-direction:column;text-align:center}
+  .overlay.show{display:block}
+}
+@media(max-width:480px){.grid-4,.portal-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="sidebar">
+  <div class="sb-brand"><div class="sb-brand-name">Edupro SMS</div><div class="sb-brand-sub">Parent Portal</div></div>
+  <nav class="sb-nav" id="sb-nav"></nav>
+  <div class="sb-footer"><div class="sb-user" id="sb-user">Loading…</div><div class="sb-logout" onclick="location.href='/logout'">Sign out</div></div>
+</div>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<div id="main">
+  <div id="topbar">
+    <div class="tb-left">
+      <button class="hamburger" onclick="toggleSidebar()">☰</button>
+      <span>👨‍👩‍👧 Parent Dashboard</span>
+    </div>
+    <div class="tb-right">
+      <select class="tb-select" id="child-sel" onchange="switchChild(this.value)" style="display:none"></select>
+      <div class="avatar" id="top-avatar">P</div>
+      <a href="/logout" style="font-size:12px;color:#888;padding:6px 10px;border:1px solid #eee;border-radius:7px">Logout</a>
+    </div>
+  </div>
+
+  <div id="content">
+    <!-- Demo banner (shown for guest users) -->
+    <div class="demo-banner" id="demo-banner" style="display:none">
+      🔔 <strong>Demo Mode</strong> — You are viewing as a guest. <a href="/login">Log in</a> to see your child's actual data.
+    </div>
+
+    <!-- Child profile banner -->
+    <div class="child-banner">
+      <div class="child-avatar" id="child-avatar">?</div>
+      <div class="child-info">
+        <div class="child-name" id="child-name">Loading…</div>
+        <div class="child-class" id="child-class">Academic Year 2026</div>
+        <div class="child-id" id="child-id"></div>
+      </div>
+      <div class="child-fee-pill fee-ok" id="fee-pill">Loading…</div>
+    </div>
+
+    <!-- KPI -->
+    <div class="grid-4">
+      <div class="card kpi-tile" style="border-left-color:#2563eb">
+        <div class="kpi"><div class="kpi-icon" style="background:#dbeafe">🏫</div>
+          <div><div class="kpi-val" id="kpi-class">—</div><div class="kpi-lbl">Class</div></div></div>
+      </div>
+      <div class="card kpi-tile" style="border-left-color:#7c3aed">
+        <div class="kpi"><div class="kpi-icon" style="background:#ede9fe">📊</div>
+          <div><div class="kpi-val" id="kpi-avg">—</div><div class="kpi-lbl">Latest Average</div></div></div>
+      </div>
+      <div class="card kpi-tile" id="kpi-fee-tile" style="border-left-color:#16a34a">
+        <div class="kpi"><div class="kpi-icon" id="kpi-fee-icon" style="background:#dcfce7">💰</div>
+          <div><div class="kpi-val" id="kpi-fees">—</div><div class="kpi-lbl">Outstanding Fees</div></div></div>
+      </div>
+      <div class="card kpi-tile" style="border-left-color:#d97706">
+        <div class="kpi"><div class="kpi-icon" style="background:#ffedd5">📅</div>
+          <div><div class="kpi-val" id="kpi-term">Term 2</div><div class="kpi-lbl">Current Term</div>
+            <div style="margin-top:6px;width:100px">
+              <div style="height:5px;background:#f0f0f0;border-radius:3px"><div id="term-prog-bar" style="height:100%;background:#d97706;border-radius:3px;width:55%;transition:width .6s"></div></div>
+            </div>
+          </div></div>
+      </div>
+    </div>
+
+    <!-- Portal cards -->
+    <div class="portal-grid">
+      <div class="portal-card" onclick="location.href='/report-card'">
+        <div class="pc-icon" style="background:#fee2e2">📋</div>
+        <div class="pc-title">Report Card</div>
+        <div class="pc-desc">View grades &amp; teacher remarks</div>
+        <button class="pc-btn">View Report Card</button>
+      </div>
+      <div class="portal-card" onclick="location.href='/fees-statement'">
+        <div class="pc-icon" style="background:#dcfce7">💰</div>
+        <div class="pc-title">Fees Statement</div>
+        <div class="pc-desc">View billing &amp; payment history</div>
+        <button class="pc-btn">View Statement</button>
+      </div>
+      <div class="portal-card disabled">
+        <div class="pc-icon" style="background:#f0f0f0">📆</div>
+        <div class="pc-title">Attendance</div>
+        <div class="pc-desc">Child's attendance record</div>
+        <button class="pc-btn grey">View Attendance</button>
+        <span class="pc-soon">Coming Soon</span>
+      </div>
+      <div class="portal-card disabled">
+        <div class="pc-icon" style="background:#f0f0f0">📢</div>
+        <div class="pc-title">School Notices</div>
+        <div class="pc-desc">Announcements from school</div>
+        <button class="pc-btn grey">View Notices</button>
+        <span class="pc-soon">Coming Soon</span>
+      </div>
+    </div>
+
+    <!-- Fee summary + Activity -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Fee Account Summary</div>
+        <table class="tbl">
+          <thead><tr><th>Term</th><th>Billed</th><th>Paid</th><th>Outstanding</th><th>Status</th></tr></thead>
+          <tbody id="fees-table"><tr><td colspan="5" style="text-align:center;color:#aaa;padding:20px">Loading…</td></tr></tbody>
+          <tfoot><tr><td><strong>Total</strong></td><td id="ft-billed">—</td><td id="ft-paid">—</td><td id="ft-out" style="color:#c0392b">—</td><td></td></tr></tfoot>
+        </table>
+        <div style="margin-top:14px;display:flex;gap:10px">
+          <a href="/fees-statement" style="flex:1;text-align:center;padding:8px;background:#c0392b;color:#fff;border-radius:8px;font-size:13px;font-weight:700">Print Statement</a>
+          <a href="/payment-receipt" style="flex:1;text-align:center;padding:8px;background:#f8f9fa;color:#1a1a2e;border-radius:8px;font-size:13px;font-weight:700;border:1px solid #eee">Post Payment</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Recent Activity</div>
+        <ul class="timeline" id="activity-list">
+          <li class="tl-item"><div class="tl-dot" style="background:#dcfce7">💰</div><div class="tl-body"><div class="tl-text">Loading activity…</div></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const NAV=[
+  {id:'dashboard',icon:'🏠',label:'Dashboard',href:'/parent-dashboard'},
+  {id:'reportcard',icon:'📋',label:'Report Card',href:'/report-card'},
+  {id:'fees',icon:'💰',label:'Fees Statement',href:'/fees-statement'},
+  {id:'attendance',icon:'📆',label:'Attendance',href:'/parent-attendance'},
+  {id:'notices',icon:'📢',label:'School Notices',href:'/parent-notices'},
+  {id:'profile',icon:'👤',label:'My Account',href:'/parent-profile'},
+];
+function renderSidebar(active){
+  document.getElementById('sb-nav').innerHTML=NAV.map(n=>
+    `<a href="${n.href}" class="sb-link${n.id===active?' active':''}"><span class="sb-icon">${n.icon}</span>${n.label}</a>`
+  ).join('');
+}
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
+let _csrf='';
+async function getCSRF(){if(_csrf)return _csrf;const r=await fetch('/api/method/education.api.parent_portal.get_csrf_token');_csrf=(await r.json()).message||'';return _csrf;}
+async function apiGet(m,p={}){const r=await fetch(`/api/method/${m}?${new URLSearchParams(p)}`,{headers:{'X-Frappe-CSRF-Token':await getCSRF()}});if(r.status===401||r.status===403){location.href='/login';return null;}const j=await r.json();if(j.exc_type)throw new Error(j.exception||j.exc_type);return j.message;}
+function fmt(n){return'$'+parseFloat(n||0).toFixed(2);}
+
+async function loadStudentData(studentId){
+  try{
+    const info=await apiGet('education.api.parent_portal.get_student_info',{student_id:studentId,year:'2026'});
+    if(!info)return;
+    const s=info.student||{};
+    const g=info.group||{};
+    const fees=info.fees||{terms:[]};
+    const initials=(s.student_name||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    document.getElementById('child-avatar').textContent=initials;
+    document.getElementById('child-name').textContent=s.student_name||'—';
+    document.getElementById('child-class').textContent=`${g.student_group_name||'—'} · Academic Year 2026`;
+    document.getElementById('child-id').textContent=`Student ID: ${s.name||studentId}`;
+    document.getElementById('kpi-class').textContent=g.student_group_name||'—';
+    document.getElementById('sb-user').textContent=s.student_name||'—';
+    document.getElementById('top-avatar').textContent=initials;
+
+    const outstanding=fees.total_outstanding||0;
+    document.getElementById('kpi-fees').textContent=fmt(outstanding);
+    const feePill=document.getElementById('fee-pill');
+    if(outstanding<=0){
+      feePill.textContent='All Paid ✓';feePill.className='child-fee-pill fee-ok';
+      document.getElementById('kpi-fee-tile').style.borderLeftColor='#16a34a';
+    } else {
+      feePill.textContent=fmt(outstanding)+' Due';feePill.className='child-fee-pill fee-due';
+      document.getElementById('kpi-fee-tile').style.borderLeftColor='#c0392b';
+      document.getElementById('kpi-fee-icon').style.background='#fee2e2';
+      document.getElementById('kpi-fee-icon').textContent='⚠️';
+    }
+
+    // Fees table
+    let totB=0,totP=0,totO=0;
+    const activity=[];
+    document.getElementById('fees-table').innerHTML=fees.terms.map(t=>{
+      totB+=t.grand_total||0;totP+=t.paid||0;totO+=t.outstanding||0;
+      const badge=t.status==='Paid'?'badge-green':t.status==='Partial'?'badge-orange':'badge-red';
+      if(t.paid>0)activity.push({icon:'💰',bg:'#dcfce7',text:`${fmt(t.paid)} paid for ${t.term}`,date:t.due_date||''});
+      return`<tr><td>${t.term}</td><td>${fmt(t.grand_total)}</td><td>${fmt(t.paid)}</td><td>${fmt(t.outstanding)}</td><td><span class="badge ${badge}">${t.status}</span></td></tr>`;
+    }).join('');
+    document.getElementById('ft-billed').textContent=fmt(totB);
+    document.getElementById('ft-paid').textContent=fmt(totP);
+    document.getElementById('ft-out').textContent=fmt(totO);
+
+    // Activity timeline
+    if(!activity.length)activity.push({icon:'📋',bg:'#dbeafe',text:'Student enrolled — Academic Year 2026',date:''});
+    document.getElementById('activity-list').innerHTML=activity.map(a=>`
+      <li class="tl-item">
+        <div class="tl-dot" style="background:${a.bg}">${a.icon}</div>
+        <div class="tl-body">
+          <div class="tl-text">${a.text}</div>
+          ${a.date?`<div class="tl-date">${a.date}</div>`:''}
+        </div>
+      </li>`).join('');
+  }catch(e){
+    document.getElementById('fees-table').innerHTML='<tr><td colspan="5" style="text-align:center;color:#aaa;padding:20px">Could not load data.</td></tr>';
+  }
+}
+
+function switchChild(id){if(id)loadStudentData(id);}
+
+async function initPage(){
+  try{
+    const u=await apiGet('frappe.auth.get_logged_user');
+    if(!u||u==='Guest'){
+      document.getElementById('demo-banner').style.display='flex';
+    } else {
+      const parts=(u||'').split('@')[0].split('.');
+      const name=parts.map(p=>p[0]?.toUpperCase()+p.slice(1)).join(' ');
+      document.getElementById('sb-user').textContent=name;
+    }
+  }catch(e){}
+
+  // Term progress (Term 2: 12 May – 13 Aug 2026, today 14 Jun)
+  const termStart=new Date('2026-05-12'),termEnd=new Date('2026-08-13'),now=new Date('2026-06-14');
+  const elapsed=now-termStart,total=termEnd-termStart;
+  const p=Math.max(0,Math.min(100,Math.round(elapsed/total*100)));
+  document.getElementById('term-prog-bar').style.width=p+'%';
+
+  try{
+    const students=await apiGet('education.api.parent_portal.get_my_students',{year:'2026'});
+    if(students&&students.length){
+      if(students.length>1){
+        const sel=document.getElementById('child-sel');
+        sel.style.display='block';
+        sel.innerHTML=students.map(s=>`<option value="${s.student_id||s.name}">${s.student_name}</option>`).join('');
+      }
+      await loadStudentData(students[0].student_id||students[0].name);
+    } else {
+      // Demo fallback
+      document.getElementById('child-name').textContent='Demo Student';
+      document.getElementById('child-class').textContent='Grade 7A · Academic Year 2026';
+      document.getElementById('kpi-class').textContent='Grade 7A';
+      document.getElementById('child-avatar').textContent='DS';
+      document.getElementById('fee-pill').textContent='Log in to view';
+      document.getElementById('fee-pill').className='child-fee-pill';
+      document.getElementById('fee-pill').style.background='#f0f0f0';
+      document.getElementById('fee-pill').style.color='#888';
+      document.getElementById('fees-table').innerHTML='<tr><td colspan="5" style="text-align:center;color:#aaa;padding:20px">Log in to view fee data.</td></tr>';
+      document.getElementById('activity-list').innerHTML='<li class="tl-item"><div class="tl-dot" style="background:#f0f0f0">📋</div><div class="tl-body"><div class="tl-text">Log in to see activity.</div></div></li>';
+    }
+  }catch(e){
+    document.getElementById('child-name').textContent='Could not load data';
+  }
+}
+
+renderSidebar('dashboard');
+initPage();
+</script>
+</body>
+</html>

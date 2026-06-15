@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Headmaster Dashboard | Edupro SMS</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#1a1a2e}
+a{text-decoration:none;color:inherit}
+#sidebar{position:fixed;left:0;top:0;width:220px;height:100vh;background:#1a1a2e;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+#main{margin-left:220px;min-height:100vh;display:flex;flex-direction:column}
+#topbar{height:52px;background:#fff;border-bottom:1px solid #eee;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+#content{padding:24px;flex:1}
+.sb-brand{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.1)}
+.sb-brand-name{font-size:17px;font-weight:800;color:#fff}
+.sb-brand-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px}
+.sb-nav{padding:8px 0;flex:1}
+.sb-link{display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:13px;color:rgba(255,255,255,.72);border-left:3px solid transparent;transition:all .15s}
+.sb-link:hover{background:rgba(255,255,255,.07);color:#fff}
+.sb-link.active{background:rgba(192,57,43,.25);border-left-color:#c0392b;color:#fff;font-weight:600}
+.sb-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0}
+.sb-footer{padding:14px 16px;border-top:1px solid rgba(255,255,255,.1)}
+.sb-user{font-size:12px;color:rgba(255,255,255,.5)}
+.sb-logout{font-size:12px;color:rgba(192,57,43,.8);margin-top:4px;cursor:pointer}
+.tb-left{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:#555}
+.tb-right{display:flex;align-items:center;gap:12px}
+.tb-select{padding:6px 10px;border:1px solid #ddd;border-radius:7px;font-size:12px;outline:none}
+.tb-select:focus{border-color:#c0392b}
+.avatar{width:34px;height:34px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.card{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:20px}
+.card-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#888;margin-bottom:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.grid-1{margin-bottom:20px}
+.kpi{display:flex;align-items:center;gap:14px}
+.kpi-icon{width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.kpi-val{font-size:26px;font-weight:800;line-height:1}
+.kpi-lbl{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-top:4px}
+.kpi-sub{font-size:11px;color:#aaa;margin-top:3px}
+.kpi-tile{border-left:4px solid}
+.banner{border-radius:10px;padding:20px 24px;margin-bottom:20px;background:#f0fdf4;border-left:4px solid #16a34a;display:flex;justify-content:space-between;align-items:center}
+.banner-title{font-size:18px;font-weight:800;color:#1a1a2e}
+.banner-sub{font-size:13px;color:#888;margin-top:4px}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{background:#f8f9fa;padding:9px 12px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:#666;border-bottom:2px solid #eee}
+.tbl td{padding:9px 12px;border-bottom:1px solid #f5f5f5;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:#f0fdf4}
+.tbl tfoot td{font-weight:700;background:#f8f9fa;border-top:2px solid #eee}
+.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.badge-green{background:#dcfce7;color:#166534}
+.badge-orange{background:#ffedd5;color:#c2410c}
+.badge-blue{background:#dbeafe;color:#1e40af}
+.badge-grey{background:#f0f0f0;color:#555}
+.chart-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.chart-row:last-child{margin-bottom:0}
+.chart-lbl{width:55px;font-size:12px;color:#555;flex-shrink:0}
+.chart-bar-wrap{flex:1;height:20px;background:#f0f0f0;border-radius:4px;overflow:hidden;position:relative}
+.chart-bar-fill{height:100%;background:#16a34a;border-radius:4px;transition:width .6s;display:flex;align-items:center;justify-content:flex-end;padding-right:6px}
+.chart-bar-fill span{font-size:10px;color:#fff;font-weight:700;white-space:nowrap}
+.chart-count{width:30px;font-size:11px;color:#888;text-align:right;flex-shrink:0}
+.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.qa-card{padding:14px;border-radius:9px;background:#f8f9fa;cursor:pointer;transition:all .2s;border:1px solid #eee;display:flex;align-items:center;gap:10px}
+.qa-card:hover{background:#f0fdf4;border-color:#bbf7d0;transform:translateY(-1px)}
+.qa-icon{width:38px;height:38px;border-radius:9px;background:#dcfce7;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.qa-title{font-size:13px;font-weight:700}
+.qa-desc{font-size:11px;color:#888;margin-top:2px}
+.hamburger{display:none;background:none;border:none;font-size:22px;cursor:pointer;margin-right:10px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99}
+@media(max-width:768px){
+  #sidebar{transform:translateX(-100%);transition:transform .25s}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  .hamburger{display:block}
+  .grid-4,.grid-2{grid-template-columns:1fr}
+  .overlay.show{display:block}
+}
+</style>
+</head>
+<body>
+<div id="sidebar">
+  <div class="sb-brand"><div class="sb-brand-name">Edupro SMS</div><div class="sb-brand-sub">Headmaster Portal</div></div>
+  <nav class="sb-nav" id="sb-nav"></nav>
+  <div class="sb-footer"><div class="sb-user" id="sb-user">Loading…</div><div class="sb-logout" onclick="location.href='/logout'">Sign out</div></div>
+</div>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<div id="main">
+  <div id="topbar">
+    <div class="tb-left">
+      <button class="hamburger" onclick="toggleSidebar()">☰</button>
+      <span>🏫 Headmaster Dashboard</span>
+    </div>
+    <div class="tb-right">
+      <select class="tb-select" id="yr-sel" onchange="initPage()">
+        <option value="2025">2025</option>
+        <option value="2026" selected>2026</option>
+      </select>
+      <div class="avatar" id="top-avatar">H</div>
+    </div>
+  </div>
+
+  <div id="content">
+    <div class="banner">
+      <div>
+        <div class="banner-title" id="banner-name">Headmaster Dashboard 👋</div>
+        <div class="banner-sub">Academic overview — Sunshine Primary School</div>
+      </div>
+      <div style="text-align:right;font-size:13px;color:#888" id="banner-date"></div>
+    </div>
+
+    <div class="grid-4">
+      <div class="card kpi-tile" style="border-left-color:#2563eb">
+        <div class="kpi"><div class="kpi-icon" style="background:#dbeafe">👨‍🎓</div>
+          <div><div class="kpi-val" id="kpi-enrolment">—</div><div class="kpi-lbl">Total Enrolment</div></div></div>
+      </div>
+      <div class="card kpi-tile" style="border-left-color:#7c3aed">
+        <div class="kpi"><div class="kpi-icon" style="background:#ede9fe">📊</div>
+          <div><div class="kpi-val" id="kpi-avg">—</div><div class="kpi-lbl">School Average</div><div class="kpi-sub">Across all marks</div></div></div>
+      </div>
+      <div class="card kpi-tile" style="border-left-color:#16a34a">
+        <div class="kpi"><div class="kpi-icon" style="background:#dcfce7">✅</div>
+          <div><div class="kpi-val" id="kpi-marks">—</div><div class="kpi-lbl">Marks Submitted</div><div class="kpi-sub" id="kpi-marks-sub">classes</div></div></div>
+      </div>
+      <div class="card kpi-tile" style="border-left-color:#d97706">
+        <div class="kpi"><div class="kpi-icon" style="background:#ffedd5">📅</div>
+          <div><div class="kpi-val" id="kpi-classes">—</div><div class="kpi-lbl">Total Classes</div></div></div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Enrolment by Grade</div>
+        <div id="enrolment-chart">
+          <div style="text-align:center;padding:20px;color:#aaa">Loading…</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Marks Submission Status</div>
+        <table class="tbl">
+          <thead><tr><th>Class</th><th>Programme</th><th>Status</th></tr></thead>
+          <tbody id="marks-status"><tr><td colspan="3" style="text-align:center;color:#aaa;padding:20px">Loading…</td></tr></tbody>
+        </table>
+        <div style="margin-top:10px;text-align:right">
+          <a href="/headmaster-marks-status" style="font-size:12px;color:#c0392b;font-weight:600">View all →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Enrolment Report by Grade</div>
+        <table class="tbl">
+          <thead><tr><th>Grade</th><th>Students</th><th>% of School</th></tr></thead>
+          <tbody id="enrolment-table"><tr><td colspan="3" style="text-align:center;color:#aaa;padding:20px">Loading…</td></tr></tbody>
+          <tfoot><tr><td><strong>Total</strong></td><td id="ft-total">—</td><td>100%</td></tr></tfoot>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Quick Actions</div>
+        <div class="qa-grid">
+          <div class="qa-card" onclick="location.href='/report-card'">
+            <div class="qa-icon">📋</div>
+            <div><div class="qa-title">Report Cards</div><div class="qa-desc">View all reports</div></div>
+          </div>
+          <div class="qa-card" onclick="location.href='/student-admission'">
+            <div class="qa-icon" style="background:#dbeafe">➕</div>
+            <div><div class="qa-title">Enrol Student</div><div class="qa-desc">Register new student</div></div>
+          </div>
+          <div class="qa-card" onclick="location.href='/headmaster-notices'">
+            <div class="qa-icon" style="background:#fef9c3">📢</div>
+            <div><div class="qa-title">Post Notice</div><div class="qa-desc">School announcements</div></div>
+          </div>
+          <div class="qa-card" onclick="location.href='/headmaster-performance'">
+            <div class="qa-icon" style="background:#ede9fe">📊</div>
+            <div><div class="qa-title">Performance</div><div class="qa-desc">Class comparison</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const NAV=[
+  {id:'dashboard',icon:'🏠',label:'Dashboard',href:'/headmaster-dashboard'},
+  {id:'reports',icon:'📋',label:'All Report Cards',href:'/report-card'},
+  {id:'performance',icon:'📊',label:'Class Performance',href:'/headmaster-performance'},
+  {id:'marks',icon:'✅',label:'Marks Submission',href:'/headmaster-marks-status'},
+  {id:'attendance',icon:'📆',label:'Attendance Overview',href:'/headmaster-attendance'},
+  {id:'enrolment',icon:'👨‍🎓',label:'Enrolment Report',href:'/headmaster-enrolment'},
+  {id:'admission',icon:'➕',label:'Student Admission',href:'/student-admission'},
+  {id:'staff',icon:'👩‍🏫',label:'Staff Directory',href:'/headmaster-staff'},
+  {id:'notices',icon:'📢',label:'Notices Board',href:'/headmaster-notices'},
+  {id:'profile',icon:'👤',label:'My Profile',href:'/headmaster-profile'},
+];
+function renderSidebar(active){
+  document.getElementById('sb-nav').innerHTML=NAV.map(n=>
+    `<a href="${n.href}" class="sb-link${n.id===active?' active':''}"><span class="sb-icon">${n.icon}</span>${n.label}</a>`
+  ).join('');
+}
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
+let _csrf='';
+async function getCSRF(){if(_csrf)return _csrf;const r=await fetch('/api/method/education.api.parent_portal.get_csrf_token');_csrf=(await r.json()).message||'';return _csrf;}
+async function apiGet(m,p={}){const r=await fetch(`/api/method/${m}?${new URLSearchParams(p)}`,{headers:{'X-Frappe-CSRF-Token':await getCSRF()}});if(r.status===401||r.status===403){location.href='/login';return null;}const j=await r.json();if(j.exc_type)throw new Error(j.exception||j.exc_type);return j.message;}
+
+async function initPage(){
+  const year=document.getElementById('yr-sel').value;
+  document.getElementById('banner-date').innerHTML=new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+  try{
+    const u=await apiGet('frappe.auth.get_logged_user');
+    if(u){
+      const parts=(u||'').split('@')[0].split('.');
+      const name=parts.map(p=>p[0]?.toUpperCase()+p.slice(1)).join(' ');
+      document.getElementById('banner-name').textContent=`Good day, ${name} 👋`;
+      document.getElementById('top-avatar').textContent=name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+      document.getElementById('sb-user').textContent=name;
+    }
+  }catch(e){}
+
+  try{
+    const stats=await apiGet('education.api.admin.get_dashboard_stats',{year});
+    if(stats){
+      document.getElementById('kpi-enrolment').textContent=(stats.total_students||0).toLocaleString();
+      document.getElementById('kpi-classes').textContent=(stats.total_classes||0);
+    }
+  }catch(e){}
+
+  try{
+    const classes=await apiGet('education.api.admin.get_classes',{year});
+    if(classes&&classes.length){
+      document.getElementById('kpi-marks').textContent='—';
+      document.getElementById('kpi-marks-sub').textContent=`of ${classes.length} classes`;
+      document.getElementById('kpi-avg').textContent='—';
+
+      // Group by program for enrolment chart
+      const byGrade={};
+      classes.forEach(c=>{
+        const prog=c.program||'Unknown';
+        if(!byGrade[prog])byGrade[prog]={count:0,students:c.student_count||0};
+        byGrade[prog].students+=(c.student_count||0);
+        byGrade[prog].count++;
+      });
+      const grades=Object.keys(byGrade).sort();
+      const maxStu=Math.max(...grades.map(g=>byGrade[g].students),1);
+      const totalStu=grades.reduce((s,g)=>s+byGrade[g].students,0);
+
+      document.getElementById('enrolment-chart').innerHTML=grades.map(g=>`
+        <div class="chart-row">
+          <span class="chart-lbl">${g.replace('Grade ','Gr ').replace('ECD','ECD')}</span>
+          <div class="chart-bar-wrap">
+            <div class="chart-bar-fill" style="width:${Math.round(byGrade[g].students/maxStu*100)}%">
+              <span>${byGrade[g].students>0?byGrade[g].students:''}</span>
+            </div>
+          </div>
+          <span class="chart-count">${byGrade[g].students}</span>
+        </div>`).join('');
+
+      document.getElementById('enrolment-table').innerHTML=grades.map(g=>`
+        <tr><td><strong>${g}</strong></td><td>${byGrade[g].students}</td>
+        <td>${totalStu>0?Math.round(byGrade[g].students/totalStu*100)+'%':'—'}</td></tr>`).join('');
+      document.getElementById('ft-total').textContent=totalStu;
+
+      // Marks status table (first 8 classes)
+      document.getElementById('marks-status').innerHTML=classes.slice(0,8).map(c=>`
+        <tr>
+          <td><strong>${c.student_group_name||c.label}</strong></td>
+          <td>${c.program||'—'}</td>
+          <td><span class="badge badge-orange">Pending</span></td>
+        </tr>`).join('');
+    }
+  }catch(e){
+    document.getElementById('enrolment-chart').innerHTML='<div style="text-align:center;padding:20px;color:#aaa">No data available</div>';
+    document.getElementById('marks-status').innerHTML='<tr><td colspan="3" style="text-align:center;color:#aaa;padding:20px">No data</td></tr>';
+  }
+}
+
+renderSidebar('dashboard');
+initPage();
+</script>
+</body>
+</html>

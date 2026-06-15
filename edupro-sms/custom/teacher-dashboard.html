@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teacher Dashboard | Edupro SMS</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#1a1a2e}
+a{text-decoration:none;color:inherit}
+#sidebar{position:fixed;left:0;top:0;width:220px;height:100vh;background:#1a1a2e;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+#main{margin-left:220px;min-height:100vh;display:flex;flex-direction:column}
+#topbar{height:52px;background:#fff;border-bottom:1px solid #eee;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+#content{padding:24px;flex:1}
+.sb-brand{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.1)}
+.sb-brand-name{font-size:17px;font-weight:800;color:#fff}
+.sb-brand-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px}
+.sb-nav{padding:8px 0;flex:1}
+.sb-link{display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:13px;color:rgba(255,255,255,.72);border-left:3px solid transparent;transition:all .15s}
+.sb-link:hover{background:rgba(255,255,255,.07);color:#fff}
+.sb-link.active{background:rgba(192,57,43,.25);border-left-color:#c0392b;color:#fff;font-weight:600}
+.sb-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0}
+.sb-footer{padding:14px 16px;border-top:1px solid rgba(255,255,255,.1)}
+.sb-user{font-size:12px;color:rgba(255,255,255,.5)}
+.sb-logout{font-size:12px;color:rgba(192,57,43,.8);margin-top:4px;cursor:pointer}
+.tb-left{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:#555}
+.tb-right{display:flex;align-items:center;gap:12px}
+.tb-select{padding:6px 10px;border:1px solid #ddd;border-radius:7px;font-size:12px;outline:none}
+.tb-select:focus{border-color:#c0392b}
+.avatar{width:34px;height:34px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.card{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:20px}
+.card-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#888;margin-bottom:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.kpi{display:flex;align-items:center;gap:14px}
+.kpi-icon{width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.kpi-val{font-size:26px;font-weight:800;line-height:1}
+.kpi-lbl{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-top:4px}
+.kpi-tile{border-left:4px solid}
+.banner{border-radius:10px;padding:20px 24px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#1a1a2e 0%,#16a34a 100%);color:#fff}
+.banner-title{font-size:20px;font-weight:800}
+.banner-sub{font-size:13px;opacity:.8;margin-top:4px}
+.banner-right{text-align:right;font-size:13px;opacity:.8}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{background:#f8f9fa;padding:9px 12px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:#666;border-bottom:2px solid #eee}
+.tbl td{padding:9px 12px;border-bottom:1px solid #f5f5f5;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:#f8fff8}
+.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.badge-green{background:#dcfce7;color:#166534}
+.badge-orange{background:#ffedd5;color:#c2410c}
+.badge-blue{background:#dbeafe;color:#1e40af}
+.btn-sm{padding:5px 12px;border-radius:7px;font-size:12px;font-weight:700;border:none;cursor:pointer;background:#c0392b;color:#fff;white-space:nowrap}
+.btn-sm:hover{background:#a93226}
+.btn-outline-sm{padding:5px 12px;border-radius:7px;font-size:12px;font-weight:700;border:2px solid #c0392b;color:#c0392b;background:none;cursor:pointer}
+.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.qa-card{padding:14px;border-radius:9px;background:#f8f9fa;cursor:pointer;transition:all .2s;border:1px solid #eee;display:flex;align-items:center;gap:10px}
+.qa-card:hover{background:#f0fdf4;border-color:#bbf7d0;transform:translateY(-1px)}
+.qa-icon{width:38px;height:38px;border-radius:9px;background:#dcfce7;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.qa-title{font-size:13px;font-weight:700}
+.qa-desc{font-size:11px;color:#888;margin-top:2px}
+.pbar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.pbar-lbl{width:110px;font-size:12px;color:#555;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pbar-bg{flex:1;height:7px;background:#f0f0f0;border-radius:4px;overflow:hidden}
+.pbar-fill{height:100%;background:#16a34a;border-radius:4px;transition:width .6s}
+.pbar-count{width:70px;font-size:11px;color:#888;text-align:right;flex-shrink:0}
+.cal-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #f5f5f5}
+.cal-row:last-child{border-bottom:none}
+.cal-term{font-size:13px;font-weight:600;width:60px}
+.cal-dates{font-size:12px;color:#888;flex:1}
+.hamburger{display:none;background:none;border:none;font-size:22px;cursor:pointer;margin-right:10px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99}
+@media(max-width:768px){
+  #sidebar{transform:translateX(-100%);transition:transform .25s}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  .hamburger{display:block}
+  .grid-4,.grid-2{grid-template-columns:1fr}
+  .overlay.show{display:block}
+}
+</style>
+</head>
+<body>
+<div id="sidebar">
+  <div class="sb-brand"><div class="sb-brand-name">Edupro SMS</div><div class="sb-brand-sub">Teacher Portal</div></div>
+  <nav class="sb-nav" id="sb-nav"></nav>
+  <div class="sb-footer"><div class="sb-user" id="sb-user">Loading…</div><div class="sb-logout" onclick="location.href='/logout'">Sign out</div></div>
+</div>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<div id="main">
+  <div id="topbar">
+    <div class="tb-left">
+      <button class="hamburger" onclick="toggleSidebar()">☰</button>
+      <span>📚 Teacher Dashboard</span>
+    </div>
+    <div class="tb-right">
+      <select class="tb-select" id="term-sel" onchange="initPage()">
+        <option value="2026 (Term 1)">Term 1 · 2026</option>
+        <option value="2026 (Term 2)" selected>Term 2 · 2026</option>
+        <option value="2026 (Term 3)">Term 3 · 2026</option>
+      </select>
+      <div class="avatar" id="top-avatar">T</div>
+    </div>
+  </div>
+
+  <div id="content">
+    <div class="banner">
+      <div>
+        <div class="banner-title" id="banner-name">Good morning, Teacher 👋</div>
+        <div class="banner-sub" id="banner-sub">Here is a summary of your classes</div>
+      </div>
+      <div class="banner-right" id="banner-right"></div>
+    </div>
+
+    <div class="grid-4">
+      <div class="card kpi-tile" style="border-left-color:#2563eb">
+        <div class="kpi"><div class="kpi-icon" style="background:#dbeafe">🏫</div>
+          <div><div class="kpi-val" id="kpi-classes">—</div><div class="kpi-lbl">My Classes</div></div></div>
+      </div>
+      <div class="card kpi-tile" style="border-left-color:#7c3aed">
+        <div class="kpi"><div class="kpi-icon" style="background:#ede9fe">👨‍🎓</div>
+          <div><div class="kpi-val" id="kpi-students">—</div><div class="kpi-lbl">Total Students</div></div></div>
+      </div>
+      <div class="card kpi-tile" style="border-left-color:#16a34a">
+        <div class="kpi"><div class="kpi-icon" style="background:#dcfce7">✅</div>
+          <div><div class="kpi-val" id="kpi-submitted">—</div><div class="kpi-lbl">Marks Submitted</div></div></div>
+      </div>
+      <div class="card kpi-tile" style="border-left-color:#d97706">
+        <div class="kpi"><div class="kpi-icon" style="background:#ffedd5">⏳</div>
+          <div><div class="kpi-val" id="kpi-pending">—</div><div class="kpi-lbl">Marks Pending</div></div></div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">My Classes This Term</div>
+        <table class="tbl">
+          <thead><tr><th>Class</th><th>Programme</th><th>Students</th><th>Marks</th><th>Action</th></tr></thead>
+          <tbody id="class-tbody"><tr><td colspan="5" style="text-align:center;color:#aaa;padding:20px">Loading classes…</td></tr></tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Marks Entry Progress</div>
+        <div id="marks-progress"><div style="text-align:center;padding:20px;color:#aaa">Loading…</div></div>
+        <div style="margin-top:14px;padding-top:12px;border-top:1px solid #f0f0f0;font-size:12px;color:#888">
+          Progress shown per class. Click "Enter Marks" to update.
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Quick Actions</div>
+        <div class="qa-grid">
+          <div class="qa-card" onclick="location.href='/marks-entry'">
+            <div class="qa-icon">📝</div>
+            <div><div class="qa-title">Enter Marks</div><div class="qa-desc">Open marks sheet</div></div>
+          </div>
+          <div class="qa-card" onclick="location.href='/report-card'">
+            <div class="qa-icon" style="background:#dbeafe">📋</div>
+            <div><div class="qa-title">Report Cards</div><div class="qa-desc">View &amp; print cards</div></div>
+          </div>
+          <div class="qa-card" onclick="location.href='/teacher-attendance'">
+            <div class="qa-icon" style="background:#fef9c3">📆</div>
+            <div><div class="qa-title">Attendance</div><div class="qa-desc">Mark class register</div></div>
+          </div>
+          <div class="qa-card" onclick="location.href='/teacher-notices'">
+            <div class="qa-icon" style="background:#ede9fe">📢</div>
+            <div><div class="qa-title">Notices</div><div class="qa-desc">School announcements</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Academic Calendar 2026</div>
+        <div class="cal-row">
+          <span class="cal-term">Term 1</span>
+          <span class="cal-dates">13 Jan – 12 Apr 2026</span>
+          <span class="badge" id="cal-t1">—</span>
+        </div>
+        <div class="cal-row">
+          <span class="cal-term">Term 2</span>
+          <span class="cal-dates">12 May – 13 Aug 2026</span>
+          <span class="badge" id="cal-t2">—</span>
+        </div>
+        <div class="cal-row">
+          <span class="cal-term">Term 3</span>
+          <span class="cal-dates">04 Sep – 04 Dec 2026</span>
+          <span class="badge" id="cal-t3">—</span>
+        </div>
+        <div style="margin-top:14px;font-size:12px;color:#888">Today: <strong id="cal-today"></strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const NAV=[
+  {id:'dashboard',icon:'🏠',label:'Dashboard',href:'/teacher-dashboard'},
+  {id:'classes',icon:'🏫',label:'My Classes',href:'/teacher-classes'},
+  {id:'marks',icon:'📝',label:'Enter Marks',href:'/marks-entry'},
+  {id:'attendance',icon:'📆',label:'Attendance',href:'/teacher-attendance'},
+  {id:'reports',icon:'📋',label:'Report Cards',href:'/report-card'},
+  {id:'notices',icon:'📢',label:'Notices',href:'/teacher-notices'},
+  {id:'profile',icon:'👤',label:'My Profile',href:'/teacher-profile'},
+];
+function renderSidebar(active){
+  document.getElementById('sb-nav').innerHTML=NAV.map(n=>
+    `<a href="${n.href}" class="sb-link${n.id===active?' active':''}"><span class="sb-icon">${n.icon}</span>${n.label}</a>`
+  ).join('');
+}
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
+
+let _csrf='';
+async function getCSRF(){if(_csrf)return _csrf;const r=await fetch('/api/method/education.api.parent_portal.get_csrf_token');_csrf=(await r.json()).message||'';return _csrf;}
+async function apiGet(m,p={}){const r=await fetch(`/api/method/${m}?${new URLSearchParams(p)}`,{headers:{'X-Frappe-CSRF-Token':await getCSRF()}});if(r.status===401||r.status===403){location.href='/login';return null;}const j=await r.json();if(j.exc_type)throw new Error(j.exception||j.exc_type);return j.message;}
+
+function setCalBadges(){
+  const now=new Date('2026-06-14');
+  const terms=[{start:new Date('2026-01-13'),end:new Date('2026-04-12')},{start:new Date('2026-05-12'),end:new Date('2026-08-13')},{start:new Date('2026-09-04'),end:new Date('2026-12-04')}];
+  document.getElementById('cal-today').textContent=now.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+  terms.forEach((t,i)=>{
+    const el=document.getElementById('cal-t'+(i+1));
+    if(now<t.start){el.textContent='Upcoming';el.className='badge badge-blue';}
+    else if(now<=t.end){el.textContent='Current';el.className='badge badge-green';}
+    else{el.textContent='Past';el.className='badge';el.style.cssText='background:#f0f0f0;color:#888';}
+  });
+}
+
+async function initPage(){
+  const term=document.getElementById('term-sel').value;
+  try{
+    const u=await apiGet('frappe.auth.get_logged_user');
+    if(u){
+      const parts=(u||'').split('@')[0].split('.');
+      const name=parts.map(p=>p[0]?.toUpperCase()+p.slice(1)).join(' ');
+      const h=new Date().getHours();
+      const greet=h<12?'Good morning':'h<17'?'Good afternoon':'Good evening';
+      document.getElementById('banner-name').textContent=`${h<12?'Good morning':h<17?'Good afternoon':'Good evening'}, ${name} 👋`;
+      document.getElementById('banner-sub').textContent=`${term} — Sunshine Primary School`;
+      document.getElementById('banner-right').innerHTML=`<div>${new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}</div>`;
+      document.getElementById('top-avatar').textContent=name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+      document.getElementById('sb-user').textContent=name;
+    }
+  }catch(e){}
+
+  try{
+    const classes=await apiGet('education.api.marks_entry.get_my_classes',{year:'2026'});
+    if(classes&&classes.length){
+      document.getElementById('kpi-classes').textContent=classes.length;
+      // Build class table
+      const tbody=document.getElementById('class-tbody');
+      tbody.innerHTML=classes.map(c=>`<tr>
+        <td><strong>${c.label}</strong></td>
+        <td>${c.program||'—'}</td>
+        <td><span class="badge badge-blue">—</span></td>
+        <td><span class="badge badge-orange">Pending</span></td>
+        <td><button class="btn-sm" onclick="location.href='/marks-entry?class=${c.id}'">Enter Marks</button></td>
+      </tr>`).join('');
+      // Build progress bars
+      document.getElementById('marks-progress').innerHTML=classes.map(c=>`
+        <div class="pbar-row">
+          <span class="pbar-lbl">${c.label}</span>
+          <div class="pbar-bg"><div class="pbar-fill" style="width:0%"></div></div>
+          <span class="pbar-count">0 / — students</span>
+        </div>`).join('');
+      document.getElementById('kpi-students').textContent='—';
+      document.getElementById('kpi-submitted').textContent='0';
+      document.getElementById('kpi-pending').textContent=classes.length;
+    } else {
+      document.getElementById('class-tbody').innerHTML='<tr><td colspan="5" style="text-align:center;color:#aaa;padding:20px">No classes assigned for this year.</td></tr>';
+      document.getElementById('kpi-classes').textContent='0';
+      document.getElementById('kpi-students').textContent='0';
+      document.getElementById('kpi-submitted').textContent='0';
+      document.getElementById('kpi-pending').textContent='0';
+      document.getElementById('marks-progress').innerHTML='<div style="text-align:center;padding:20px;color:#aaa">No classes to show.</div>';
+    }
+  }catch(e){
+    document.getElementById('class-tbody').innerHTML='<tr><td colspan="5" style="text-align:center;color:#aaa;padding:20px">Could not load classes.</td></tr>';
+    ['kpi-classes','kpi-students','kpi-submitted','kpi-pending'].forEach(id=>document.getElementById(id).textContent='—');
+  }
+  setCalBadges();
+}
+
+renderSidebar('dashboard');
+initPage();
+</script>
+</body>
+</html>

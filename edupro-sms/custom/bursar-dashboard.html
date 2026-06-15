@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bursar Dashboard | Edupro SMS</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#1a1a2e}
+a{text-decoration:none;color:inherit}
+#sidebar{position:fixed;left:0;top:0;width:220px;height:100vh;background:#1a1a2e;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+#main{margin-left:220px;min-height:100vh;display:flex;flex-direction:column}
+#topbar{height:52px;background:#fff;border-bottom:1px solid #eee;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+#content{padding:24px;flex:1}
+.sb-brand{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.1)}
+.sb-brand-name{font-size:17px;font-weight:800;color:#fff}
+.sb-brand-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px}
+.sb-nav{padding:8px 0;flex:1}
+.sb-link{display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:13px;color:rgba(255,255,255,.72);border-left:3px solid transparent;transition:all .15s}
+.sb-link:hover{background:rgba(255,255,255,.07);color:#fff}
+.sb-link.active{background:rgba(192,57,43,.25);border-left-color:#c0392b;color:#fff;font-weight:600}
+.sb-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0}
+.sb-footer{padding:14px 16px;border-top:1px solid rgba(255,255,255,.1)}
+.sb-user{font-size:12px;color:rgba(255,255,255,.5)}
+.sb-logout{font-size:12px;color:rgba(192,57,43,.8);margin-top:4px;cursor:pointer}
+.tb-left{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:#555}
+.tb-right{display:flex;align-items:center;gap:10px}
+.tb-select{padding:6px 10px;border:1px solid #ddd;border-radius:7px;font-size:12px;outline:none}
+.tb-select:focus{border-color:#c0392b}
+.avatar{width:34px;height:34px;border-radius:50%;background:#d97706;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.card{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:20px}
+.card-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#888;margin-bottom:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.grid-1{margin-bottom:20px}
+.kpi{display:flex;align-items:center;gap:14px}
+.kpi-icon{width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.kpi-val{font-size:24px;font-weight:800;line-height:1}
+.kpi-lbl{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-top:4px}
+.kpi-sub{font-size:11px;color:#aaa;margin-top:3px}
+.kpi-tile{border-left:4px solid}
+.pbar-bg{height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden;margin-top:6px}
+.pbar-fill{height:100%;border-radius:3px;transition:width .6s}
+.banner{border-radius:10px;padding:18px 22px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;background:#fff;border-left:4px solid #d97706;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{background:#f8f9fa;padding:9px 12px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:#666;border-bottom:2px solid #eee}
+.tbl td{padding:9px 12px;border-bottom:1px solid #f5f5f5;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:#fffbf5}
+.tbl tfoot td{font-weight:700;background:#f8f9fa;border-top:2px solid #eee}
+.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.badge-green{background:#dcfce7;color:#166534}
+.badge-orange{background:#ffedd5;color:#c2410c}
+.badge-red{background:#fee2e2;color:#991b1b}
+.badge-blue{background:#dbeafe;color:#1e40af}
+.btn-primary{padding:9px 18px;background:#c0392b;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer}
+.btn-primary:hover{background:#a93226}
+.term-coll-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.term-coll-row:last-child{margin-bottom:0}
+.tcr-lbl{width:65px;font-size:13px;color:#555;flex-shrink:0}
+.tcr-bar{flex:1}
+.tcr-amt{width:120px;font-size:12px;color:#888;text-align:right;flex-shrink:0}
+.method-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f5f5f5}
+.method-row:last-child{border-bottom:none}
+.method-icon{font-size:20px;width:32px;text-align:center;flex-shrink:0}
+.method-lbl{font-size:13px;font-weight:600;flex:1}
+.method-amt{font-size:14px;font-weight:700;color:#1a1a2e}
+.method-sub{font-size:11px;color:#888;margin-top:2px}
+.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.qa-card{padding:16px;border-radius:9px;background:#f8f9fa;cursor:pointer;transition:all .2s;border:1px solid #eee;text-align:center}
+.qa-card:hover{background:#fffbf5;border-color:#fed7aa;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.07)}
+.qa-icon{font-size:26px;margin-bottom:8px}
+.qa-title{font-size:13px;font-weight:700}
+.qa-desc{font-size:11px;color:#888;margin-top:3px}
+.hamburger{display:none;background:none;border:none;font-size:22px;cursor:pointer;margin-right:10px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99}
+@media(max-width:768px){
+  #sidebar{transform:translateX(-100%);transition:transform .25s}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  .hamburger{display:block}
+  .grid-4,.grid-2{grid-template-columns:1fr}
+  .overlay.show{display:block}
+}
+</style>
+</head>
+<body>
+<div id="sidebar">
+  <div class="sb-brand"><div class="sb-brand-name">Edupro SMS</div><div class="sb-brand-sub">Bursar Portal</div></div>
+  <nav class="sb-nav" id="sb-nav"></nav>
+  <div class="sb-footer"><div class="sb-user" id="sb-user">Loading…</div><div class="sb-logout" onclick="location.href='/logout'">Sign out</div></div>
+</div>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<div id="main">
+  <div id="topbar">
+    <div class="tb-left">
+      <button class="hamburger" onclick="toggleSidebar()">☰</button>
+      <span>💰 Bursar Dashboard</span>
+    </div>
+    <div class="tb-right">
+      <select class="tb-select" id="term-sel" onchange="initPage()">
+        <option value="">All Terms</option>
+        <option value="2026 (Term 1)">Term 1 · 2026</option>
+        <option value="2026 (Term 2)">Term 2 · 2026</option>
+        <option value="2026 (Term 3)">Term 3 · 2026</option>
+      </select>
+      <select class="tb-select" id="yr-sel" onchange="initPage()">
+        <option value="2025">2025</option>
+        <option value="2026" selected>2026</option>
+      </select>
+      <div class="avatar" id="top-avatar">B</div>
+    </div>
+  </div>
+
+  <div id="content">
+    <div class="banner">
+      <div>
+        <div style="font-size:17px;font-weight:800" id="banner-name">Welcome, Bursar 👋</div>
+        <div style="font-size:13px;color:#888;margin-top:3px">Sunshine Primary School — Academic Year <span id="banner-year">2026</span></div>
+      </div>
+      <div style="text-align:right;font-size:13px;color:#888" id="banner-date"></div>
+    </div>
+
+    <div class="grid-4">
+      <div class="card kpi-tile" style="border-left-color:#2563eb">
+        <div class="kpi"><div class="kpi-icon" style="background:#dbeafe">💵</div>
+          <div><div class="kpi-val" id="kpi-billed">—</div><div class="kpi-lbl">Total Billed</div></div></div>
+      </div>
+      <div class="card kpi-tile" style="border-left-color:#16a34a">
+        <div class="kpi"><div class="kpi-icon" style="background:#dcfce7">✅</div>
+          <div>
+            <div class="kpi-val" id="kpi-collected">—</div>
+            <div class="kpi-lbl">Total Collected</div>
+            <div class="kpi-sub" id="kpi-coll-sub"></div>
+            <div class="pbar-bg" style="width:120px"><div class="pbar-fill" id="pb-coll" style="width:0%;background:#16a34a"></div></div>
+          </div></div>
+      </div>
+      <div class="card kpi-tile" style="border-left-color:#c0392b">
+        <div class="kpi"><div class="kpi-icon" style="background:#fee2e2">⚠️</div>
+          <div><div class="kpi-val" id="kpi-outstanding">—</div><div class="kpi-lbl">Outstanding</div></div></div>
+      </div>
+      <div class="card kpi-tile" style="border-left-color:#d97706">
+        <div class="kpi"><div class="kpi-icon" style="background:#ffedd5">🧾</div>
+          <div><div class="kpi-val" id="kpi-today">—</div><div class="kpi-lbl">Receipts Today</div><div class="kpi-sub" id="kpi-today-sub"></div></div></div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Collection by Term</div>
+        <div id="term-coll-rows">
+          <div class="term-coll-row"><span class="tcr-lbl">Term 1</span><div class="tcr-bar"><div class="pbar-bg"><div class="pbar-fill" id="pb-t1" style="width:0%;background:#c0392b"></div></div></div><span class="tcr-amt" id="tc-t1">— of —</span></div>
+          <div class="term-coll-row"><span class="tcr-lbl">Term 2</span><div class="tcr-bar"><div class="pbar-bg"><div class="pbar-fill" id="pb-t2" style="width:0%;background:#c0392b"></div></div></div><span class="tcr-amt" id="tc-t2">— of —</span></div>
+          <div class="term-coll-row"><span class="tcr-lbl">Term 3</span><div class="tcr-bar"><div class="pbar-bg"><div class="pbar-fill" id="pb-t3" style="width:0%;background:#c0392b"></div></div></div><span class="tcr-amt" id="tc-t3">— of —</span></div>
+        </div>
+        <div style="margin-top:16px;padding-top:12px;border-top:1px solid #f0f0f0">
+          <button class="btn-primary" style="width:100%" onclick="location.href='/payment-receipt'">💳 Post New Payment</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Payment Method Breakdown</div>
+        <div id="method-rows">
+          <div class="method-row"><span class="method-icon">💵</span><div><div class="method-lbl">Cash</div><div class="method-sub" id="meth-cash-ct">— receipts</div></div><div class="method-amt" id="meth-cash">—</div></div>
+          <div class="method-row"><span class="method-icon">📱</span><div><div class="method-lbl">EcoCash</div><div class="method-sub" id="meth-eco-ct">— receipts</div></div><div class="method-amt" id="meth-eco">—</div></div>
+          <div class="method-row"><span class="method-icon">🏦</span><div><div class="method-lbl">Bank Transfer</div><div class="method-sub" id="meth-bank-ct">— receipts</div></div><div class="method-amt" id="meth-bank">—</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Recent Receipts</div>
+        <table class="tbl">
+          <thead><tr><th>Receipt No</th><th>Student</th><th>Amount</th><th>Date</th></tr></thead>
+          <tbody id="recent-rcpt"><tr><td colspan="4" style="text-align:center;color:#aaa;padding:20px">Loading…</td></tr></tbody>
+        </table>
+        <div style="margin-top:12px;text-align:right">
+          <a href="/bursar-receipts" style="font-size:12px;color:#c0392b;font-weight:600">View all receipts →</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Quick Actions</div>
+        <div class="qa-grid">
+          <div class="qa-card" onclick="location.href='/payment-receipt'">
+            <div class="qa-icon">💳</div>
+            <div class="qa-title">Post Payment</div>
+            <div class="qa-desc">Receipt fee payment</div>
+          </div>
+          <div class="qa-card" onclick="location.href='/bursar-receipts'">
+            <div class="qa-icon">📜</div>
+            <div class="qa-title">Receipt History</div>
+            <div class="qa-desc">View all receipts</div>
+          </div>
+          <div class="qa-card" onclick="location.href='/bursar-outstanding'">
+            <div class="qa-icon">⚠️</div>
+            <div class="qa-title">Outstanding</div>
+            <div class="qa-desc">View defaulters</div>
+          </div>
+          <div class="qa-card" onclick="location.href='/bursar-term-summary'">
+            <div class="qa-icon">📊</div>
+            <div class="qa-title">Term Summary</div>
+            <div class="qa-desc">Full collection report</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-1">
+      <div class="card">
+        <div class="card-title">Outstanding by Class</div>
+        <table class="tbl">
+          <thead><tr><th>Class</th><th>Students</th><th>Fully Paid</th><th>Partial</th><th>Unpaid</th><th>Outstanding</th></tr></thead>
+          <tbody id="class-outstanding"><tr><td colspan="6" style="text-align:center;color:#aaa;padding:20px">Loading…</td></tr></tbody>
+          <tfoot><tr><td><strong>Total</strong></td><td id="ft-students">—</td><td id="ft-paid">—</td><td id="ft-partial">—</td><td id="ft-unpaid">—</td><td id="ft-outstanding" style="color:#c0392b">—</td></tr></tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const NAV=[
+  {id:'dashboard',icon:'🏠',label:'Dashboard',href:'/bursar-dashboard'},
+  {id:'receipt',icon:'💳',label:'Post Payment',href:'/payment-receipt'},
+  {id:'history',icon:'📜',label:'Receipt History',href:'/bursar-receipts'},
+  {id:'balance',icon:'👁️',label:'Student Balance',href:'/bursar-balance'},
+  {id:'outstanding',icon:'⚠️',label:'Outstanding',href:'/bursar-outstanding'},
+  {id:'daily',icon:'📅',label:'Daily Collections',href:'/bursar-daily-report'},
+  {id:'term',icon:'📊',label:'Term Summary',href:'/bursar-term-summary'},
+  {id:'invoices',icon:'🧾',label:'Fee Invoices',href:'/bursar-invoices'},
+  {id:'profile',icon:'👤',label:'My Profile',href:'/bursar-profile'},
+];
+function renderSidebar(active){
+  document.getElementById('sb-nav').innerHTML=NAV.map(n=>
+    `<a href="${n.href}" class="sb-link${n.id===active?' active':''}"><span class="sb-icon">${n.icon}</span>${n.label}</a>`
+  ).join('');
+}
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
+let _csrf='';
+async function getCSRF(){if(_csrf)return _csrf;const r=await fetch('/api/method/education.api.parent_portal.get_csrf_token');_csrf=(await r.json()).message||'';return _csrf;}
+async function apiGet(m,p={}){const r=await fetch(`/api/method/${m}?${new URLSearchParams(p)}`,{headers:{'X-Frappe-CSRF-Token':await getCSRF()}});if(r.status===401||r.status===403){location.href='/login';return null;}const j=await r.json();if(j.exc_type)throw new Error(j.exception||j.exc_type);return j.message;}
+function fmt(n){return'$'+parseFloat(n||0).toFixed(2);}
+function pct(a,b){return b>0?Math.min(100,Math.round(a/b*100)):0;}
+function fmtDate(s){if(!s)return'—';try{return new Date(s).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});}catch(e){return s;}}
+
+async function initPage(){
+  const year=document.getElementById('yr-sel').value;
+  const term=document.getElementById('term-sel').value;
+  document.getElementById('banner-year').textContent=year;
+  document.getElementById('banner-date').innerHTML=new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+  try{
+    const u=await apiGet('frappe.auth.get_logged_user');
+    if(u){
+      const parts=(u||'').split('@')[0].split('.');
+      const name=parts.map(p=>p[0]?.toUpperCase()+p.slice(1)).join(' ');
+      document.getElementById('banner-name').textContent=`Welcome, ${name} 👋`;
+      document.getElementById('top-avatar').textContent=name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+      document.getElementById('sb-user').textContent=name;
+    }
+  }catch(e){}
+
+  try{
+    const s=await apiGet('education.api.admin.get_dashboard_stats',{year});
+    if(s){
+      document.getElementById('kpi-billed').textContent=fmt(s.fee_billed);
+      document.getElementById('kpi-collected').textContent=fmt(s.fee_collected);
+      document.getElementById('kpi-outstanding').textContent=fmt(s.fee_outstanding);
+      const p=pct(s.fee_collected,s.fee_billed);
+      document.getElementById('pb-coll').style.width=p+'%';
+      document.getElementById('kpi-coll-sub').textContent=`${p}% collected`;
+      document.getElementById('kpi-today').textContent='—';
+      document.getElementById('kpi-today-sub').textContent='API not wired yet';
+
+      // Term bars from fee_by_term if available
+      if(s.fee_by_term){
+        ['t1','t2','t3'].forEach((t,i)=>{
+          const td=s.fee_by_term[i]||{};
+          const p2=pct(td.collected||0,td.billed||1);
+          document.getElementById('pb-'+t).style.width=p2+'%';
+          document.getElementById('tc-'+t).textContent=`${fmt(td.collected||0)} of ${fmt(td.billed||0)}`;
+        });
+      }
+
+      // Recent payments as receipts
+      const pays=s.recent_payments||[];
+      document.getElementById('recent-rcpt').innerHTML=pays.length
+        ?pays.map(p=>`<tr><td><span style="font-size:11px;color:#888">${p.name||'—'}</span></td><td>${p.student||'—'}</td><td><strong style="color:#16a34a">${fmt(p.paid)}</strong></td><td>${fmtDate(p.modified)}</td></tr>`).join('')
+        :'<tr><td colspan="4" style="text-align:center;color:#aaa;padding:20px">No recent payments</td></tr>';
+    }
+  }catch(e){
+    ['kpi-billed','kpi-collected','kpi-outstanding'].forEach(id=>document.getElementById(id).textContent='—');
+  }
+
+  try{
+    const methods=await apiGet('education.api.admin.fee_collection_by_method',{year});
+    if(methods&&methods.length){
+      const map={};methods.forEach(m=>{map[m.method]=m;});
+      ['Cash','EcoCash','Bank Transfer'].forEach((m,i)=>{
+        const ids=['cash','eco','bank'];
+        const d=map[m]||{total:0,count:0};
+        document.getElementById('meth-'+ids[i]).textContent=fmt(d.total||0);
+        document.getElementById('meth-'+ids[i]+'-ct').textContent=`${d.count||0} receipt${d.count===1?'':'s'}`;
+      });
+    }
+  }catch(e){}
+
+  try{
+    const summary=await apiGet('education.api.admin.get_financial_summary',{year,term});
+    if(summary&&summary.rows&&summary.rows.length){
+      let totStu=0,totPaid=0,totPart=0,totUnpaid=0,totOut=0;
+      document.getElementById('class-outstanding').innerHTML=summary.rows.map(r=>{
+        totStu+=r.invoice_count||0;
+        totOut+=r.outstanding||0;
+        return`<tr>
+          <td><strong>${r.class_name}</strong></td>
+          <td>${r.invoice_count||0}</td>
+          <td>—</td><td>—</td><td>—</td>
+          <td><strong style="color:${r.outstanding>0?'#c0392b':'#16a34a'}">${fmt(r.outstanding)}</strong></td>
+        </tr>`;
+      }).join('');
+      document.getElementById('ft-students').textContent=totStu;
+      document.getElementById('ft-paid').textContent='—';
+      document.getElementById('ft-partial').textContent='—';
+      document.getElementById('ft-unpaid').textContent='—';
+      document.getElementById('ft-outstanding').textContent=fmt(totOut);
+    } else {
+      document.getElementById('class-outstanding').innerHTML='<tr><td colspan="6" style="text-align:center;color:#aaa;padding:20px">No data available for selected filters.</td></tr>';
+    }
+  }catch(e){
+    document.getElementById('class-outstanding').innerHTML='<tr><td colspan="6" style="text-align:center;color:#aaa;padding:20px">Could not load class summary.</td></tr>';
+  }
+}
+
+renderSidebar('dashboard');
+initPage();
+</script>
+</body>
+</html>
