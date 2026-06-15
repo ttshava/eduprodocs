@@ -1,0 +1,6 @@
+node_modules/
+certs/
+public/board-client.js
+public/tablet-client.js
+*.log
+.DS_Store

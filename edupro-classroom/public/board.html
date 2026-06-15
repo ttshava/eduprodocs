@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduPro Board — Broadcaster</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#f1f5f9;min-height:100vh;display:flex;flex-direction:column}
+
+/* TOP BAR */
+.topbar{height:56px;background:#1e293b;border-bottom:1px solid #334155;display:flex;align-items:center;padding:0 24px;gap:16px;flex-shrink:0}
+.topbar-logo{font-size:22px}
+.topbar-title{font-size:1rem;font-weight:700}
+.topbar-badge{background:#FF052722;color:#FF0527;border:1px solid #FF052755;border-radius:20px;padding:3px 12px;font-size:.72rem;font-weight:700;text-transform:uppercase}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.viewer-count{font-size:.85rem;color:#94a3b8}
+.viewer-count span{font-weight:700;color:#f1f5f9}
+.live-pill{display:none;background:#dc2626;color:#fff;border-radius:20px;padding:4px 14px;font-size:.75rem;font-weight:700;letter-spacing:.06em;animation:pulseBg 2s infinite}
+.live-pill.show{display:inline-flex;align-items:center;gap:6px}
+@keyframes pulseBg{0%,100%{opacity:1}50%{opacity:.8}}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;gap:24px}
+
+/* PREVIEW */
+.preview-wrap{width:100%;max-width:900px;aspect-ratio:16/9;background:#0f172a;border:2px solid #334155;border-radius:16px;overflow:hidden;position:relative}
+#preview{width:100%;height:100%;object-fit:contain;display:none}
+.preview-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:#475569}
+.preview-placeholder .icon{font-size:64px;opacity:.4}
+.preview-placeholder p{font-size:.9rem}
+
+/* CONTROLS */
+.controls{display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center}
+.btn{padding:14px 32px;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;border:none;transition:all .15s;display:inline-flex;align-items:center;gap:8px}
+.btn-primary{background:#FF0527;color:#fff}
+.btn-primary:hover:not(:disabled){background:#c8021e}
+.btn-primary:disabled{background:#374151;color:#64748b;cursor:not-allowed}
+.btn-secondary{background:#1e293b;color:#f1f5f9;border:1.5px solid #334155}
+.btn-secondary:hover:not(:disabled){border-color:#FF0527;color:#FF0527}
+.btn-secondary:disabled{opacity:.5;cursor:not-allowed}
+.btn-stop{background:#1e293b;color:#FF0527;border:1.5px solid #FF0527}
+.btn-stop:hover{background:#FF052715}
+
+/* STATUS */
+.status-card{background:#1e293b;border-radius:12px;padding:16px 24px;display:flex;align-items:center;gap:16px;width:100%;max-width:900px}
+.status-dot{width:10px;height:10px;border-radius:50%;background:#374151;flex-shrink:0;transition:background .3s}
+.status-dot.connecting{background:#f59e0b;animation:spin .8s linear infinite}
+.status-dot.live{background:#22c55e;box-shadow:0 0 8px #22c55e80;animation:glow 2s ease-in-out infinite}
+.status-dot.error{background:#ef4444}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes glow{0%,100%{box-shadow:0 0 8px #22c55e80}50%{box-shadow:0 0 16px #22c55ebb}}
+#status-msg{font-size:.9rem;color:#94a3b8}
+#status-msg strong{color:#f1f5f9}
+
+/* TIPS */
+.tips{max-width:900px;width:100%;background:#1e293b;border-radius:12px;padding:16px 20px}
+.tips h3{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#64748b;margin-bottom:10px}
+.tips ul{list-style:none;display:flex;gap:20px;flex-wrap:wrap}
+.tips li{font-size:.8rem;color:#94a3b8;display:flex;align-items:center;gap:6px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-logo">📡</span>
+  <span class="topbar-title">EduPro Board — Broadcaster</span>
+  <span class="topbar-badge">Interactive Board</span>
+  <div class="topbar-right">
+    <div class="viewer-count">👁 <span id="viewer-num">0</span> watching</div>
+    <div class="live-pill" id="live-pill">● LIVE</div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="preview-wrap">
+    <video id="preview" autoplay muted playsinline></video>
+    <div class="preview-placeholder" id="placeholder">
+      <div class="icon">🖥️</div>
+      <p>Your screen preview will appear here when broadcasting starts</p>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn btn-primary" id="btn-start" onclick="startBroadcast()">
+      ▶ Start Broadcasting
+    </button>
+    <button class="btn btn-stop" id="btn-stop" onclick="stopBroadcast()" disabled>
+      ⏹ Stop Broadcasting
+    </button>
+    <a class="btn btn-secondary" href="/">← Dashboard</a>
+  </div>
+
+  <div class="status-card">
+    <div class="status-dot" id="status-dot"></div>
+    <div id="status-msg">Connecting to server…</div>
+  </div>
+
+  <div class="tips">
+    <h3>Tips</h3>
+    <ul>
+      <li>🖥️ Click "Start Broadcasting" → select the screen/window to share</li>
+      <li>📱 Tablets open: <strong>https://192.168.100.176:3000/tablet</strong></li>
+      <li>🔒 Accept the SSL certificate warning (one-time, self-signed)</li>
+      <li>📶 All devices must be on the same WiFi network</li>
+    </ul>
+  </div>
+
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/board-client.js"></script>
+<script>
+const SERVER = location.origin;
+const socket = io(SERVER);
+
+let device, producerTransport, videoProducer, audioProducer;
+let broadcasting = false;
+
+const btnStart  = document.getElementById('btn-start');
+const btnStop   = document.getElementById('btn-stop');
+const preview   = document.getElementById('preview');
+const ph        = document.getElementById('placeholder');
+const livePill  = document.getElementById('live-pill');
+const viewerNum = document.getElementById('viewer-num');
+
+// ── Status helpers ──────────────────────────────────────────────────────────
+function setStatus(type, msg) {
+  const dot = document.getElementById('status-dot');
+  const txt = document.getElementById('status-msg');
+  dot.className = 'status-dot ' + type;
+  txt.innerHTML = msg;
+}
+
+// ── Socket events ───────────────────────────────────────────────────────────
+socket.on('connect',    () => setStatus('', 'Connected to server — ready to broadcast'));
+socket.on('disconnect', () => setStatus('error', '⚠ Disconnected from server — retrying…'));
+socket.on('server:status', (s) => { viewerNum.textContent = s.viewers; });
+
+// ── Broadcast ───────────────────────────────────────────────────────────────
+async function startBroadcast() {
+  if (broadcasting) return;
+  try {
+    setStatus('connecting', '⏳ Requesting screen capture…');
+    btnStart.disabled = true;
+
+    // 1. Capture screen (and optionally audio)
+    const stream = await navigator.mediaDevices.getDisplayMedia({
+      video: { frameRate: { ideal: 30, max: 30 }, width: { ideal: 1920 }, height: { ideal: 1080 } },
+      audio: true,
+    });
+
+    // Show local preview
+    preview.srcObject = stream;
+    preview.style.display = 'block';
+    ph.style.display = 'none';
+
+    // If user cancelled screen pick
+    stream.getVideoTracks()[0].addEventListener('ended', stopBroadcast);
+
+    // 2. Create mediasoup Device
+    setStatus('connecting', '⏳ Setting up streaming…');
+    device = new mediasoupClient.Device();
+
+    // 3. Load router RTP capabilities
+    const { rtpCapabilities } = await getRouterRtpCapabilities();
+    await device.load({ routerRtpCapabilities: rtpCapabilities });
+
+    // 4. Create producer transport
+    const transportParams = await createProducerTransport();
+    producerTransport = device.createSendTransport(transportParams);
+
+    producerTransport.on('connect', ({ dtlsParameters }, cb, errCb) => {
+      socket.emit('board:connectTransport', { dtlsParameters }, (res) => {
+        res.ok ? cb() : errCb(new Error(res.error));
+      });
+    });
+
+    producerTransport.on('produce', ({ kind, rtpParameters }, cb, errCb) => {
+      socket.emit('board:produce', { kind, rtpParameters }, (res) => {
+        res.ok ? cb({ id: res.producerId }) : errCb(new Error(res.error));
+      });
+    });
+
+    // 5. Produce video
+    const videoTrack = stream.getVideoTracks()[0];
+    videoProducer = await producerTransport.produce({ track: videoTrack });
+
+    // 6. Produce audio if available
+    if (stream.getAudioTracks().length) {
+      const audioTrack = stream.getAudioTracks()[0];
+      audioProducer = await producerTransport.produce({ track: audioTrack });
+    }
+
+    broadcasting = true;
+    btnStart.disabled = true;
+    btnStop.disabled  = false;
+    livePill.classList.add('show');
+    setStatus('live', '🔴 <strong>Live</strong> — broadcasting to all tablets');
+
+  } catch (err) {
+    console.error('startBroadcast error:', err);
+    setStatus('error', '❌ ' + (err.message || 'Failed to start broadcast'));
+    btnStart.disabled = false;
+  }
+}
+
+async function stopBroadcast() {
+  if (videoProducer) { videoProducer.close(); videoProducer = null; }
+  if (audioProducer) { audioProducer.close(); audioProducer = null; }
+  if (producerTransport) { producerTransport.close(); producerTransport = null; }
+  if (preview.srcObject) {
+    preview.srcObject.getTracks().forEach(t => t.stop());
+    preview.srcObject = null;
+  }
+  preview.style.display = 'none';
+  ph.style.display = 'flex';
+
+  socket.emit('board:stopBroadcast');
+
+  broadcasting = false;
+  btnStart.disabled = false;
+  btnStop.disabled  = true;
+  livePill.classList.remove('show');
+  setStatus('', 'Broadcast stopped — click Start to broadcast again');
+}
+
+// ── Signaling helpers ───────────────────────────────────────────────────────
+async function getRouterRtpCapabilities() {
+  const r = await fetch('/api/rtp-capabilities');
+  return await r.json();
+}
+
+function createProducerTransport() {
+  return new Promise((res, rej) => {
+    socket.emit('board:createTransport', {}, (data) => {
+      if (data.ok) res(data);
+      else rej(new Error(data.error));
+    });
+  });
+}
+</script>
+</body>
+</html>

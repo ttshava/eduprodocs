@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduPro Classroom</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#f1f5f9;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.logo{font-size:48px;margin-bottom:8px;text-align:center}
+h1{font-size:1.8rem;font-weight:800;text-align:center;margin-bottom:6px}
+.sub{font-size:.95rem;color:#94a3b8;text-align:center;margin-bottom:40px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:680px;width:100%}
+.card{background:#1e293b;border-radius:16px;padding:32px 24px;text-align:center;text-decoration:none;color:inherit;border:2px solid transparent;transition:all .2s}
+.card:hover{border-color:#FF0527;transform:translateY(-2px)}
+.card-icon{font-size:56px;margin-bottom:16px;display:block}
+.card-title{font-size:1.2rem;font-weight:700;margin-bottom:8px}
+.card-desc{font-size:.85rem;color:#94a3b8;line-height:1.5}
+.board-card{border-color:#FF052733}
+.tablet-card{border-color:#10b98133}
+.status-bar{margin-top:32px;background:#1e293b;border-radius:12px;padding:14px 24px;display:flex;align-items:center;gap:16px;font-size:.85rem;max-width:680px;width:100%}
+.dot{width:10px;height:10px;border-radius:50%;background:#374151;flex-shrink:0}
+.dot.live{background:#22c55e;box-shadow:0 0 8px #22c55e80;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.status-text{color:#94a3b8}
+.status-text span{font-weight:700;color:#f1f5f9}
+.qr-section{margin-top:24px;text-align:center;max-width:680px;width:100%}
+.qr-section h3{font-size:.9rem;font-weight:600;color:#94a3b8;margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em}
+.qr-wrap{background:#fff;border-radius:12px;padding:16px;display:inline-block}
+.qr-url{margin-top:10px;font-size:.8rem;color:#64748b;font-family:monospace}
+@media(max-width:500px){.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="logo">🎓</div>
+<h1>EduPro Classroom</h1>
+<p class="sub">Screen sharing · 1 board → 40 tablets · Offline LAN</p>
+
+<div class="cards">
+  <a class="card board-card" href="/board">
+    <span class="card-icon">📡</span>
+    <div class="card-title">Interactive Board</div>
+    <div class="card-desc">Open on the classroom board or teacher's computer to broadcast the screen to all tablets.</div>
+  </a>
+  <a class="card tablet-card" href="/tablet">
+    <span class="card-icon">📱</span>
+    <div class="card-title">Student Tablet</div>
+    <div class="card-desc">Open on each student tablet to view the board's screen in real time. Scans the QR code below.</div>
+  </a>
+</div>
+
+<div class="status-bar">
+  <div class="dot" id="status-dot"></div>
+  <div class="status-text" id="status-text">Connecting to server…</div>
+</div>
+
+<div class="qr-section">
+  <h3>Scan to connect tablet</h3>
+  <div class="qr-wrap">
+    <img src="/qr" width="200" height="200" alt="QR Code for tablet URL">
+  </div>
+  <div class="qr-url">https://192.168.100.176:3000/tablet</div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+const socket = io();
+const dot  = document.getElementById('status-dot');
+const text = document.getElementById('status-text');
+
+socket.on('connect', () => {
+  dot.classList.remove('live');
+  text.innerHTML = 'Server connected — <span>waiting for broadcast</span>';
+  pollStatus();
+});
+socket.on('disconnect', () => {
+  dot.classList.remove('live');
+  text.textContent = 'Disconnected from server — retrying…';
+});
+socket.on('server:status', updateStatus);
+
+function updateStatus(s) {
+  if (s.broadcasting) {
+    dot.classList.add('live');
+    text.innerHTML = `🔴 <span>Live</span> — ${s.viewers} tablet${s.viewers!==1?'s':''} watching`;
+  } else {
+    dot.classList.remove('live');
+    text.innerHTML = `Server ready — <span>Board not broadcasting yet</span> · ${s.viewers} tablet${s.viewers!==1?'s':''} connected`;
+  }
+}
+
+async function pollStatus() {
+  try {
+    const r = await fetch('/api/status');
+    const s = await r.json();
+    updateStatus(s);
+  } catch(e) {}
+}
+</script>
+</body>
+</html>

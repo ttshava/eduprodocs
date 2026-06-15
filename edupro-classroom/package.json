@@ -1,0 +1,26 @@
+{
+  "name": "edupro-classroom",
+  "version": "1.0.0",
+  "description": "EduPro WebRTC Classroom Screen Sharing — Offline, 1 board → 40 tablets",
+  "main": "server.js",
+  "scripts": {
+    "build": "npx esbuild src/board-client.js --bundle --platform=browser --outfile=public/board-client.js --define:process.env.NODE_ENV=\\\"production\\\" && npx esbuild src/tablet-client.js --bundle --platform=browser --outfile=public/tablet-client.js --define:process.env.NODE_ENV=\\\"production\\\"",
+    "setup": "npm install && npm run build && npm run certs",
+    "certs": "node scripts/gen-certs.js",
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mediasoup": "^3.14.0",
+    "mediasoup-client": "^3.7.10",
+    "socket.io": "^4.7.2",
+    "qrcode": "^1.5.3"
+  },
+  "devDependencies": {
+    "esbuild": "^0.20.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
