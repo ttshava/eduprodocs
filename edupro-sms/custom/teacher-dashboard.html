@@ -1,292 +1,992 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Teacher Dashboard | Edupro SMS</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#1a1a2e}
-a{text-decoration:none;color:inherit}
-#sidebar{position:fixed;left:0;top:0;width:220px;height:100vh;background:#1a1a2e;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
-#main{margin-left:220px;min-height:100vh;display:flex;flex-direction:column}
-#topbar{height:52px;background:#fff;border-bottom:1px solid #eee;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
-#content{padding:24px;flex:1}
-.sb-brand{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.1)}
-.sb-brand-name{font-size:17px;font-weight:800;color:#fff}
-.sb-brand-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px}
-.sb-nav{padding:8px 0;flex:1}
-.sb-link{display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:13px;color:rgba(255,255,255,.72);border-left:3px solid transparent;transition:all .15s}
-.sb-link:hover{background:rgba(255,255,255,.07);color:#fff}
-.sb-link.active{background:rgba(192,57,43,.25);border-left-color:#c0392b;color:#fff;font-weight:600}
-.sb-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0}
-.sb-footer{padding:14px 16px;border-top:1px solid rgba(255,255,255,.1)}
-.sb-user{font-size:12px;color:rgba(255,255,255,.5)}
-.sb-logout{font-size:12px;color:rgba(192,57,43,.8);margin-top:4px;cursor:pointer}
-.tb-left{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:#555}
-.tb-right{display:flex;align-items:center;gap:12px}
-.tb-select{padding:6px 10px;border:1px solid #ddd;border-radius:7px;font-size:12px;outline:none}
-.tb-select:focus{border-color:#c0392b}
-.avatar{width:34px;height:34px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
-.card{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:20px}
-.card-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#888;margin-bottom:16px}
-.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
-.kpi{display:flex;align-items:center;gap:14px}
-.kpi-icon{width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-.kpi-val{font-size:26px;font-weight:800;line-height:1}
-.kpi-lbl{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-top:4px}
-.kpi-tile{border-left:4px solid}
-.banner{border-radius:10px;padding:20px 24px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#1a1a2e 0%,#16a34a 100%);color:#fff}
-.banner-title{font-size:20px;font-weight:800}
-.banner-sub{font-size:13px;opacity:.8;margin-top:4px}
-.banner-right{text-align:right;font-size:13px;opacity:.8}
-.tbl{width:100%;border-collapse:collapse;font-size:13px}
-.tbl th{background:#f8f9fa;padding:9px 12px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:#666;border-bottom:2px solid #eee}
-.tbl td{padding:9px 12px;border-bottom:1px solid #f5f5f5;vertical-align:middle}
-.tbl tr:last-child td{border-bottom:none}
-.tbl tr:hover td{background:#f8fff8}
-.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
-.badge-green{background:#dcfce7;color:#166534}
-.badge-orange{background:#ffedd5;color:#c2410c}
-.badge-blue{background:#dbeafe;color:#1e40af}
-.btn-sm{padding:5px 12px;border-radius:7px;font-size:12px;font-weight:700;border:none;cursor:pointer;background:#c0392b;color:#fff;white-space:nowrap}
-.btn-sm:hover{background:#a93226}
-.btn-outline-sm{padding:5px 12px;border-radius:7px;font-size:12px;font-weight:700;border:2px solid #c0392b;color:#c0392b;background:none;cursor:pointer}
-.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.qa-card{padding:14px;border-radius:9px;background:#f8f9fa;cursor:pointer;transition:all .2s;border:1px solid #eee;display:flex;align-items:center;gap:10px}
-.qa-card:hover{background:#f0fdf4;border-color:#bbf7d0;transform:translateY(-1px)}
-.qa-icon{width:38px;height:38px;border-radius:9px;background:#dcfce7;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.qa-title{font-size:13px;font-weight:700}
-.qa-desc{font-size:11px;color:#888;margin-top:2px}
-.pbar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.pbar-lbl{width:110px;font-size:12px;color:#555;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pbar-bg{flex:1;height:7px;background:#f0f0f0;border-radius:4px;overflow:hidden}
-.pbar-fill{height:100%;background:#16a34a;border-radius:4px;transition:width .6s}
-.pbar-count{width:70px;font-size:11px;color:#888;text-align:right;flex-shrink:0}
-.cal-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #f5f5f5}
-.cal-row:last-child{border-bottom:none}
-.cal-term{font-size:13px;font-weight:600;width:60px}
-.cal-dates{font-size:12px;color:#888;flex:1}
-.hamburger{display:none;background:none;border:none;font-size:22px;cursor:pointer;margin-right:10px}
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99}
-@media(max-width:768px){
-  #sidebar{transform:translateX(-100%);transition:transform .25s}
-  #sidebar.open{transform:translateX(0)}
-  #main{margin-left:0}
-  .hamburger{display:block}
-  .grid-4,.grid-2{grid-template-columns:1fr}
-  .overlay.show{display:block}
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teacher Dashboard — Edupro SMS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    /* ── CSS Variables ── */
+    :root {
+      --red: #c0392b;
+      --red-dark: #991b1b;
+      --red-light: #fef2f2;
+      --navy: #0f172a;
+      --navy-mid: #1e293b;
+      --bg: #f8fafc;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text-2: #475569;
+      --text-3: #94a3b8;
+      --blue: #3b82f6;
+      --blue-light: #eff6ff;
+      --green: #10b981;
+      --green-light: #ecfdf5;
+      --purple: #8b5cf6;
+      --purple-light: #f5f3ff;
+      --orange: #f59e0b;
+      --orange-light: #fffbeb;
+    }
+
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── Shimmer / Skeleton ── */
+    @keyframes shimmer {
+      0%   { background-position: -200% 0; }
+      100% { background-position:  200% 0; }
+    }
+    .skeleton {
+      background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 8px;
+    }
+
+    /* ── Sidebar ── */
+    #sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 260px;
+      height: 100vh;
+      background: #0f172a;
+      display: flex;
+      flex-direction: column;
+      z-index: 200;
+      overflow-y: auto;
+      transition: transform .25s ease;
+    }
+
+    /* Logo */
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      flex-shrink: 0;
+    }
+    .logo-circle {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #c0392b, #e74c3c);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 700; color: #fff;
+      flex-shrink: 0;
+    }
+    .logo-text { display: flex; flex-direction: column; }
+    .logo-name  { font-size: 15px; font-weight: 700; color: #fff; line-height: 1.2; }
+    .logo-sub   { font-size: 11px; color: #64748b; line-height: 1.2; }
+
+    /* Nav */
+    #sidebar-nav { flex: 1; padding: 12px 0; }
+    .nav-section-header {
+      font-size: 10px;
+      text-transform: uppercase;
+      color: #475569;
+      letter-spacing: .8px;
+      padding: 14px 20px 6px;
+      font-weight: 600;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      margin: 2px 12px;
+      cursor: pointer;
+      transition: background .15s;
+      color: #94a3b8;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .nav-item:hover { background: rgba(255,255,255,.06); color: #cbd5e1; }
+    .nav-item.active {
+      background: rgba(192,57,43,.18);
+      color: #fff;
+      font-weight: 600;
+    }
+    .nav-icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.06);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+      transition: background .15s;
+    }
+    .nav-item.active .nav-icon { background: #c0392b; }
+
+    /* User card */
+    .sidebar-user {
+      margin: 12px;
+      background: rgba(255,255,255,.06);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .user-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #c0392b, #e74c3c);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; color: #fff;
+      flex-shrink: 0;
+    }
+    .user-info { flex: 1; min-width: 0; }
+    .user-name  { font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .user-role  { font-size: 11px; color: #64748b; }
+    .user-logout {
+      font-size: 16px; color: #64748b; cursor: pointer; transition: color .15s;
+    }
+    .user-logout:hover { color: #c0392b; }
+
+    /* ── Sidebar overlay backdrop (mobile) ── */
+    #sidebar-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.5);
+      z-index: 199;
+    }
+
+    /* ── Topbar ── */
+    #topbar {
+      position: fixed;
+      top: 0; left: 260px; right: 0;
+      height: 60px;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 28px;
+      z-index: 100;
+      gap: 16px;
+    }
+    .topbar-hamburger {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 22px;
+      color: var(--text-2);
+      margin-right: 4px;
+      align-items: center;
+    }
+    .topbar-title  { font-size: 16px; font-weight: 700; color: var(--text); flex: 1; }
+    .topbar-actions { display: flex; align-items: center; gap: 12px; }
+    .topbar-badge {
+      position: relative;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .topbar-badge:hover { background: var(--border); }
+    .badge-dot {
+      position: absolute;
+      top: 6px; right: 6px;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--red);
+      border: 2px solid #fff;
+    }
+    .topbar-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #c0392b, #e74c3c);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: #fff;
+      cursor: pointer;
+    }
+
+    /* ── Main content ── */
+    #main-content {
+      margin-left: 260px;
+      padding-top: 60px;
+      min-height: 100vh;
+    }
+    .page-body { padding: 28px; }
+
+    /* ── Hero Banner ── */
+    .hero-banner {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1e3a5f 100%);
+      border-radius: 20px;
+      padding: 28px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      overflow: hidden;
+      position: relative;
+    }
+    .hero-left    { position: relative; z-index: 1; }
+    .hero-greeting {
+      font-size: 22px; font-weight: 700; color: #fff;
+      margin-bottom: 4px; line-height: 1.3;
+    }
+    .hero-subtitle {
+      font-size: 14px; color: rgba(255,255,255,.7); margin-bottom: 16px;
+    }
+    .hero-pills   { display: flex; flex-wrap: wrap; gap: 8px; }
+    .hero-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 999px; padding: 5px 12px;
+      font-size: 12px; font-weight: 500;
+      color: rgba(255,255,255,.85);
+      backdrop-filter: blur(4px);
+    }
+    .hero-deco {
+      font-size: 80px; opacity: .3; line-height: 1;
+      user-select: none; flex-shrink: 0;
+    }
+
+    /* ── KPI Grid ── */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .kpi-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.04);
+      padding: 22px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .kpi-icon-box {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; flex-shrink: 0;
+    }
+    .kpi-body  { flex: 1; min-width: 0; }
+    .kpi-label {
+      font-size: 11px; font-weight: 600; color: var(--text-3);
+      text-transform: uppercase; letter-spacing: .6px; margin-bottom: 4px;
+    }
+    .kpi-value {
+      font-size: 32px; font-weight: 800; color: var(--text); line-height: 1.1;
+    }
+    .kpi-sub   { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+
+    /* ── Two-col rows ── */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+
+    /* ── Card ── */
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.04);
+      padding: 22px;
+    }
+    .card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .card-title { font-size: 15px; font-weight: 700; color: var(--text); }
+    .card-link  {
+      font-size: 13px; font-weight: 600; color: var(--red); transition: opacity .15s;
+    }
+    .card-link:hover { opacity: .75; }
+    .card-label { font-size: 12px; font-weight: 500; color: var(--text-3); }
+
+    /* ── Class rows ── */
+    .class-row {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .class-row:last-child { border-bottom: none; }
+    .class-row-top {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 8px; gap: 8px; flex-wrap: wrap;
+    }
+    .class-row-info   { display: flex; align-items: center; gap: 8px; }
+    .class-name       { font-size: 14px; font-weight: 600; color: var(--text); }
+    .term-badge {
+      font-size: 11px; font-weight: 600;
+      background: var(--blue-light); color: var(--blue);
+      border-radius: 999px; padding: 2px 8px;
+    }
+    .class-row-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .class-progress-label { font-size: 12px; color: var(--text-3); }
+    .btn-enter {
+      font-size: 12px; font-weight: 600;
+      color: var(--red); border: 1.5px solid var(--red);
+      border-radius: 8px; padding: 4px 12px;
+      background: transparent; cursor: pointer;
+      transition: background .15s, color .15s; white-space: nowrap;
+      display: inline-block;
+    }
+    .btn-enter:hover { background: var(--red); color: #fff; }
+    .progress-bar-wrap {
+      height: 8px; background: var(--border);
+      border-radius: 999px; overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #c0392b, #e74c3c);
+      border-radius: 999px;
+      transition: width .5s ease;
+    }
+
+    /* Empty state */
+    .empty-state { text-align: center; padding: 32px 16px; color: var(--text-3); }
+    .empty-state-icon { font-size: 36px; margin-bottom: 8px; }
+    .empty-state-text { font-size: 14px; }
+
+    /* ── Marks status table ── */
+    .marks-table { width: 100%; border-collapse: collapse; }
+    .marks-table th {
+      font-size: 11px; font-weight: 600; color: var(--text-3);
+      text-transform: uppercase; letter-spacing: .5px;
+      padding: 0 10px 10px 0; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .marks-table td {
+      padding: 11px 10px 11px 0;
+      font-size: 13px; color: var(--text);
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .marks-table tr:last-child td { border-bottom: none; }
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 12px; font-weight: 600;
+      border-radius: 999px; padding: 3px 10px;
+    }
+    .status-submitted { background: var(--green-light); color: var(--green); }
+    .status-pending   { background: var(--orange-light); color: var(--orange); }
+    .action-link-edit {
+      font-size: 12px; font-weight: 600; color: var(--text-2); transition: color .15s;
+    }
+    .action-link-edit:hover  { color: var(--green); }
+    .action-link-enter {
+      font-size: 12px; font-weight: 600; color: var(--red); transition: color .15s;
+    }
+    .action-link-enter:hover { color: var(--red-dark); }
+
+    /* ── Calendar / Events list ── */
+    .events-list { display: flex; flex-direction: column; }
+    .event-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 0; border-bottom: 1px solid var(--border);
+    }
+    .event-row:last-child { border-bottom: none; }
+    .event-dot  { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .event-body { flex: 1; min-width: 0; }
+    .event-name { font-size: 13px; font-weight: 500; color: var(--text); }
+    .event-date { font-size: 12px; color: var(--text-3); margin-top: 1px; }
+    .event-today {
+      font-size: 11px; font-weight: 600;
+      background: var(--red-light); color: var(--red);
+      border-radius: 999px; padding: 2px 8px; white-space: nowrap;
+    }
+
+    /* ── Quick Actions grid ── */
+    .qa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .qa-tile {
+      border-radius: 14px; padding: 18px 16px;
+      display: flex; flex-direction: column; gap: 6px;
+      cursor: pointer; transition: opacity .15s, transform .15s;
+      text-decoration: none;
+    }
+    .qa-tile:hover { opacity: .88; transform: translateY(-1px); }
+    .qa-tile-icon  { font-size: 24px; margin-bottom: 2px; }
+    .qa-tile-title { font-size: 14px; font-weight: 700; color: #fff; }
+    .qa-tile-sub   { font-size: 12px; color: rgba(255,255,255,.75); }
+    .qa-blue   { background: linear-gradient(135deg, #2563eb, #3b82f6); }
+    .qa-purple { background: linear-gradient(135deg, #7c3aed, #8b5cf6); }
+    .qa-green  { background: linear-gradient(135deg, #059669, #10b981); }
+    .qa-orange { background: linear-gradient(135deg, #d97706, #f59e0b); }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 900px) {
+      .two-col { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      #sidebar { transform: translateX(-100%); }
+      #sidebar.open { transform: translateX(0); }
+      #sidebar-backdrop.open { display: block; }
+      #topbar { left: 0; }
+      .topbar-hamburger { display: flex; }
+      #main-content { margin-left: 0; }
+      .page-body { padding: 16px; }
+      .kpi-grid { grid-template-columns: 1fr 1fr; }
+      .hero-deco { display: none; }
+      .hero-banner { padding: 22px 20px; }
+    }
+    @media (max-width: 480px) {
+      .kpi-grid { grid-template-columns: 1fr; }
+      .qa-grid  { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-<div id="sidebar">
-  <div class="sb-brand"><div class="sb-brand-name">Edupro SMS</div><div class="sb-brand-sub">Teacher Portal</div></div>
-  <nav class="sb-nav" id="sb-nav"></nav>
-  <div class="sb-footer"><div class="sb-user" id="sb-user">Loading…</div><div class="sb-logout" onclick="location.href='/logout'">Sign out</div></div>
-</div>
-<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 
-<div id="main">
-  <div id="topbar">
-    <div class="tb-left">
-      <button class="hamburger" onclick="toggleSidebar()">☰</button>
-      <span>📚 Teacher Dashboard</span>
-    </div>
-    <div class="tb-right">
-      <select class="tb-select" id="term-sel" onchange="initPage()">
-        <option value="2026 (Term 1)">Term 1 · 2026</option>
-        <option value="2026 (Term 2)" selected>Term 2 · 2026</option>
-        <option value="2026 (Term 3)">Term 3 · 2026</option>
-      </select>
-      <div class="avatar" id="top-avatar">T</div>
-    </div>
-  </div>
-
-  <div id="content">
-    <div class="banner">
-      <div>
-        <div class="banner-title" id="banner-name">Good morning, Teacher 👋</div>
-        <div class="banner-sub" id="banner-sub">Here is a summary of your classes</div>
-      </div>
-      <div class="banner-right" id="banner-right"></div>
-    </div>
-
-    <div class="grid-4">
-      <div class="card kpi-tile" style="border-left-color:#2563eb">
-        <div class="kpi"><div class="kpi-icon" style="background:#dbeafe">🏫</div>
-          <div><div class="kpi-val" id="kpi-classes">—</div><div class="kpi-lbl">My Classes</div></div></div>
-      </div>
-      <div class="card kpi-tile" style="border-left-color:#7c3aed">
-        <div class="kpi"><div class="kpi-icon" style="background:#ede9fe">👨‍🎓</div>
-          <div><div class="kpi-val" id="kpi-students">—</div><div class="kpi-lbl">Total Students</div></div></div>
-      </div>
-      <div class="card kpi-tile" style="border-left-color:#16a34a">
-        <div class="kpi"><div class="kpi-icon" style="background:#dcfce7">✅</div>
-          <div><div class="kpi-val" id="kpi-submitted">—</div><div class="kpi-lbl">Marks Submitted</div></div></div>
-      </div>
-      <div class="card kpi-tile" style="border-left-color:#d97706">
-        <div class="kpi"><div class="kpi-icon" style="background:#ffedd5">⏳</div>
-          <div><div class="kpi-val" id="kpi-pending">—</div><div class="kpi-lbl">Marks Pending</div></div></div>
+  <!-- ── Sidebar ── -->
+  <aside id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-circle">E</div>
+      <div class="logo-text">
+        <span class="logo-name">Edupro SMS</span>
+        <span class="logo-sub">School Management</span>
       </div>
     </div>
-
-    <div class="grid-2">
-      <div class="card">
-        <div class="card-title">My Classes This Term</div>
-        <table class="tbl">
-          <thead><tr><th>Class</th><th>Programme</th><th>Students</th><th>Marks</th><th>Action</th></tr></thead>
-          <tbody id="class-tbody"><tr><td colspan="5" style="text-align:center;color:#aaa;padding:20px">Loading classes…</td></tr></tbody>
-        </table>
+    <nav id="sidebar-nav"></nav>
+    <div class="sidebar-user">
+      <div class="user-avatar" id="sidebar-user-avatar">T</div>
+      <div class="user-info">
+        <div class="user-name" id="sidebar-user-name">Teacher</div>
+        <div class="user-role">Class Teacher</div>
       </div>
+      <a class="user-logout" href="/login" title="Logout">⏻</a>
+    </div>
+  </aside>
 
-      <div class="card">
-        <div class="card-title">Marks Entry Progress</div>
-        <div id="marks-progress"><div style="text-align:center;padding:20px;color:#aaa">Loading…</div></div>
-        <div style="margin-top:14px;padding-top:12px;border-top:1px solid #f0f0f0;font-size:12px;color:#888">
-          Progress shown per class. Click "Enter Marks" to update.
+  <!-- Sidebar backdrop (mobile) -->
+  <div id="sidebar-backdrop"></div>
+
+  <!-- ── Topbar ── -->
+  <header id="topbar">
+    <button class="topbar-hamburger" id="hamburger-btn" aria-label="Open menu">☰</button>
+    <div class="topbar-title">Teacher Dashboard</div>
+    <div class="topbar-actions">
+      <div class="topbar-badge" title="Notifications">
+        🔔
+        <span class="badge-dot"></span>
+      </div>
+      <div class="topbar-avatar" id="topbar-avatar" title="Profile">T</div>
+    </div>
+  </header>
+
+  <!-- ── Main content ── -->
+  <main id="main-content">
+    <div class="page-body">
+
+      <!-- Hero Banner -->
+      <div class="hero-banner">
+        <div class="hero-left">
+          <div class="hero-greeting" id="hero-name">Welcome back, Teacher 👋</div>
+          <div class="hero-subtitle" id="hero-class">Class Teacher · Grade 4A</div>
+          <div class="hero-pills">
+            <span class="hero-pill">📅 Term 2 · 2026</span>
+            <span class="hero-pill">✏️ Marks entry open</span>
+            <span class="hero-pill" id="hero-students">🏫 — students</span>
+          </div>
         </div>
+        <div class="hero-deco">✏️</div>
       </div>
-    </div>
 
-    <div class="grid-2">
-      <div class="card">
-        <div class="card-title">Quick Actions</div>
-        <div class="qa-grid">
-          <div class="qa-card" onclick="location.href='/marks-entry'">
-            <div class="qa-icon">📝</div>
-            <div><div class="qa-title">Enter Marks</div><div class="qa-desc">Open marks sheet</div></div>
+      <!-- KPI Grid -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon-box" style="background:var(--blue-light);">👨‍🎓</div>
+          <div class="kpi-body">
+            <div class="kpi-label">My Students</div>
+            <div class="kpi-value skeleton" id="kpi-students" style="min-width:60px;min-height:36px;">&nbsp;</div>
+            <div class="kpi-sub">Total enrolled</div>
           </div>
-          <div class="qa-card" onclick="location.href='/report-card'">
-            <div class="qa-icon" style="background:#dbeafe">📋</div>
-            <div><div class="qa-title">Report Cards</div><div class="qa-desc">View &amp; print cards</div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon-box" style="background:var(--green-light);">✅</div>
+          <div class="kpi-body">
+            <div class="kpi-label">Subjects Submitted</div>
+            <div class="kpi-value skeleton" id="kpi-marks-done" style="min-width:60px;min-height:36px;">&nbsp;</div>
+            <div class="kpi-sub">Marks entered</div>
           </div>
-          <div class="qa-card" onclick="location.href='/teacher-attendance'">
-            <div class="qa-icon" style="background:#fef9c3">📆</div>
-            <div><div class="qa-title">Attendance</div><div class="qa-desc">Mark class register</div></div>
-          </div>
-          <div class="qa-card" onclick="location.href='/teacher-notices'">
-            <div class="qa-icon" style="background:#ede9fe">📢</div>
-            <div><div class="qa-title">Notices</div><div class="qa-desc">School announcements</div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon-box" style="background:var(--orange-light);">⏳</div>
+          <div class="kpi-body">
+            <div class="kpi-label">Pending Submission</div>
+            <div class="kpi-value skeleton" id="kpi-pending" style="min-width:60px;min-height:36px;">&nbsp;</div>
+            <div class="kpi-sub">Awaiting entry</div>
           </div>
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-title">Academic Calendar 2026</div>
-        <div class="cal-row">
-          <span class="cal-term">Term 1</span>
-          <span class="cal-dates">13 Jan – 12 Apr 2026</span>
-          <span class="badge" id="cal-t1">—</span>
+      <!-- Middle Row -->
+      <div class="two-col">
+
+        <!-- My Classes -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">My Classes</div>
+            <a class="card-link" href="/marks-entry">Enter Marks →</a>
+          </div>
+          <div id="classes-list">
+            <!-- Skeleton placeholders -->
+            <div class="class-row">
+              <div class="class-row-top">
+                <div class="skeleton" style="width:120px;height:16px;border-radius:6px;"></div>
+                <div class="skeleton" style="width:80px;height:16px;border-radius:6px;"></div>
+              </div>
+              <div class="progress-bar-wrap">
+                <div class="skeleton" style="width:100%;height:8px;border-radius:999px;"></div>
+              </div>
+            </div>
+            <div class="class-row">
+              <div class="class-row-top">
+                <div class="skeleton" style="width:100px;height:16px;border-radius:6px;"></div>
+                <div class="skeleton" style="width:80px;height:16px;border-radius:6px;"></div>
+              </div>
+              <div class="progress-bar-wrap">
+                <div class="skeleton" style="width:100%;height:8px;border-radius:999px;"></div>
+              </div>
+            </div>
+            <div class="class-row">
+              <div class="class-row-top">
+                <div class="skeleton" style="width:110px;height:16px;border-radius:6px;"></div>
+                <div class="skeleton" style="width:80px;height:16px;border-radius:6px;"></div>
+              </div>
+              <div class="progress-bar-wrap">
+                <div class="skeleton" style="width:100%;height:8px;border-radius:999px;"></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="cal-row">
-          <span class="cal-term">Term 2</span>
-          <span class="cal-dates">12 May – 13 Aug 2026</span>
-          <span class="badge" id="cal-t2">—</span>
+
+        <!-- Marks Submission Status -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Marks Submission</div>
+            <span class="card-label">Term 2 · 2026</span>
+          </div>
+          <table class="marks-table">
+            <thead>
+              <tr>
+                <th>Subject</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="marks-status-tbody">
+              <tr>
+                <td><div class="skeleton" style="width:100px;height:14px;"></div></td>
+                <td><div class="skeleton" style="width:80px;height:22px;border-radius:999px;"></div></td>
+                <td><div class="skeleton" style="width:50px;height:14px;"></div></td>
+              </tr>
+              <tr>
+                <td><div class="skeleton" style="width:90px;height:14px;"></div></td>
+                <td><div class="skeleton" style="width:80px;height:22px;border-radius:999px;"></div></td>
+                <td><div class="skeleton" style="width:50px;height:14px;"></div></td>
+              </tr>
+              <tr>
+                <td><div class="skeleton" style="width:110px;height:14px;"></div></td>
+                <td><div class="skeleton" style="width:80px;height:22px;border-radius:999px;"></div></td>
+                <td><div class="skeleton" style="width:50px;height:14px;"></div></td>
+              </tr>
+              <tr>
+                <td><div class="skeleton" style="width:95px;height:14px;"></div></td>
+                <td><div class="skeleton" style="width:80px;height:22px;border-radius:999px;"></div></td>
+                <td><div class="skeleton" style="width:50px;height:14px;"></div></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="cal-row">
-          <span class="cal-term">Term 3</span>
-          <span class="cal-dates">04 Sep – 04 Dec 2026</span>
-          <span class="badge" id="cal-t3">—</span>
+
+      </div><!-- /.two-col (middle) -->
+
+      <!-- Bottom Row -->
+      <div class="two-col">
+
+        <!-- Academic Calendar -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Upcoming Events</div>
+            <a class="card-link" href="/teacher-calendar">View all →</a>
+          </div>
+          <div class="events-list">
+            <div class="event-row">
+              <div class="event-dot" style="background:#c0392b;"></div>
+              <div class="event-body">
+                <div class="event-name">📅 Term 2 Exams</div>
+                <div class="event-date">14 Jun 2026</div>
+              </div>
+              <span class="event-today">Today</span>
+            </div>
+            <div class="event-row">
+              <div class="event-dot" style="background:#3b82f6;"></div>
+              <div class="event-body">
+                <div class="event-name">📋 Report Card Submission</div>
+                <div class="event-date">20 Jun 2026</div>
+              </div>
+            </div>
+            <div class="event-row">
+              <div class="event-dot" style="background:#f59e0b;"></div>
+              <div class="event-body">
+                <div class="event-name">🏖️ Term 2 Break</div>
+                <div class="event-date">27 Jun 2026</div>
+              </div>
+            </div>
+            <div class="event-row">
+              <div class="event-dot" style="background:#10b981;"></div>
+              <div class="event-body">
+                <div class="event-name">📅 Term 3 Starts</div>
+                <div class="event-date">14 Jul 2026</div>
+              </div>
+            </div>
+            <div class="event-row">
+              <div class="event-dot" style="background:#8b5cf6;"></div>
+              <div class="event-body">
+                <div class="event-name">🎓 End of Year</div>
+                <div class="event-date">12 Dec 2026</div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div style="margin-top:14px;font-size:12px;color:#888">Today: <strong id="cal-today"></strong></div>
-      </div>
-    </div>
-  </div>
-</div>
 
-<script>
-const NAV=[
-  {id:'dashboard',icon:'🏠',label:'Dashboard',href:'/teacher-dashboard'},
-  {id:'classes',icon:'🏫',label:'My Classes',href:'/teacher-classes'},
-  {id:'marks',icon:'📝',label:'Enter Marks',href:'/marks-entry'},
-  {id:'attendance',icon:'📆',label:'Attendance',href:'/teacher-attendance'},
-  {id:'reports',icon:'📋',label:'Report Cards',href:'/report-card'},
-  {id:'notices',icon:'📢',label:'Notices',href:'/teacher-notices'},
-  {id:'profile',icon:'👤',label:'My Profile',href:'/teacher-profile'},
-];
-function renderSidebar(active){
-  document.getElementById('sb-nav').innerHTML=NAV.map(n=>
-    `<a href="${n.href}" class="sb-link${n.id===active?' active':''}"><span class="sb-icon">${n.icon}</span>${n.label}</a>`
-  ).join('');
-}
-function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show');}
-function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
+        <!-- Quick Actions -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Quick Actions</div>
+          </div>
+          <div class="qa-grid">
+            <a class="qa-tile qa-blue" href="/marks-entry">
+              <div class="qa-tile-icon">✏️</div>
+              <div class="qa-tile-title">Enter Marks</div>
+              <div class="qa-tile-sub">Submit subject scores</div>
+            </a>
+            <a class="qa-tile qa-purple" href="/report-card">
+              <div class="qa-tile-icon">📋</div>
+              <div class="qa-tile-title">View Reports</div>
+              <div class="qa-tile-sub">Student report cards</div>
+            </a>
+            <a class="qa-tile qa-green" href="/teacher-students">
+              <div class="qa-tile-icon">👨‍🎓</div>
+              <div class="qa-tile-title">My Students</div>
+              <div class="qa-tile-sub">View class list</div>
+            </a>
+            <a class="qa-tile qa-orange" href="/teacher-calendar">
+              <div class="qa-tile-icon">📅</div>
+              <div class="qa-tile-title">Calendar</div>
+              <div class="qa-tile-sub">Academic schedule</div>
+            </a>
+          </div>
+        </div>
 
-let _csrf='';
-async function getCSRF(){if(_csrf)return _csrf;const r=await fetch('/api/method/education.api.parent_portal.get_csrf_token');_csrf=(await r.json()).message||'';return _csrf;}
-async function apiGet(m,p={}){const r=await fetch(`/api/method/${m}?${new URLSearchParams(p)}`,{headers:{'X-Frappe-CSRF-Token':await getCSRF()}});if(r.status===401||r.status===403){location.href='/login';return null;}const j=await r.json();if(j.exc_type)throw new Error(j.exception||j.exc_type);return j.message;}
+      </div><!-- /.two-col (bottom) -->
 
-function setCalBadges(){
-  const now=new Date('2026-06-14');
-  const terms=[{start:new Date('2026-01-13'),end:new Date('2026-04-12')},{start:new Date('2026-05-12'),end:new Date('2026-08-13')},{start:new Date('2026-09-04'),end:new Date('2026-12-04')}];
-  document.getElementById('cal-today').textContent=now.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
-  terms.forEach((t,i)=>{
-    const el=document.getElementById('cal-t'+(i+1));
-    if(now<t.start){el.textContent='Upcoming';el.className='badge badge-blue';}
-    else if(now<=t.end){el.textContent='Current';el.className='badge badge-green';}
-    else{el.textContent='Past';el.className='badge';el.style.cssText='background:#f0f0f0;color:#888';}
-  });
-}
+    </div><!-- /.page-body -->
+  </main>
 
-async function initPage(){
-  const term=document.getElementById('term-sel').value;
-  try{
-    const u=await apiGet('frappe.auth.get_logged_user');
-    if(u){
-      const parts=(u||'').split('@')[0].split('.');
-      const name=parts.map(p=>p[0]?.toUpperCase()+p.slice(1)).join(' ');
-      const h=new Date().getHours();
-      const greet=h<12?'Good morning':'h<17'?'Good afternoon':'Good evening';
-      document.getElementById('banner-name').textContent=`${h<12?'Good morning':h<17?'Good afternoon':'Good evening'}, ${name} 👋`;
-      document.getElementById('banner-sub').textContent=`${term} — Sunshine Primary School`;
-      document.getElementById('banner-right').innerHTML=`<div>${new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}</div>`;
-      document.getElementById('top-avatar').textContent=name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-      document.getElementById('sb-user').textContent=name;
+  <script>
+    /* ──────────────────────────────────────────
+       NAV definition
+    ────────────────────────────────────────── */
+    const NAV = [
+      { section: 'MAIN',       id: 'dashboard', icon: '🏠', label: 'Dashboard',        href: '/teacher-dashboard' },
+      {                        id: 'marks',     icon: '✏️', label: 'Enter Marks',       href: '/marks-entry' },
+      {                        id: 'reports',   icon: '📋', label: 'Report Cards',      href: '/report-card' },
+      { section: 'MY CLASSES', id: 'classes',   icon: '🏫', label: 'My Classes',        href: '/teacher-classes' },
+      {                        id: 'students',  icon: '👨‍🎓', label: 'My Students',       href: '/teacher-students' },
+      { section: 'CALENDAR',   id: 'calendar',  icon: '📅', label: 'Academic Calendar', href: '/teacher-calendar' },
+      {                        id: 'profile',   icon: '👤', label: 'My Profile',        href: '/teacher-profile' },
+    ];
+
+    /* ──────────────────────────────────────────
+       Sidebar renderer
+    ────────────────────────────────────────── */
+    function renderSidebar(activeId, navItems) {
+      const container = document.getElementById('sidebar-nav');
+      if (!container) return;
+      let html = '';
+      navItems.forEach(function(item) {
+        if (item.section) {
+          html += '<div class="nav-section-header">' + item.section + '</div>';
+        }
+        const isActive = item.id === activeId;
+        html += '<a href="' + item.href + '" class="nav-item' + (isActive ? ' active' : '') + '" data-id="' + item.id + '">'
+          + '<span class="nav-icon">' + item.icon + '</span>'
+          + '<span class="nav-label">' + item.label + '</span>'
+          + '</a>';
+      });
+      container.innerHTML = html;
     }
-  }catch(e){}
 
-  try{
-    const classes=await apiGet('education.api.marks_entry.get_my_classes',{year:'2026'});
-    if(classes&&classes.length){
-      document.getElementById('kpi-classes').textContent=classes.length;
-      // Build class table
-      const tbody=document.getElementById('class-tbody');
-      tbody.innerHTML=classes.map(c=>`<tr>
-        <td><strong>${c.label}</strong></td>
-        <td>${c.program||'—'}</td>
-        <td><span class="badge badge-blue">—</span></td>
-        <td><span class="badge badge-orange">Pending</span></td>
-        <td><button class="btn-sm" onclick="location.href='/marks-entry?class=${c.id}'">Enter Marks</button></td>
-      </tr>`).join('');
-      // Build progress bars
-      document.getElementById('marks-progress').innerHTML=classes.map(c=>`
-        <div class="pbar-row">
-          <span class="pbar-lbl">${c.label}</span>
-          <div class="pbar-bg"><div class="pbar-fill" style="width:0%"></div></div>
-          <span class="pbar-count">0 / — students</span>
-        </div>`).join('');
-      document.getElementById('kpi-students').textContent='—';
-      document.getElementById('kpi-submitted').textContent='0';
-      document.getElementById('kpi-pending').textContent=classes.length;
+    /* ──────────────────────────────────────────
+       API helpers
+    ────────────────────────────────────────── */
+    var _csrf = '';
+
+    async function getCSRF() {
+      if (_csrf) return _csrf;
+      try {
+        var r = await fetch('/api/method/education.api.parent_portal.get_csrf_token');
+        _csrf = (await r.json()).message || '';
+      } catch (_) { _csrf = ''; }
+      return _csrf;
+    }
+
+    async function apiGet(method, params) {
+      params = params || {};
+      var token = await getCSRF();
+      var qs = new URLSearchParams(params).toString();
+      var url = '/api/method/' + method + (qs ? '?' + qs : '');
+      var r = await fetch(url, {
+        headers: { 'X-Frappe-CSRF-Token': token }
+      });
+      if (r.status === 401 || r.status === 403) {
+        location.href = '/login';
+        return null;
+      }
+      var j = await r.json();
+      if (j.exc_type) throw new Error(j.exception || j.exc_type);
+      return j.message;
+    }
+
+    /* ──────────────────────────────────────────
+       KPI helpers
+    ────────────────────────────────────────── */
+    function setKpi(id, value) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      el.classList.remove('skeleton');
+      el.style.minWidth  = '';
+      el.style.minHeight = '';
+      el.textContent = value;
+    }
+
+    function showKpiError(id) { setKpi(id, '—'); }
+
+    /* ──────────────────────────────────────────
+       Utility: HTML escape
+    ────────────────────────────────────────── */
+    function escHtml(str) {
+      var d = document.createElement('div');
+      d.textContent = String(str);
+      return d.innerHTML;
+    }
+
+    /* ──────────────────────────────────────────
+       Render: My Classes card
+    ────────────────────────────────────────── */
+    function renderClasses(classes) {
+      var container = document.getElementById('classes-list');
+      if (!container) return;
+
+      if (!classes || classes.length === 0) {
+        container.innerHTML = '<div class="empty-state">'
+          + '<div class="empty-state-icon">🏫</div>'
+          + '<div class="empty-state-text">No classes assigned yet.</div>'
+          + '</div>';
+        return;
+      }
+
+      var TOTAL_SUBJECTS = 6;
+      var html = '';
+      classes.forEach(function(cls) {
+        var submitted  = typeof cls.submitted_subjects === 'number' ? cls.submitted_subjects : 0;
+        var pct        = Math.round((submitted / TOTAL_SUBJECTS) * 100);
+        var className  = cls.class_name || cls.student_group || cls.name || 'Class';
+        html += '<div class="class-row">'
+          + '<div class="class-row-top">'
+          +   '<div class="class-row-info">'
+          +     '<span class="class-name">' + escHtml(className) + '</span>'
+          +     '<span class="term-badge">Term 2</span>'
+          +   '</div>'
+          +   '<div class="class-row-actions">'
+          +     '<span class="class-progress-label">' + submitted + '/' + TOTAL_SUBJECTS + ' subjects submitted</span>'
+          +     '<a href="/marks-entry?class=' + encodeURIComponent(className) + '" class="btn-enter">Enter &rarr;</a>'
+          +   '</div>'
+          + '</div>'
+          + '<div class="progress-bar-wrap">'
+          +   '<div class="progress-bar-fill" style="width:' + pct + '%;"></div>'
+          + '</div>'
+          + '</div>';
+      });
+      container.innerHTML = html;
+    }
+
+    /* ──────────────────────────────────────────
+       Render: Marks Submission Status table
+    ────────────────────────────────────────── */
+    function renderMarksStatus(subjects) {
+      var tbody = document.getElementById('marks-status-tbody');
+      if (!tbody) return;
+
+      var defaultSubjects = [
+        { name: 'Mathematics',    submitted: true  },
+        { name: 'English',        submitted: true  },
+        { name: 'Science',        submitted: false },
+        { name: 'Social Studies', submitted: false },
+        { name: 'Shona',          submitted: true  },
+        { name: 'Art & Design',   submitted: false },
+      ];
+
+      var list = (subjects && subjects.length > 0) ? subjects : defaultSubjects;
+      var html = '';
+      list.forEach(function(sub) {
+        var subName     = sub.subject || sub.name || 'Subject';
+        var isSubmitted = sub.submitted || sub.marks_submitted || false;
+        if (isSubmitted) {
+          html += '<tr>'
+            + '<td>' + escHtml(subName) + '</td>'
+            + '<td><span class="status-badge status-submitted">&#10003; Submitted</span></td>'
+            + '<td><a href="/marks-entry?subject=' + encodeURIComponent(subName) + '" class="action-link-edit">Edit &rarr;</a></td>'
+            + '</tr>';
+        } else {
+          html += '<tr>'
+            + '<td>' + escHtml(subName) + '</td>'
+            + '<td><span class="status-badge status-pending">&#9203; Pending</span></td>'
+            + '<td><a href="/marks-entry?subject=' + encodeURIComponent(subName) + '" class="action-link-enter">Enter &rarr;</a></td>'
+            + '</tr>';
+        }
+      });
+      tbody.innerHTML = html;
+    }
+
+    /* ──────────────────────────────────────────
+       Mobile hamburger
+    ────────────────────────────────────────── */
+    function initMobileMenu() {
+      var btn      = document.getElementById('hamburger-btn');
+      var sidebar  = document.getElementById('sidebar');
+      var backdrop = document.getElementById('sidebar-backdrop');
+
+      function openSidebar() {
+        sidebar.classList.add('open');
+        backdrop.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeSidebar() {
+        sidebar.classList.remove('open');
+        backdrop.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      if (btn)      btn.addEventListener('click', openSidebar);
+      if (backdrop) backdrop.addEventListener('click', closeSidebar);
+    }
+
+    /* ──────────────────────────────────────────
+       initPage — main entry point
+    ────────────────────────────────────────── */
+    async function initPage() {
+      // 1. Render sidebar with active item
+      renderSidebar('dashboard', NAV);
+
+      // 2. Mobile menu
+      initMobileMenu();
+
+      // 3. Fetch teacher's classes data from API
+      try {
+        var data = await apiGet('education.api.marks_entry.get_my_classes');
+        if (!data) return; // redirected to /login
+
+        // Normalise data shape
+        var classes     = data.classes  || (Array.isArray(data) ? data : []);
+        var subjects    = data.subjects || [];
+        var teacherName = data.teacher_name || data.full_name || 'Teacher';
+        var primaryClass = data.class_name
+          || (classes[0] && (classes[0].class_name || classes[0].student_group))
+          || 'Grade 4A';
+
+        // 4. Update hero section
+        document.getElementById('hero-name').textContent  = 'Welcome back, ' + teacherName + ' 👋';
+        document.getElementById('hero-class').textContent = 'Class Teacher · ' + primaryClass;
+
+        // 5. Calculate KPIs from data
+        var totalStudents = typeof data.students_count === 'number'
+          ? data.students_count
+          : classes.reduce(function(acc, c) { return acc + (c.students_count || c.total_students || 0); }, 0);
+
+        var TOTAL_SUBJECTS = 6;
+        var totalSubmitted = 0;
+        var totalPending   = 0;
+
+        if (subjects.length > 0) {
+          subjects.forEach(function(s) {
+            if (s.submitted || s.marks_submitted) totalSubmitted++;
+            else totalPending++;
+          });
+        } else {
+          // Derive from classes array
+          classes.forEach(function(c) {
+            var sub = typeof c.submitted_subjects === 'number' ? c.submitted_subjects : 0;
+            totalSubmitted += sub;
+            totalPending   += Math.max(0, TOTAL_SUBJECTS - sub);
+          });
+          if (classes.length === 0) {
+            totalSubmitted = 0;
+            totalPending   = TOTAL_SUBJECTS;
+          }
+        }
+
+        // Update hero student pill
+        document.getElementById('hero-students').textContent = '🏫 ' + (totalStudents || '—') + ' students';
+
+        // Update sidebar & topbar avatars with teacher initials
+        var initials = teacherName.split(' ').map(function(w) { return w[0] || ''; }).join('').toUpperCase().slice(0, 2) || 'T';
+        var avatarEl        = document.getElementById('sidebar-user-avatar');
+        var topbarAvatarEl  = document.getElementById('topbar-avatar');
+        var sidebarNameEl   = document.getElementById('sidebar-user-name');
+        if (avatarEl)       avatarEl.textContent       = initials;
+        if (topbarAvatarEl) topbarAvatarEl.textContent = initials;
+        if (sidebarNameEl)  sidebarNameEl.textContent  = teacherName;
+
+        // 5. Set KPI tiles
+        setKpi('kpi-students',   totalStudents  || '—');
+        setKpi('kpi-marks-done', totalSubmitted);
+        setKpi('kpi-pending',    totalPending);
+
+        // 6. Render class rows
+        renderClasses(classes);
+
+        // 7. Render marks status table
+        renderMarksStatus(subjects.length > 0 ? subjects : null);
+
+      } catch (err) {
+        console.error('Dashboard load error:', err);
+
+        // 6. On error show "—" for all KPIs
+        showKpiError('kpi-students');
+        showKpiError('kpi-marks-done');
+        showKpiError('kpi-pending');
+
+        // Show error state in classes list
+        var classesList = document.getElementById('classes-list');
+        if (classesList) {
+          classesList.innerHTML = '<div class="empty-state">'
+            + '<div class="empty-state-icon">⚠️</div>'
+            + '<div class="empty-state-text">Could not load classes. Please refresh.</div>'
+            + '</div>';
+        }
+
+        // Fall back to default marks table
+        renderMarksStatus(null);
+      }
+    }
+
+    // Boot on DOM ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initPage);
     } else {
-      document.getElementById('class-tbody').innerHTML='<tr><td colspan="5" style="text-align:center;color:#aaa;padding:20px">No classes assigned for this year.</td></tr>';
-      document.getElementById('kpi-classes').textContent='0';
-      document.getElementById('kpi-students').textContent='0';
-      document.getElementById('kpi-submitted').textContent='0';
-      document.getElementById('kpi-pending').textContent='0';
-      document.getElementById('marks-progress').innerHTML='<div style="text-align:center;padding:20px;color:#aaa">No classes to show.</div>';
+      initPage();
     }
-  }catch(e){
-    document.getElementById('class-tbody').innerHTML='<tr><td colspan="5" style="text-align:center;color:#aaa;padding:20px">Could not load classes.</td></tr>';
-    ['kpi-classes','kpi-students','kpi-submitted','kpi-pending'].forEach(id=>document.getElementById(id).textContent='—');
-  }
-  setCalBadges();
-}
-
-renderSidebar('dashboard');
-initPage();
-</script>
+  </script>
 </body>
 </html>
