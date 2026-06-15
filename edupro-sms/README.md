@@ -54,7 +54,40 @@ Edupro SMS is a complete school management platform built for Zimbabwe primary s
 
 ---
 
-## Screenshots
+## Role Dashboards
+
+Edupro SMS provides a dedicated dashboard for each user role. Every dashboard has a role-specific sidebar, live KPI tiles, quick-action cards, and is fully mobile-responsive.
+
+| Role | URL | Access |
+|------|-----|--------|
+| Super Admin | `/admin-dashboard` | Full system — students, staff, fees, settings |
+| Headmaster | `/headmaster-dashboard` | Academic oversight, enrolment, marks status |
+| Teacher | `/teacher-dashboard` | My classes, marks entry progress, calendar |
+| Bursar | `/bursar-dashboard` | Fee collections, receipts, outstanding by class |
+| Student | `/student-dashboard` | My marks, fees, report card, notices |
+| Parent | `/parent-dashboard` | Child's grades, fee account, activity timeline |
+
+### Super Admin Dashboard
+![Super Admin Dashboard](docs/screenshots/dashboards/admin-dashboard.png)
+
+### Headmaster Dashboard
+![Headmaster Dashboard](docs/screenshots/dashboards/headmaster-dashboard.png)
+
+### Teacher Dashboard
+![Teacher Dashboard](docs/screenshots/dashboards/teacher-dashboard.png)
+
+### Bursar Dashboard
+![Bursar Dashboard](docs/screenshots/dashboards/bursar-dashboard.png)
+
+### Student Dashboard
+![Student Dashboard](docs/screenshots/dashboards/student-dashboard.png)
+
+### Parent Dashboard
+![Parent Dashboard](docs/screenshots/dashboards/parent-dashboard.png)
+
+---
+
+## Feature Pages
 
 ### Student Records
 ![Student List](docs/screenshots/01_students_list.png)
