@@ -257,9 +257,19 @@ io.on('connection', (socket) => {
       });
       state.consumers.set(socket.id, consumer);
 
-      consumer.on('transportclose', () => state.consumers.delete(socket.id));
-      consumer.on('producerclose',  () => {
-        state.consumers.delete(socket.id);
+      consumer.on('transportclose', () => {
+        if (state.consumers.has(socket.id)) {
+          state.consumers.delete(socket.id);
+          state.viewers = Math.max(0, state.viewers - 1);
+          broadcastStatus();
+        }
+      });
+      consumer.on('producerclose', () => {
+        if (state.consumers.has(socket.id)) {
+          state.consumers.delete(socket.id);
+          state.viewers = Math.max(0, state.viewers - 1);
+          broadcastStatus();
+        }
         socket.emit('board:stopped');
       });
 

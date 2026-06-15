@@ -10,50 +10,44 @@
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
   --red:#FF0527;--navy:#0f172a;--navy2:#1e293b;--navy3:#334155;
-  --muted:#94a3b8;--light:#f1f5f9;--green:#22c55e;
+  --muted:#94a3b8;--light:#f1f5f9;--green:#22c55e;--amber:#f59e0b;
 }
 html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 
-/* VIDEO — fills screen */
+/* VIDEO fills entire screen */
 #screen{
-  width:100vw;height:100vh;
-  object-fit:contain;background:#000;display:none;
+  position:fixed;inset:0;
+  width:100%;height:100%;
+  object-fit:contain;background:#000;
+  display:none;z-index:1;
 }
 
 /* OVERLAY */
 #overlay{
-  position:fixed;inset:0;
+  position:fixed;inset:0;z-index:10;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   background:var(--navy);color:var(--light);
-  gap:20px;padding:32px;text-align:center;
-  transition:opacity .5s;
+  gap:18px;padding:32px;text-align:center;
+  transition:opacity .4s;
 }
 #overlay.hidden{opacity:0;pointer-events:none}
 
-.ov-logo{
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:8px;
-}
-.ov-logo img{height:40px;width:auto}
+.ov-logo img{height:36px;width:auto;margin-bottom:4px}
 
 .ov-icon{
-  width:80px;height:80px;border-radius:20px;
+  width:76px;height:76px;border-radius:18px;
   background:var(--navy2);border:1px solid var(--navy3);
   display:flex;align-items:center;justify-content:center;
-  margin-bottom:4px;
 }
-.ov-icon svg{width:40px;height:40px;color:var(--red)}
+.ov-icon svg{width:38px;height:38px;color:var(--red)}
 
-.ov-title{font-size:1.3rem;font-weight:800;letter-spacing:-.02em}
-.ov-sub{font-size:.88rem;font-weight:500;color:var(--red);letter-spacing:.05em;text-transform:uppercase;margin-top:-12px}
+.ov-title{font-size:1.25rem;font-weight:800;letter-spacing:-.02em}
+.ov-sub{font-size:.8rem;font-weight:600;color:var(--red);letter-spacing:.07em;text-transform:uppercase;margin-top:-10px}
 
-/* Spinner ring */
 .spinner-ring{
-  width:44px;height:44px;
-  border:3px solid var(--navy3);
-  border-top-color:var(--red);
-  border-radius:50%;
-  animation:spin 0.9s linear infinite;
+  width:40px;height:40px;
+  border:3px solid var(--navy3);border-top-color:var(--red);
+  border-radius:50%;animation:spin .9s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
@@ -62,78 +56,76 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'In
   max-width:300px;line-height:1.6;
 }
 
-/* Waiting card */
+/* Waiting card (shown when connected, no broadcast yet) */
 .ov-card{
   background:var(--navy2);border:1px solid var(--navy3);border-radius:14px;
-  padding:18px 24px;max-width:320px;width:100%;
-  display:flex;flex-direction:column;gap:10px;
+  padding:16px 20px;max-width:320px;width:100%;
+  display:none;flex-direction:column;gap:10px;
 }
-.ov-card-row{display:flex;align-items:center;gap:10px;font-size:.85rem;color:var(--muted)}
-.ov-card-row svg{width:16px;height:16px;color:var(--red);flex-shrink:0}
+.ov-card-row{display:flex;align-items:flex-start;gap:10px;font-size:.84rem;color:var(--muted)}
+.ov-card-row svg{width:16px;height:16px;flex-shrink:0;margin-top:2px;color:var(--red)}
+.ov-card-row.success svg{color:var(--green)}
+.ov-card-row.warn svg{color:var(--amber)}
 
-/* STATUS BAR (top, shown when live) */
+/* SSL help box */
+.ssl-help{
+  background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);
+  border-radius:12px;padding:14px 18px;max-width:320px;width:100%;
+  display:none;flex-direction:column;gap:8px;
+  font-size:.82rem;color:rgba(245,158,11,.9);line-height:1.55;
+}
+.ssl-help-title{font-weight:700;font-size:.82rem;display:flex;align-items:center;gap:7px}
+.ssl-help-title svg{width:16px;height:16px;flex-shrink:0}
+
+/* LIVE STATUS BAR */
 #statusbar{
-  position:fixed;top:0;left:0;right:0;
+  position:fixed;top:0;left:0;right:0;z-index:20;
   height:44px;background:rgba(0,0,0,.65);backdrop-filter:blur(12px);
   display:none;align-items:center;justify-content:space-between;
-  padding:0 18px;font-size:.8rem;color:rgba(255,255,255,.75);
-  z-index:20;border-bottom:1px solid rgba(255,255,255,.08);
+  padding:0 18px;border-bottom:1px solid rgba(255,255,255,.08);
 }
 #statusbar.show{display:flex}
+
 .live-badge{
   display:flex;align-items:center;gap:7px;
-  background:rgba(220,38,38,.25);
-  border:1px solid rgba(220,38,38,.4);
+  background:rgba(220,38,38,.25);border:1px solid rgba(220,38,38,.4);
   border-radius:20px;padding:3px 12px;
   font-size:.73rem;font-weight:700;letter-spacing:.06em;color:#fca5a5;
 }
-.live-badge-dot{
-  width:7px;height:7px;border-radius:50%;background:#ef4444;
-  animation:pulseDot 1.5s ease-in-out infinite;
-}
-@keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.5}}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#ef4444;animation:pdot 1.5s ease-in-out infinite}
+@keyframes pdot{0%,100%{opacity:1}50%{opacity:.45}}
 
-#sb-brand{
-  display:flex;align-items:center;gap:6px;
-  font-weight:600;font-size:.78rem;color:rgba(255,255,255,.5);
-}
-#sb-brand img{height:18px;width:auto;opacity:.6}
+#sb-viewers{font-size:.8rem;color:rgba(255,255,255,.5)}
+#sb-brand{display:flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.4)}
+#sb-brand img{height:18px;width:auto;opacity:.55}
 
 /* FULLSCREEN BTN */
 #fs-btn{
-  position:fixed;bottom:20px;right:20px;
+  position:fixed;bottom:20px;right:20px;z-index:30;
   background:rgba(0,0,0,.55);backdrop-filter:blur(8px);
   border:1px solid rgba(255,255,255,.2);border-radius:10px;
-  color:white;padding:10px 16px;
-  font-size:.8rem;font-weight:600;font-family:inherit;
-  cursor:pointer;z-index:30;display:none;
-  display:none;align-items:center;gap:7px;transition:background .15s;
+  color:white;padding:10px 16px;font-size:.8rem;font-weight:600;
+  font-family:inherit;cursor:pointer;display:none;align-items:center;gap:7px;
+  transition:background .15s;
 }
 #fs-btn svg{width:16px;height:16px}
-#fs-btn:hover{background:rgba(0,0,0,.75)}
+#fs-btn:hover{background:rgba(0,0,0,.8)}
 </style>
 </head>
 <body>
 
-<video id="screen" autoplay playsinline></video>
+<video id="screen" autoplay playsinline webkit-playsinline></video>
 
-<!-- STATUS BAR (visible when live) -->
+<!-- LIVE STATUS BAR -->
 <div id="statusbar">
-  <div class="live-badge">
-    <span class="live-badge-dot"></span> LIVE
-  </div>
-  <div id="sb-viewers" style="font-size:.8rem;color:rgba(255,255,255,.55)"></div>
-  <div id="sb-brand">
-    <img src="/img/logo.svg" alt="Edupro">
-    Classroom
-  </div>
+  <div class="live-badge"><span class="live-dot"></span> LIVE</div>
+  <div id="sb-viewers"></div>
+  <div id="sb-brand"><img src="/img/logo.svg" alt="Edupro"> Classroom</div>
 </div>
 
 <!-- WAITING OVERLAY -->
 <div id="overlay">
-  <div class="ov-logo">
-    <img src="/img/logo.svg" alt="Edupro SMS">
-  </div>
+  <div class="ov-logo"><img src="/img/logo.svg" alt="Edupro SMS"></div>
 
   <div class="ov-icon">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -148,17 +140,31 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'In
     <div class="ov-sub">EduPro Classroom</div>
   </div>
 
+  <!-- SSL help — shown on first connect -->
+  <div class="ssl-help" id="ssl-help">
+    <div class="ssl-help-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      SSL Certificate Warning
+    </div>
+    <div>If you see a security warning, tap <strong>Advanced</strong> → <strong>Proceed to 192.168.100.176</strong>. This is a school-local certificate, not a security risk.</div>
+  </div>
+
   <div class="spinner-ring" id="spinner"></div>
   <div class="ov-status" id="ov-status">Connecting to classroom server…</div>
 
-  <div class="ov-card" id="ov-card" style="display:none">
-    <div class="ov-card-row">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-      <span>Waiting for your teacher to start broadcasting…</span>
+  <!-- Waiting card -->
+  <div class="ov-card" id="ov-card">
+    <div class="ov-card-row success">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      <span>Connected to classroom server</span>
     </div>
     <div class="ov-card-row">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg>
-      <span>Stay on this screen</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+      <span>Waiting for teacher to start broadcasting…</span>
+    </div>
+    <div class="ov-card-row warn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span>Keep this screen open and stay on your school WiFi</span>
     </div>
   </div>
 </div>
@@ -184,45 +190,48 @@ const overlay   = document.getElementById('overlay');
 const ovStatus  = document.getElementById('ov-status');
 const spinner   = document.getElementById('spinner');
 const ovCard    = document.getElementById('ov-card');
+const sslHelp   = document.getElementById('ssl-help');
 const statusbar = document.getElementById('statusbar');
 const sbViewers = document.getElementById('sb-viewers');
 const fsBtn     = document.getElementById('fs-btn');
 
-function setStatus(msg, showSpinner = true) {
+// Show SSL help briefly on load, then hide when connected
+sslHelp.style.display = 'flex';
+
+function setStatus(msg, mode) {
+  // mode: 'loading' | 'waiting' | 'error'
   ovStatus.textContent = msg;
-  spinner.style.display = showSpinner ? 'block' : 'none';
-  ovCard.style.display  = showSpinner ? 'none'  : 'flex';
+  spinner.style.display  = mode === 'loading' ? 'block' : 'none';
+  ovCard.style.display   = mode === 'waiting' ? 'flex'  : 'none';
 }
 
+// ── Socket events ────────────────────────────────────────────────────────────
 socket.on('connect', async () => {
-  setStatus('Connected — setting up…');
+  sslHelp.style.display = 'none';
+  setStatus('Connected — setting up…', 'loading');
   await initTransport();
 });
 
 socket.on('disconnect', () => {
-  showOverlay('Connection lost — reconnecting…');
+  showOverlay('Connection lost — reconnecting…', 'loading');
+  hideVideo();
 });
 
 socket.on('board:newProducer', async () => {
-  setStatus('Board started — loading stream…');
+  setStatus('Teacher started — loading stream…', 'loading');
   await startConsuming();
 });
 
 socket.on('board:stopped', () => {
-  showOverlay('Teacher has stopped broadcasting.', false);
-  if (videoEl.srcObject) {
-    videoEl.srcObject.getTracks().forEach(t => t.stop());
-    videoEl.srcObject = null;
-  }
-  videoEl.style.display = 'none';
-  statusbar.classList.remove('show');
-  fsBtn.style.display = 'none';
+  showOverlay('Teacher has stopped broadcasting.', 'waiting');
+  hideVideo();
 });
 
 socket.on('server:status', s => {
   sbViewers.textContent = s.viewers + ' student' + (s.viewers !== 1 ? 's' : '') + ' viewing';
 });
 
+// ── Init transport ───────────────────────────────────────────────────────────
 async function initTransport() {
   try {
     const params = await new Promise((res, rej) => {
@@ -240,52 +249,83 @@ async function initTransport() {
     if (params.producerExists) {
       await startConsuming();
     } else {
-      setStatus('Waiting for teacher to start broadcasting…', false);
+      setStatus('Waiting for teacher to start broadcasting…', 'waiting');
     }
   } catch (err) {
     console.error('initTransport:', err);
-    setStatus('Setup error: ' + err.message);
+    setStatus('Setup error: ' + err.message, 'error');
   }
 }
 
+// ── Start consuming ──────────────────────────────────────────────────────────
 async function startConsuming() {
   try {
-    setStatus('Loading board stream…');
+    setStatus('Loading board stream…', 'loading');
 
     const params = await new Promise((res, rej) => {
       socket.emit('tablet:consume', { rtpCapabilities: device.rtpCapabilities }, d => d.ok ? res(d) : rej(new Error(d.error)));
     });
 
-    consumer = await consumerTransport.consume(params);
+    // In mediasoup-client v3, consume() is async
+    consumer = await consumerTransport.consume({
+      id:            params.id,
+      producerId:    params.producerId,
+      kind:          params.kind,
+      rtpParameters: params.rtpParameters,
+    });
 
     const stream = new MediaStream([consumer.track]);
     videoEl.srcObject = stream;
 
-    videoEl.oncanplay = () => {
+    // showVideo is called on whichever event fires first:
+    // loadedmetadata (desktop/Android Chrome) or a timeout fallback
+    let shown = false;
+    function showVideo() {
+      if (shown) return;
+      shown = true;
       videoEl.style.display = 'block';
       overlay.classList.add('hidden');
       statusbar.classList.add('show');
       fsBtn.style.display = 'flex';
-      videoEl.play().catch(() => {});
-    };
+      videoEl.play().catch(e => console.warn('play():', e));
+    }
+
+    videoEl.addEventListener('loadedmetadata', showVideo, { once: true });
+    videoEl.addEventListener('canplay',        showVideo, { once: true });
+    // Fallback: if neither event fires within 3 s, show anyway
+    setTimeout(showVideo, 3000);
+
+    // Start playing immediately — some browsers need this before events fire
+    videoEl.play().catch(() => {});
+
   } catch (err) {
     console.error('startConsuming:', err);
-    setStatus('Could not receive stream: ' + err.message);
+    setStatus('Could not receive stream: ' + err.message, 'error');
   }
 }
 
-function showOverlay(msg, spin = true) {
+// ── Helpers ──────────────────────────────────────────────────────────────────
+function showOverlay(msg, mode) {
   overlay.classList.remove('hidden');
-  setStatus(msg, spin);
+  setStatus(msg, mode || 'loading');
+}
+
+function hideVideo() {
+  if (videoEl.srcObject) {
+    videoEl.srcObject.getTracks().forEach(t => t.stop());
+    videoEl.srcObject = null;
+  }
+  videoEl.style.display = 'none';
+  statusbar.classList.remove('show');
+  fsBtn.style.display = 'none';
 }
 
 function goFullscreen() {
   const el = document.documentElement;
-  if (el.requestFullscreen)       el.requestFullscreen();
+  if (el.requestFullscreen)            el.requestFullscreen();
   else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
 }
 
-// Auto-fullscreen on first tap
 document.addEventListener('click', () => {
   if (!document.fullscreenElement) goFullscreen();
 }, { once: true });
