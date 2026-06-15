@@ -1,201 +1,293 @@
-# EduPro Classroom — WebRTC Screen Sharing
+# EduPro Classroom — Screen Sharing System
 
-**Offline LAN screen sharing: 1 Interactive Board → 40 Android Tablets**
+## What It Does
 
-No internet required. The board broadcasts its screen over your local WiFi network. All 40 tablets receive the live stream in real time via a browser.
-
-```
-Interactive Board (broadcaster)
-        │
-        ▼
-  Your Machine (192.168.100.176)
-  Node.js + Mediasoup SFU Server
-        │
-   ┌────┴──────────────────────┐
-   ▼         ▼             ▼
-Tablet 1  Tablet 2  ...  Tablet 40
-```
+EduPro Classroom lets a teacher broadcast their interactive board screen live to up to 40 student tablets over the school's local WiFi network — no internet required. The server runs on the teacher's machine and delivers a real-time video stream to every connected tablet through a standard web browser.
 
 ---
 
-## Quick Start
+## Quick Start (IT / Admin)
 
-### Prerequisites
-- **Node.js 18+** — [nodejs.org](https://nodejs.org)
-- **OpenSSL** — usually pre-installed on Linux/Mac; for Windows see [Win32 OpenSSL](https://slproweb.com/products/Win32OpenSSL.html)
-- All devices on the **same WiFi network**
+### Requirements
 
-### 1. Download / Clone
+- **Node.js 18 or later** — download from [https://nodejs.org](https://nodejs.org)
+- All devices (board computer + tablets) on the **same WiFi network**
+- Server machine assigned IP address **192.168.100.176**
+- Port **3000** open in the firewall
+
+---
+
+### Windows Installation
+
+1. Copy the `edupro-classroom` folder to the teacher's computer.
+2. Open the `installer\windows\` folder.
+3. Right-click **EduPro-Classroom-Setup.bat** and choose **Run as Administrator**.
+4. The installer will:
+   - Verify Node.js 18+ is present (opens nodejs.org if missing)
+   - Create `C:\EduPro\Classroom`
+   - Copy all application files
+   - Run `npm install` to download dependencies
+   - Run `npm run certs` to generate SSL certificates
+   - Create a **Desktop shortcut** (EduPro Classroom)
+   - Create a **Start Menu** entry under EduPro
+5. When the installer prints "Installation Complete", it is ready to use.
+
+---
+
+### Linux / macOS Installation
+
+1. Copy the `edupro-classroom` folder to the teacher's computer.
+2. Open a terminal in that folder.
+3. Run:
 
 ```bash
-git clone https://github.com/ttshava/eduprodocs.git
-cd eduprodocs/edupro-classroom
+bash installer/linux/install.sh
 ```
 
-### 2. One-time Setup
+4. The installer will:
+   - Verify Node.js 18+ is present (prints install instructions if missing)
+   - Install to `~/EduPro/classroom`
+   - Run `npm install` and generate SSL certificates
+   - Create a launcher at `~/Desktop/EduPro-Classroom.sh`
+   - Optionally install a systemd service (if run with `sudo`)
 
-**Linux / macOS / WSL:**
-```bash
-bash setup.sh
-```
+---
+
+### First Run Checklist
+
+- [ ] Server IP is `192.168.100.176` (or updated in `server.js`)
+- [ ] Firewall allows TCP port 3000
+- [ ] All tablets connect to the same WiFi network as the server
+- [ ] At least one tablet has opened `https://192.168.100.176:3000` and accepted the SSL warning
+
+---
+
+## Teacher Guide
+
+### 1. Starting the Server
 
 **Windows:**
-```
-setup.bat
-```
+- Double-click **EduPro Classroom** on the Desktop, or open **Start Menu > EduPro > EduPro Classroom**
+- A terminal window opens and the server starts — keep it open while class is running
 
-This will:
-- Install Node.js packages (`npm install`)
-- Generate a self-signed SSL certificate in `./certs/`
-- Bundle the browser client files
-
-### 3. Start the Server
-
+**Linux / macOS:**
 ```bash
+bash ~/Desktop/EduPro-Classroom.sh
+```
+
+Or from the installation directory:
+```bash
+cd ~/EduPro/classroom
 npm start
 ```
 
-Or:
-```bash
-bash start.sh        # Linux/Mac
-start.bat            # Windows
-```
-
-You will see:
-```
-╔══════════════════════════════════════════════════════╗
-║        🎓  EduPro Classroom Server  Ready            ║
-╠══════════════════════════════════════════════════════╣
-║  Dashboard: https://192.168.100.176:3000              ║
-║  Board:     https://192.168.100.176:3000/board        ║
-║  Tablet:    https://192.168.100.176:3000/tablet       ║
-║  QR Code:   https://192.168.100.176:3000/qr           ║
-╚══════════════════════════════════════════════════════╝
-```
+When the server is ready you will see URLs printed in the terminal.
 
 ---
 
-## Using the System
+### 2. Opening the Board Page
 
-### On the Interactive Board / Teacher Computer
-
-1. Open Chrome on the board
+1. Open **Google Chrome** on the board computer
 2. Go to: `https://192.168.100.176:3000/board`
-3. On first visit: click **Advanced → Proceed** (self-signed SSL warning)
-4. Click **▶ Start Broadcasting**
-5. Chrome will ask which screen/window to share — select the whole screen
-6. The board is now live. All connected tablets receive the stream instantly.
-
-### On Each Student Tablet
-
-1. Open **Chrome** on the tablet
-2. Navigate to: `https://192.168.100.176:3000/tablet`
-   - **Or scan the QR code** at `https://192.168.100.176:3000/qr`
-3. On first visit: tap **Advanced → Proceed** (SSL warning, one-time only)
-4. The tablet automatically displays the board screen when broadcasting starts
-5. Tap the screen to go fullscreen
+3. On first visit you will see a security warning — this is normal (self-signed SSL)
+4. Click **Advanced**, then click **Proceed to 192.168.100.176 (unsafe)**
+5. The board control panel loads
 
 ---
 
-## Accepting the SSL Certificate (Required Once Per Device)
+### 3. Starting a Broadcast
 
-Because WebRTC requires HTTPS, we use a self-signed certificate. Every device must accept it once:
+1. On the board page, click the **Start Broadcasting** button
+2. Chrome opens a screen-sharing picker — select **Entire Screen** and click **Share**
+3. The button changes to show the broadcast is live
+4. All tablets that are already on the tablet page will immediately begin receiving your screen
 
-| Browser prompt | Action |
+---
+
+### 4. Stopping a Broadcast
+
+1. Click **Stop Broadcasting** on the board page
+2. All tablets will display a "Waiting for broadcast..." message
+3. You can start a new broadcast at any time by clicking Start Broadcasting again
+
+---
+
+### 5. Monitoring Tablets (Viewer Count)
+
+- The board page shows a **viewer count** that updates in real time
+- The dashboard at `https://192.168.100.176:3000` shows all connected devices
+
+---
+
+## Student / Tablet Guide
+
+### 1. Connect to School WiFi
+
+Make sure the tablet is connected to the school WiFi network (ask your teacher which network to use).
+
+---
+
+### 2. Open the Tablet Page
+
+Open **Chrome** on the tablet, then either:
+
+- Type this address in the address bar: `https://192.168.100.176:3000/tablet`
+- **Or** scan the QR code your teacher shows you (scan with Chrome or any QR scanner app)
+
+---
+
+### 3. Accept the SSL Warning
+
+The first time you open the page, Chrome shows a security warning. This is expected — follow these steps:
+
+1. Tap **Advanced**
+2. Tap **Proceed to 192.168.100.176 (unsafe)**
+
+The page will load normally. You only need to do this once per tablet.
+
+---
+
+### 4. What You See
+
+- **Waiting for broadcast...** — the teacher has not started sharing yet. Stay on this page.
+- **Live screen** — the teacher's board is showing. You will see it automatically.
+
+Do not close the tab or navigate away while class is running.
+
+---
+
+### 5. Fullscreen Tip
+
+Tap anywhere on the video to go fullscreen. Tap again or press Back to exit fullscreen.
+
+---
+
+## Dashboard
+
+Open `https://192.168.100.176:3000` in Chrome to see the server dashboard.
+
+| Card | What it means |
 |---|---|
-| "Your connection is not private" | Click **Advanced** → **Proceed to 192.168.100.176** |
-| "NET::ERR_CERT_AUTHORITY_INVALID" | Same — click Advanced → Proceed |
-
-After accepting once, the browser remembers it permanently.
-
-**Batch setup tip:** Show tablets the QR code at `https://192.168.100.176:3000/qr` — students scan and accept in 10 seconds.
-
----
-
-## Auto-Start on Boot (Optional)
-
-So the server restarts automatically after a power cut:
-
-```bash
-npm install -g pm2
-pm2 start server.js --name edupro-classroom
-pm2 startup
-pm2 save
-```
-
-To view logs: `pm2 logs edupro-classroom`
-To stop: `pm2 stop edupro-classroom`
-
----
-
-## Network Requirements
-
-- WiFi router with **40+ simultaneous connections** (WiFi 6 / AX recommended)
-- All devices on the **same subnet** (e.g., `192.168.100.x`)
-- Your machine's IP must be `192.168.100.176` (or update `SERVER_IP` in `server.js`)
-- Ports: **3000 (TCP)** + **40000–49999 (UDP/TCP)** for WebRTC media
-
-### Firewall rules (Linux)
-```bash
-sudo ufw allow 3000/tcp
-sudo ufw allow 40000:49999/tcp
-sudo ufw allow 40000:49999/udp
-```
-
----
-
-## File Structure
-
-```
-edupro-classroom/
-├── server.js              ← Mediasoup SFU + Express + Socket.io server
-├── package.json
-├── setup.sh               ← One-time setup (Linux/Mac)
-├── setup.bat              ← One-time setup (Windows)
-├── start.sh / start.bat   ← Start server
-├── scripts/
-│   └── gen-certs.js       ← SSL certificate generator
-├── src/
-│   ├── board-client.js    ← mediasoup-client source (board)
-│   └── tablet-client.js   ← mediasoup-client source (tablet)
-├── certs/                 ← Generated SSL files (key.pem, cert.pem)
-└── public/
-    ├── index.html         ← Dashboard + QR code
-    ├── board.html         ← Board broadcaster UI
-    ├── tablet.html        ← Tablet viewer UI (fullscreen)
-    ├── board-client.js    ← Built bundle (generated)
-    └── tablet-client.js   ← Built bundle (generated)
-```
+| **Server Status** | Green = running normally |
+| **Connected Viewers** | Number of tablets currently receiving the stream |
+| **Broadcast Status** | Whether the board is currently sharing its screen |
+| **QR Code** | Scannable code that takes tablets directly to the tablet page |
 
 ---
 
 ## Troubleshooting
 
-| Problem | Fix |
-|---|---|
-| "SSL certs not found" | Run `npm run certs` |
-| "Cannot read property of undefined" (mediasoup) | Run `npm run build` |
-| Tablets can't connect | Check all devices are on same WiFi; check firewall allows port 3000 |
-| Black screen on tablet | Board must click "Start Broadcasting" first |
-| Stream lag / choppy | Move router closer; reduce tablet count or lower resolution in `board.html` (`frameRate: 15`) |
-| mediasoup install fails | Need build tools: `sudo apt install build-essential python3` |
+### Video not showing on tablets
+
+- Confirm the teacher has clicked **Start Broadcasting** on the board page
+- Confirm the tablet is on the tablet page (`/tablet`), not the home page
+- Check that all devices are on the same WiFi network
+
+### "Connection lost" on tablets
+
+- The server may have stopped — check the terminal on the board computer
+- Refresh the tablet page; it will reconnect automatically when the server is back
+
+### SSL warning keeps appearing
+
+Each tablet must accept the SSL warning **once**. If it keeps appearing:
+- Make sure the student taps **Advanced** then **Proceed** (not just hitting Back)
+- Try clearing Chrome's site data for `192.168.100.176` and accepting again
+
+### Board says "Failed to start broadcast"
+
+- Chrome needs permission to share the screen — check that no other app is blocking screen capture
+- Try refreshing the board page and clicking Start Broadcasting again
+- Make sure you selected **Entire Screen** (not a window) in the Chrome picker
+
+### Viewer count wrong
+
+- Tablets that closed the browser tab or lost WiFi will drop from the count automatically within a few seconds
+- If count shows 0 but tablets look connected, refresh the dashboard page
+
+### Server won't start — port in use
+
+```
+Error: listen EADDRINUSE :::3000
+```
+
+Another process is using port 3000. Either:
+- Find and stop that process, or
+- Change the port in `server.js` (search for `PORT = 3000`) and update the URLs accordingly
+
+### Server won't start — certs missing
+
+```
+Error: ENOENT: no such file or directory, open 'certs/cert.pem'
+```
+
+Generate the certificates:
+
+**Windows:**
+```
+cd C:\EduPro\Classroom
+npm run certs
+```
+
+**Linux / macOS:**
+```bash
+cd ~/EduPro/classroom
+npm run certs
+```
 
 ---
 
-## Tech Stack
+## Network Requirements
 
-| Component | Technology |
-|---|---|
-| SFU (Selective Forwarding Unit) | [Mediasoup](https://mediasoup.org) v3 |
-| Signaling | Socket.io v4 |
-| Web server | Express + Node HTTPS |
-| Screen capture | `getDisplayMedia()` API (Chrome) |
-| Video codec | VP8 / VP9 / H.264 |
-| Bundler | esbuild |
-
-**Why Mediasoup (SFU) instead of plain WebRTC?**
-Plain WebRTC peer-to-peer would require the board to send 40 separate streams — killing the CPU and network. Mediasoup's SFU model: board sends **one stream** to the server → server fans it out to all tablets. Far more efficient and scalable.
+- All devices must be on the **same WiFi or LAN** — they cannot be on different subnets
+- **No internet connection is needed** once installed
+- Server IP: `192.168.100.176`
+- Server port: `3000` (TCP)
+- Recommended: WiFi 5 (802.11ac) or WiFi 6 router; at least 40 simultaneous connections
 
 ---
 
-*EduPro Classroom — Offline WebRTC Screen Sharing for Zimbabwe Classrooms*
+## Technical Details
+
+### Architecture
+
+```
++---------------------------+
+|  Interactive Board        |
+|  Chrome /board            |
+|  getDisplayMedia()        |
++----------+----------------+
+           |  WebRTC + Socket.io
+           v
++---------------------------+
+|  Node.js Server           |
+|  192.168.100.176:3000     |
+|  Express + Socket.io      |
+|  WebRTC SFU relay         |
++----------+----------------+
+           |  WebRTC + Socket.io (fan-out)
+    +------+------+------+
+    v      v      v      v
+ Tab-1  Tab-2  Tab-3  Tab-40
+ Chrome /tablet (each)
+```
+
+The board sends **one stream** to the server; the server relays it to all tablets. This keeps the board's CPU and network usage low regardless of tablet count.
+
+### Ports Used
+
+| Port | Protocol | Purpose |
+|---|---|---|
+| 3000 | TCP (HTTPS) | Web server, signaling, dashboard |
+
+### How to Change the IP or Port
+
+1. Open `server.js` in a text editor
+2. Find the line `const SERVER_IP = '192.168.100.176'` and change the IP
+3. Find the line `const PORT = 3000` and change the port if needed
+4. Save the file and restart the server
+5. Update all bookmarks and QR codes to use the new address
+
+---
+
+*EduPro Classroom — Offline Screen Sharing for Classrooms*
