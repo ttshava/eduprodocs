@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Receipt History | Edupro SMS</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#1a1a2e}
+a{text-decoration:none;color:inherit}
+#sidebar{position:fixed;left:0;top:0;width:220px;height:100vh;background:#1a1a2e;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+#main{margin-left:220px;min-height:100vh;display:flex;flex-direction:column}
+#topbar{height:52px;background:#fff;border-bottom:1px solid #eee;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+#content{padding:24px;flex:1}
+.sb-brand{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.1)}
+.sb-brand-name{font-size:17px;font-weight:800;color:#fff}
+.sb-brand-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px}
+.sb-nav{padding:8px 0;flex:1}
+.sb-link{display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:13px;color:rgba(255,255,255,.72);border-left:3px solid transparent;transition:all .15s}
+.sb-link:hover{background:rgba(255,255,255,.07);color:#fff}
+.sb-link.active{background:rgba(192,57,43,.25);border-left-color:#c0392b;color:#fff;font-weight:600}
+.sb-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0}
+.sb-footer{padding:14px 16px;border-top:1px solid rgba(255,255,255,.1)}
+.sb-user{font-size:12px;color:rgba(255,255,255,.5)}
+.sb-logout{font-size:12px;color:rgba(192,57,43,.8);margin-top:4px;cursor:pointer}
+.tb-left{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:#555}
+.tb-right{display:flex;align-items:center;gap:10px}
+.tb-select{padding:6px 10px;border:1px solid #ddd;border-radius:7px;font-size:12px;outline:none}
+.tb-select:focus{border-color:#c0392b}
+.avatar{width:34px;height:34px;border-radius:50%;background:#d97706;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.card{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:20px;margin-bottom:20px}
+.card-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#888;margin-bottom:16px}
+.page-title{font-size:20px;font-weight:800;color:#1a1a2e;margin-bottom:6px}
+.page-sub{font-size:13px;color:#888;margin-bottom:20px}
+/* Filters */
+.filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px}
+.filter-group{display:flex;flex-direction:column;gap:4px}
+.filter-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:#888}
+.filter-input,.filter-select{padding:8px 12px;border:1px solid #ddd;border-radius:8px;font-size:13px;outline:none;min-width:150px}
+.filter-input:focus,.filter-select:focus{border-color:#c0392b;box-shadow:0 0 0 3px rgba(192,57,43,.08)}
+.btn-filter{padding:8px 18px;background:#c0392b;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;align-self:flex-end}
+.btn-filter:hover{background:#a93226}
+.btn-export{padding:8px 16px;background:#f8f9fa;border:1px solid #ddd;border-radius:8px;font-size:13px;cursor:pointer;align-self:flex-end}
+.btn-export:hover{background:#eee}
+/* Stats row */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.stat-tile{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:16px;border-left:4px solid}
+.st-val{font-size:22px;font-weight:800}
+.st-lbl{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-top:3px}
+/* Table */
+.tbl-wrap{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:13px;min-width:750px}
+.tbl th{background:#f8f9fa;padding:10px 12px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:#666;border-bottom:2px solid #eee;white-space:nowrap}
+.tbl td{padding:10px 12px;border-bottom:1px solid #f5f5f5;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:#fffbf5}
+.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.badge-green{background:#dcfce7;color:#166534}
+.badge-orange{background:#ffedd5;color:#c2410c}
+.badge-red{background:#fee2e2;color:#991b1b}
+.badge-blue{background:#dbeafe;color:#1e40af}
+.btn-sm{padding:4px 10px;background:#c0392b;color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer}
+.btn-sm:hover{background:#a93226}
+/* Pagination */
+.pager{display:flex;align-items:center;justify-content:space-between;margin-top:16px;font-size:13px;color:#888}
+.pager-btns{display:flex;gap:6px}
+.pager-btn{padding:6px 14px;border:1px solid #ddd;border-radius:7px;background:#fff;cursor:pointer;font-size:13px}
+.pager-btn:hover:not(:disabled){background:#fef5f5;border-color:#c0392b;color:#c0392b}
+.pager-btn:disabled{opacity:.4;cursor:default}
+.hamburger{display:none;background:none;border:none;font-size:22px;cursor:pointer;margin-right:10px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99}
+@media(max-width:768px){#sidebar{transform:translateX(-100%);transition:transform .25s}#sidebar.open{transform:translateX(0)}#main{margin-left:0}.hamburger{display:block}.stats-row{grid-template-columns:1fr 1fr}.overlay.show{display:block}}
+</style>
+</head>
+<body>
+<div id="sidebar">
+  <div class="sb-brand"><div class="sb-brand-name">Edupro SMS</div><div class="sb-brand-sub">Bursar Portal</div></div>
+  <nav class="sb-nav" id="sb-nav"></nav>
+  <div class="sb-footer"><div class="sb-user" id="sb-user">Bursar</div><div class="sb-logout" onclick="location.href='/logout'">Sign out</div></div>
+</div>
+<div class="overlay" id="overlay" onclick="document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show')"></div>
+<div id="main">
+  <div id="topbar">
+    <div class="tb-left"><button class="hamburger" onclick="document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show')">☰</button><span>📜 Receipt History</span></div>
+    <div class="tb-right"><select class="tb-select" id="yr" onchange="loadReceipts()"><option value="2025">2025</option><option value="2026" selected>2026</option></select><div class="avatar" id="top-av">B</div></div>
+  </div>
+  <div id="content">
+    <div class="page-title">Receipt History</div>
+    <div class="page-sub">All fee payments received — search, filter and print receipts</div>
+
+    <!-- Filters -->
+    <div class="filters">
+      <div class="filter-group">
+        <span class="filter-label">Search Student</span>
+        <input class="filter-input" id="f-search" placeholder="Name or Student ID…" oninput="debounce()">
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Term</span>
+        <select class="filter-select" id="f-term" onchange="loadReceipts()"><option value="">All Terms</option></select>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Status</span>
+        <select class="filter-select" id="f-status" onchange="loadReceipts()">
+          <option value="all">All</option>
+          <option value="paid">Fully Paid</option>
+          <option value="partial">Partial</option>
+          <option value="unpaid">Unpaid</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Date From</span>
+        <input class="filter-input" id="f-date-from" type="date" onchange="loadReceipts()" style="min-width:130px">
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Date To</span>
+        <input class="filter-input" id="f-date-to" type="date" onchange="loadReceipts()" style="min-width:130px">
+      </div>
+      <button class="btn-filter" onclick="loadReceipts()">🔍 Search</button>
+      <button class="btn-export" onclick="exportCSV()">⬇ Export CSV</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-tile" style="border-left-color:#2563eb"><div class="st-val" id="st-count">—</div><div class="st-lbl">Total Records</div></div>
+      <div class="stat-tile" style="border-left-color:#16a34a"><div class="st-val" id="st-collected">—</div><div class="st-lbl">Total Collected</div></div>
+      <div class="stat-tile" style="border-left-color:#c0392b"><div class="st-val" id="st-outstanding">—</div><div class="st-lbl">Outstanding</div></div>
+      <div class="stat-tile" style="border-left-color:#d97706"><div class="st-val" id="st-billed">—</div><div class="st-lbl">Total Billed</div></div>
+    </div>
+
+    <!-- Table -->
+    <div class="card">
+      <div class="card-title">Fee Payment Records</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>#</th><th>Invoice ID</th><th>Student Name</th><th>Class</th><th>Term</th><th>Billed</th><th>Paid</th><th>Outstanding</th><th>Status</th><th>Date</th><th>Action</th></tr></thead>
+          <tbody id="receipt-tbody"><tr><td colspan="11" style="text-align:center;color:#aaa;padding:30px">Loading…</td></tr></tbody>
+        </table>
+      </div>
+      <div class="pager">
+        <span id="pager-info">Showing — records</span>
+        <div class="pager-btns">
+          <button class="pager-btn" id="btn-prev" onclick="changePage(-1)" disabled>← Previous</button>
+          <button class="pager-btn" id="btn-next" onclick="changePage(1)" disabled>Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const NAV=[{id:'dashboard',icon:'🏠',label:'Dashboard',href:'/bursar-dashboard'},{id:'receipt',icon:'💳',label:'Post Payment',href:'/payment-receipt'},{id:'history',icon:'📜',label:'Receipt History',href:'/bursar-receipts'},{id:'balance',icon:'👁️',label:'Student Balance',href:'/bursar-balance'},{id:'outstanding',icon:'⚠️',label:'Outstanding',href:'/bursar-outstanding'},{id:'daily',icon:'📅',label:'Daily Collections',href:'/bursar-daily-report'},{id:'term',icon:'📊',label:'Term Summary',href:'/bursar-term-summary'},{id:'invoices',icon:'🧾',label:'Fee Invoices',href:'/bursar-invoices'},{id:'reminders',icon:'📨',label:'Fee Reminders',href:'/bursar-reminders'},{id:'profile',icon:'👤',label:'My Profile',href:'/bursar-profile'}];
+function renderSidebar(a){document.getElementById('sb-nav').innerHTML=NAV.map(n=>`<a href="${n.href}" class="sb-link${n.id===a?' active':''}"><span class="sb-icon">${n.icon}</span>${n.label}</a>`).join('');}
+let _csrf='',_page=1,_total=0,_rows=[];
+async function getCSRF(){if(_csrf)return _csrf;const r=await fetch('/api/method/education.api.parent_portal.get_csrf_token');_csrf=(await r.json()).message||'';return _csrf;}
+async function apiGet(m,p={}){const r=await fetch(`/api/method/${m}?${new URLSearchParams(p)}`,{headers:{'X-Frappe-CSRF-Token':await getCSRF()}});if(r.status===401||r.status===403){location.href='/login';return null;}const j=await r.json();if(j.exc_type)throw new Error(j.exception||j.exc_type);return j.message;}
+function fmt(n){return'$'+parseFloat(n||0).toFixed(2);}
+function fmtDate(s){if(!s)return'—';try{return new Date(s).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});}catch(e){return s;}}
+let _dt=null;
+function debounce(){clearTimeout(_dt);_dt=setTimeout(()=>{_page=1;loadReceipts();},400);}
+function changePage(d){_page=Math.max(1,Math.min(Math.ceil(_total/50),_page+d));loadReceipts();}
+
+async function loadReceipts(){
+  const year=document.getElementById('yr').value;
+  const term=document.getElementById('f-term').value;
+  const search=document.getElementById('f-search').value;
+  const df=document.getElementById('f-date-from').value;
+  const dt=document.getElementById('f-date-to').value;
+  document.getElementById('receipt-tbody').innerHTML='<tr><td colspan="11" style="text-align:center;color:#aaa;padding:30px">Loading…</td></tr>';
+  try{
+    const d=await apiGet('education.api.bursar_reports.get_receipt_history',{year,term,student_search:search,date_from:df,date_to:dt,page:_page,page_size:50});
+    if(!d)return;
+    _rows=d.receipts||[];_total=d.total||0;
+    // stats
+    const totC=_rows.reduce((s,r)=>s+parseFloat(r.paid||0),0);
+    const totO=_rows.reduce((s,r)=>s+parseFloat(r.outstanding||0),0);
+    const totB=_rows.reduce((s,r)=>s+parseFloat(r.billed||0),0);
+    document.getElementById('st-count').textContent=_total.toLocaleString();
+    document.getElementById('st-collected').textContent=fmt(totC);
+    document.getElementById('st-outstanding').textContent=fmt(totO);
+    document.getElementById('st-billed').textContent=fmt(totB);
+    // table
+    if(!_rows.length){document.getElementById('receipt-tbody').innerHTML='<tr><td colspan="11" style="text-align:center;color:#aaa;padding:30px">No records found.</td></tr>';return;}
+    const offset=(_page-1)*50;
+    document.getElementById('receipt-tbody').innerHTML=_rows.map((r,i)=>{
+      const badge=r.status==='Paid'?'badge-green':r.status==='Partial'?'badge-orange':'badge-red';
+      return`<tr>
+        <td>${offset+i+1}</td>
+        <td><code style="font-size:11px">${r.invoice_id}</code></td>
+        <td><strong>${r.student_name}</strong><br><span style="font-size:11px;color:#aaa">${r.student_id}</span></td>
+        <td>${r.class_name||'—'}</td>
+        <td>${r.term||'—'}</td>
+        <td>${fmt(r.billed)}</td>
+        <td><strong style="color:#16a34a">${fmt(r.paid)}</strong></td>
+        <td>${parseFloat(r.outstanding||0)>0?`<span style="color:#c0392b">${fmt(r.outstanding)}</span>`:'—'}</td>
+        <td><span class="badge ${badge}">${r.status}</span></td>
+        <td>${fmtDate(r.payment_date)}</td>
+        <td><button class="btn-sm" onclick="printReceiptFor('${r.invoice_id}','${r.student_name}','${fmt(r.paid)}','${r.term||''}','${fmtDate(r.payment_date)}')">🖨 Print</button></td>
+      </tr>`;
+    }).join('');
+    // pager
+    const totalPages=Math.max(1,Math.ceil(_total/50));
+    document.getElementById('pager-info').textContent=`Showing ${offset+1}–${Math.min(offset+_rows.length,_total)} of ${_total} records`;
+    document.getElementById('btn-prev').disabled=_page<=1;
+    document.getElementById('btn-next').disabled=_page>=totalPages;
+  }catch(e){document.getElementById('receipt-tbody').innerHTML=`<tr><td colspan="11" style="text-align:center;color:#c0392b;padding:30px">Error: ${e.message}</td></tr>`;}
+}
+
+function printReceiptFor(invoiceId,studentName,amount,term,date){
+  const w=window.open('','_blank','width=420,height=500');
+  w.document.write(`<!DOCTYPE html><html><head><title>Receipt</title>
+  <style>body{font-family:'Segoe UI',sans-serif;padding:24px;color:#111}h2{text-align:center;color:#c0392b;margin-bottom:4px}
+  .sub{text-align:center;font-size:12px;color:#888;margin-bottom:18px}.no{text-align:center;font-size:11px;color:#aaa;margin-bottom:14px}
+  hr{border:none;border-top:1px dashed #ccc;margin:12px 0}table{width:100%;border-collapse:collapse;font-size:13px}
+  td{padding:6px 0}td:last-child{text-align:right;font-weight:600}.total td{font-size:16px;color:#c0392b;border-top:2px solid #eee;padding-top:10px}
+  .footer{margin-top:24px;text-align:center;font-size:11px;color:#aaa}@media print{body{padding:10mm}}</style></head><body>
+  <h2>Sunshine Primary School</h2><div class="sub">Official Fee Payment Receipt</div>
+  <div class="no">Invoice: <strong>${invoiceId}</strong></div><hr>
+  <table><tr><td>Student</td><td>${studentName}</td></tr>
+  <tr><td>Term</td><td>${term}</td></tr>
+  <tr><td>Date</td><td>${date}</td></tr>
+  <tr class="total"><td>Amount Paid</td><td>${amount}</td></tr></table><hr>
+  <div class="footer">Thank you. Keep this receipt for your records.</div>
+  <script>window.onload=()=>window.print();<\/script></body></html>`);
+  w.document.close();
+}
+
+function exportCSV(){
+  if(!_rows.length){alert('No data to export.');return;}
+  const headers=['Invoice ID','Student ID','Student Name','Class','Term','Billed','Paid','Outstanding','Status','Date'];
+  const csv=[headers.join(','),..._rows.map(r=>[r.invoice_id,r.student_id,`"${r.student_name}"`,`"${r.class_name||''}"`,`"${r.term||''}"`,r.billed,r.paid,r.outstanding,r.status,r.payment_date].join(','))].join('\n');
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='receipts.csv';a.click();
+}
+
+async function init(){
+  try{const u=await apiGet('frappe.auth.get_logged_user');if(u){const n=(u||'').split('@')[0].split('.').map(p=>p[0]?.toUpperCase()+p.slice(1)).join(' ');document.getElementById('sb-user').textContent=n;document.getElementById('top-av').textContent=n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();}}catch(e){}
+  try{const terms=await apiGet('education.api.bursar_reports.get_terms_for_bursar',{year:document.getElementById('yr').value});const sel=document.getElementById('f-term');(terms||[]).forEach(t=>sel.add(new Option(t,t)));}catch(e){}
+  loadReceipts();
+}
+renderSidebar('history');
+init();
+</script>
+</body>
+</html>
