@@ -9,283 +9,166 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --red:#FF0527;--red-dark:#c8021e;--red-light:#fff0f2;
+  --red:#FF0527;--red-dark:#c8021e;
   --navy:#0f172a;--navy2:#1e293b;--navy3:#334155;
   --slate:#64748b;--muted:#94a3b8;--light:#f1f5f9;
-  --white:#fff;--green:#22c55e;--amber:#f59e0b;
+  --green:#22c55e;--amber:#f59e0b;
 }
 body{font-family:'Inter',system-ui,sans-serif;background:var(--navy);color:var(--light);min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
 
-/* ── TOP BAR ── */
-.topbar{
-  height:60px;background:var(--navy2);
-  border-bottom:1px solid var(--navy3);
-  display:flex;align-items:center;padding:0 24px;gap:16px;flex-shrink:0;
-  box-shadow:0 1px 12px rgba(0,0,0,.3);
-}
+/* TOP BAR */
+.topbar{height:60px;background:var(--navy2);border-bottom:1px solid var(--navy3);display:flex;align-items:center;padding:0 24px;gap:16px;flex-shrink:0;box-shadow:0 1px 12px rgba(0,0,0,.3)}
 .topbar-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
 .topbar-logo img{height:32px;width:auto}
-.topbar-divider{width:1px;height:24px;background:var(--navy3)}
-.topbar-label{font-size:.82rem;font-weight:600;color:var(--muted);letter-spacing:.03em}
-.topbar-badge{
-  background:rgba(255,5,39,.15);color:var(--red);
-  border:1px solid rgba(255,5,39,.3);border-radius:20px;
-  padding:3px 12px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
-}
+.divider{width:1px;height:24px;background:var(--navy3)}
+.topbar-label{font-size:.82rem;font-weight:600;color:var(--muted)}
+.topbar-badge{background:rgba(255,5,39,.15);color:var(--red);border:1px solid rgba(255,5,39,.3);border-radius:20px;padding:3px 12px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
 .topbar-right{margin-left:auto;display:flex;align-items:center;gap:14px}
-.viewer-pill{
-  display:flex;align-items:center;gap:6px;
-  background:var(--navy3);border-radius:20px;padding:5px 14px;
-  font-size:.82rem;font-weight:600;color:var(--muted);
-}
-.viewer-pill svg{color:var(--muted)}
+.viewer-pill{display:flex;align-items:center;gap:6px;background:var(--navy3);border-radius:20px;padding:5px 14px;font-size:.82rem;font-weight:600;color:var(--muted)}
+.viewer-pill svg{width:14px;height:14px}
 .viewer-pill span{color:var(--light)}
-.live-pill{
-  display:none;align-items:center;gap:7px;
-  background:rgba(220,38,38,.2);color:#fca5a5;
-  border:1px solid rgba(220,38,38,.4);border-radius:20px;
-  padding:5px 14px;font-size:.75rem;font-weight:700;letter-spacing:.06em;
-}
+.live-pill{display:none;align-items:center;gap:7px;background:rgba(220,38,38,.2);color:#fca5a5;border:1px solid rgba(220,38,38,.4);border-radius:20px;padding:5px 14px;font-size:.75rem;font-weight:700;letter-spacing:.06em}
 .live-pill.show{display:flex}
-.live-dot{width:8px;height:8px;border-radius:50%;background:#ef4444;animation:pulseDot 1.5s ease-in-out infinite}
-@keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.85)}}
-.btn-dash{
-  display:flex;align-items:center;gap:6px;
-  padding:7px 14px;background:transparent;color:var(--muted);
-  border:1px solid var(--navy3);border-radius:8px;font-size:.82rem;font-weight:600;
-  cursor:pointer;text-decoration:none;transition:all .15s;font-family:inherit;
-}
-.btn-dash:hover{border-color:var(--muted);color:var(--light)}
-.btn-dash svg{width:14px;height:14px}
+.live-dot{width:8px;height:8px;border-radius:50%;background:#ef4444;animation:pdot 1.5s ease-in-out infinite}
+@keyframes pdot{0%,100%{opacity:1}50%{opacity:.5}}
+.btn-ghost{display:flex;align-items:center;gap:6px;padding:7px 14px;background:transparent;color:var(--muted);border:1px solid var(--navy3);border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .15s;font-family:inherit}
+.btn-ghost:hover{border-color:var(--muted);color:var(--light)}
+.btn-ghost svg{width:14px;height:14px}
 
-/* ── MAIN ── */
+/* MAIN */
 .main{flex:1;display:flex;flex-direction:column;align-items:center;padding:32px 24px;gap:24px}
 
-/* ── PREVIEW ── */
-.preview-wrap{
-  width:100%;max-width:960px;aspect-ratio:16/9;
-  background:#000;border:2px solid var(--navy3);border-radius:16px;
-  overflow:hidden;position:relative;
-  box-shadow:0 8px 40px rgba(0,0,0,.5);
-}
+/* PREVIEW */
+.preview-wrap{width:100%;max-width:960px;aspect-ratio:16/9;background:#000;border:2px solid var(--navy3);border-radius:16px;overflow:hidden;position:relative;box-shadow:0 8px 40px rgba(0,0,0,.5)}
 #preview{width:100%;height:100%;object-fit:contain;display:none}
-.preview-placeholder{
-  position:absolute;inset:0;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:14px;color:var(--slate);
-}
-.ph-icon{
-  width:72px;height:72px;border-radius:16px;
-  background:var(--navy3);display:flex;align-items:center;justify-content:center;
-}
-.ph-icon svg{width:36px;height:36px;color:var(--slate)}
+.ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--slate)}
+.ph-icon{width:72px;height:72px;border-radius:16px;background:var(--navy3);display:flex;align-items:center;justify-content:center}
+.ph-icon svg{width:36px;height:36px}
 .ph-text{font-size:.9rem;color:var(--muted);text-align:center;max-width:300px;line-height:1.5}
 
-/* ── CONTROLS ── */
-.controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center}
-.btn{
-  padding:13px 28px;border-radius:10px;font-size:.95rem;font-weight:700;
-  cursor:pointer;border:none;transition:all .15s;
-  display:inline-flex;align-items:center;gap:9px;font-family:inherit;
-}
-.btn svg{width:18px;height:18px;flex-shrink:0}
-.btn-start{background:var(--red);color:#fff}
-.btn-start:hover:not(:disabled){background:var(--red-dark);transform:translateY(-1px);box-shadow:0 4px 20px rgba(255,5,39,.35)}
-.btn-start:disabled{background:var(--navy3);color:var(--slate);cursor:not-allowed}
-.btn-stop{
-  background:transparent;color:var(--red);
-  border:2px solid var(--red);
-}
-.btn-stop:hover:not(:disabled){background:rgba(255,5,39,.1)}
-.btn-stop:disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
-.btn-nav{
-  background:var(--navy2);color:var(--muted);
-  border:1px solid var(--navy3);
-}
+/* CONTROLS */
+.controls{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.btn{padding:13px 28px;border-radius:10px;font-size:.95rem;font-weight:700;cursor:pointer;border:none;transition:all .15s;display:inline-flex;align-items:center;gap:9px;font-family:inherit}
+.btn svg{width:18px;height:18px}
+.btn-red{background:var(--red);color:#fff}
+.btn-red:hover:not(:disabled){background:var(--red-dark);transform:translateY(-1px);box-shadow:0 4px 20px rgba(255,5,39,.35)}
+.btn-red:disabled{background:var(--navy3);color:var(--slate);cursor:not-allowed}
+.btn-outline{background:transparent;color:var(--red);border:2px solid var(--red)}
+.btn-outline:hover:not(:disabled){background:rgba(255,5,39,.1)}
+.btn-outline:disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
+.btn-nav{background:var(--navy2);color:var(--muted);border:1px solid var(--navy3)}
 .btn-nav:hover{border-color:var(--muted);color:var(--light)}
 
-/* ── STATUS CARD ── */
-.status-card{
-  background:var(--navy2);border:1px solid var(--navy3);border-radius:12px;
-  padding:14px 20px;display:flex;align-items:center;gap:14px;
-  width:100%;max-width:960px;
-}
-.status-dot{
-  width:10px;height:10px;border-radius:50%;
-  background:var(--navy3);flex-shrink:0;transition:background .3s;
-}
+/* STATUS */
+.status-card{background:var(--navy2);border:1px solid var(--navy3);border-radius:12px;padding:14px 20px;display:flex;align-items:center;gap:14px;width:100%;max-width:960px}
+.status-dot{width:10px;height:10px;border-radius:50%;background:var(--navy3);flex-shrink:0;transition:background .3s}
 .status-dot.connecting{background:var(--amber)}
 .status-dot.live{background:var(--green);box-shadow:0 0 10px rgba(34,197,94,.5);animation:glow 2s ease-in-out infinite}
 .status-dot.error{background:#ef4444}
-@keyframes glow{0%,100%{box-shadow:0 0 8px rgba(34,197,94,.5)}50%{box-shadow:0 0 18px rgba(34,197,94,.8)}}
+@keyframes glow{0%,100%{box-shadow:0 0 8px rgba(34,197,94,.4)}50%{box-shadow:0 0 18px rgba(34,197,94,.8)}}
 .status-text{font-size:.88rem;color:var(--muted)}
 .status-text strong{color:var(--light);font-weight:600}
 
-/* ── INFO ROW ── */
-.info-row{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
-  width:100%;max-width:960px;
-}
-.info-card{
-  background:var(--navy2);border:1px solid var(--navy3);border-radius:12px;
-  padding:14px 18px;display:flex;align-items:center;gap:12px;
-}
-.info-card-icon{
-  width:36px;height:36px;border-radius:8px;
-  background:rgba(255,5,39,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-.info-card-icon svg{width:18px;height:18px;color:var(--red)}
-.info-card-body{}
-.info-card-label{font-size:.72rem;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
-.info-card-val{font-size:.9rem;font-weight:600;color:var(--light);font-family:monospace;word-break:break-all}
+/* INFO ROW */
+.info-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:960px}
+.info-card{background:var(--navy2);border:1px solid var(--navy3);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px}
+.info-icon{width:36px;height:36px;border-radius:8px;background:rgba(255,5,39,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.info-icon svg{width:18px;height:18px;color:var(--red)}
+.info-label{font-size:.72rem;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+.info-val{font-size:.85rem;font-weight:600;color:var(--light)}
 
-@media(max-width:680px){
-  .info-row{grid-template-columns:1fr}
-  .topbar-badge,.topbar-label{display:none}
-  .btn{padding:12px 20px;font-size:.88rem}
-}
+@media(max-width:680px){.info-row{grid-template-columns:1fr}.topbar-badge,.topbar-label{display:none}.btn{padding:12px 20px;font-size:.88rem}}
 </style>
 </head>
 <body>
 
-<!-- TOP BAR -->
 <div class="topbar">
-  <a href="/" class="topbar-logo">
-    <img src="/img/logo.svg" alt="Edupro SMS">
-  </a>
-  <div class="topbar-divider"></div>
+  <a href="/" class="topbar-logo"><img src="/img/logo.svg" alt="Edupro SMS"></a>
+  <div class="divider"></div>
   <span class="topbar-label">Classroom</span>
   <span class="topbar-badge">Board</span>
   <div class="topbar-right">
     <div class="viewer-pill">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       <span id="viewer-num">0</span> watching
     </div>
-    <div class="live-pill" id="live-pill">
-      <span class="live-dot"></span> LIVE
-    </div>
-    <a class="btn-dash" href="/">
+    <div class="live-pill" id="live-pill"><span class="live-dot"></span> LIVE</div>
+    <a class="btn-ghost" href="/">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
       Dashboard
     </a>
   </div>
 </div>
 
-<!-- MAIN -->
 <div class="main">
 
-  <!-- PREVIEW -->
   <div class="preview-wrap">
     <video id="preview" autoplay muted playsinline></video>
-    <div class="preview-placeholder" id="placeholder">
+    <div class="ph" id="ph">
       <div class="ph-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <rect x="2" y="3" width="20" height="14" rx="2"/>
-          <line x1="8" y1="21" x2="16" y2="21"/>
-          <line x1="12" y1="17" x2="12" y2="21"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
       </div>
       <p class="ph-text">Screen preview appears here when broadcasting starts</p>
     </div>
   </div>
 
-  <!-- CONTROLS -->
   <div class="controls">
-    <button class="btn btn-start" id="btn-start" onclick="startBroadcast()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3" fill="currentColor"/>
-      </svg>
+    <button class="btn btn-red" id="btn-start" onclick="startBroadcast()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>
       Start Broadcasting
     </button>
-    <button class="btn btn-stop" id="btn-stop" onclick="stopBroadcast()" disabled>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <rect x="3" y="3" width="18" height="18" rx="2"/>
-      </svg>
+    <button class="btn btn-outline" id="btn-stop" onclick="stopBroadcast()" disabled>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
       Stop
     </button>
     <a class="btn btn-nav" href="/">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <polyline points="15 18 9 12 15 6"/>
-      </svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
       Dashboard
     </a>
   </div>
 
-  <!-- STATUS -->
   <div class="status-card">
     <div class="status-dot" id="status-dot"></div>
     <div class="status-text" id="status-msg">Connecting to server…</div>
   </div>
 
-  <!-- INFO ROW -->
   <div class="info-row">
     <div class="info-card">
-      <div class="info-card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="2" y="3" width="20" height="14" rx="2"/>
-          <line x1="8" y1="21" x2="16" y2="21"/>
-          <line x1="12" y1="17" x2="12" y2="21"/>
-        </svg>
-      </div>
-      <div class="info-card-body">
-        <div class="info-card-label">Tablet URL</div>
-        <div class="info-card-val">https://192.168.100.176:3000/tablet</div>
-      </div>
+      <div class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+      <div><div class="info-label">Tablet URL</div><div class="info-val">192.168.100.176:3000/tablet</div></div>
     </div>
     <div class="info-card">
-      <div class="info-card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M1 6s+3-3 7-3 8 3 8 3-3 3-8 3-7-3-7-3z"/>
-          <path d="M1 6v3s3 3 7 3 8-3 8-3V6"/>
-          <path d="M8 9v3"/>
-        </svg>
-      </div>
-      <div class="info-card-body">
-        <div class="info-card-label">SSL Note</div>
-        <div class="info-card-val">Accept certificate warning once</div>
-      </div>
+      <div class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <div><div class="info-label">SSL</div><div class="info-val">Accept warning once per device</div></div>
     </div>
     <div class="info-card">
-      <div class="info-card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M5 12.55a11 11 0 0 1 14.08 0"/>
-          <path d="M1.42 9a16 16 0 0 1 21.16 0"/>
-          <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
-          <circle cx="12" cy="20" r="1" fill="currentColor"/>
-        </svg>
-      </div>
-      <div class="info-card-body">
-        <div class="info-card-label">Network</div>
-        <div class="info-card-val">All devices on same WiFi</div>
-      </div>
+      <div class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg></div>
+      <div><div class="info-label">Network</div><div class="info-val">Same WiFi required</div></div>
     </div>
   </div>
 
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
-<script src="/board-client.js"></script>
 <script>
-const SERVER = location.origin;
-const socket = io(SERVER);
-
-let device, producerTransport, videoProducer, audioProducer;
-let broadcasting = false;
+const socket = io(location.origin);
+let mediaRecorder, stream, broadcasting = false;
 
 const btnStart  = document.getElementById('btn-start');
 const btnStop   = document.getElementById('btn-stop');
 const preview   = document.getElementById('preview');
-const ph        = document.getElementById('placeholder');
+const ph        = document.getElementById('ph');
 const livePill  = document.getElementById('live-pill');
 const viewerNum = document.getElementById('viewer-num');
 
-function setStatus(type, msg) {
+function setStatus(type, html) {
   document.getElementById('status-dot').className = 'status-dot ' + (type || '');
-  document.getElementById('status-msg').innerHTML = msg;
+  document.getElementById('status-msg').innerHTML = html;
 }
 
-socket.on('connect',    () => setStatus('', 'Connected — ready to broadcast'));
-socket.on('disconnect', () => setStatus('error', '<strong>Disconnected</strong> from server — retrying…'));
-socket.on('server:status', (s) => { viewerNum.textContent = s.viewers; });
+socket.on('connect',         () => setStatus('', 'Connected — ready to broadcast'));
+socket.on('disconnect',      () => setStatus('error', '<strong>Disconnected</strong> from server — retrying…'));
+socket.on('server:status',   s  => { viewerNum.textContent = s.viewers; });
 
 async function startBroadcast() {
   if (broadcasting) return;
@@ -293,44 +176,54 @@ async function startBroadcast() {
     setStatus('connecting', 'Requesting screen capture…');
     btnStart.disabled = true;
 
-    const stream = await navigator.mediaDevices.getDisplayMedia({
+    stream = await navigator.mediaDevices.getDisplayMedia({
       video: { frameRate: { ideal: 30, max: 30 }, width: { ideal: 1920 }, height: { ideal: 1080 } },
       audio: true,
     });
 
+    // Show local preview
     preview.srcObject = stream;
     preview.style.display = 'block';
     ph.style.display = 'none';
     stream.getVideoTracks()[0].addEventListener('ended', stopBroadcast);
 
-    setStatus('connecting', 'Setting up streaming…');
-    device = new mediasoupClient.Device();
+    // Pick best supported codec
+    const codecs = [
+      'video/webm;codecs=vp8,opus',
+      'video/webm;codecs=vp9,opus',
+      'video/webm;codecs=h264,opus',
+      'video/webm;codecs=vp8',
+      'video/webm',
+    ];
+    const mimeType = codecs.find(c => MediaRecorder.isTypeSupported(c)) || 'video/webm';
+    setStatus('connecting', `Setting up recorder (${mimeType})…`);
 
-    const { rtpCapabilities } = await fetch('/api/rtp-capabilities').then(r => r.json());
-    await device.load({ routerRtpCapabilities: rtpCapabilities });
-
-    const transportParams = await new Promise((res, rej) => {
-      socket.emit('board:createTransport', {}, d => d.ok ? res(d) : rej(new Error(d.error)));
-    });
-    producerTransport = device.createSendTransport(transportParams);
-
-    producerTransport.on('connect', ({ dtlsParameters }, cb, errCb) => {
-      socket.emit('board:connectTransport', { dtlsParameters }, r => r.ok ? cb() : errCb(new Error(r.error)));
-    });
-
-    producerTransport.on('produce', ({ kind, rtpParameters }, cb, errCb) => {
-      socket.emit('board:produce', { kind, rtpParameters }, r => r.ok ? cb({ id: r.producerId }) : errCb(new Error(r.error)));
+    let initSent = false;
+    mediaRecorder = new MediaRecorder(stream, {
+      mimeType,
+      videoBitsPerSecond: 1_500_000,
     });
 
-    videoProducer = await producerTransport.produce({ track: stream.getVideoTracks()[0] });
+    mediaRecorder.ondataavailable = async (e) => {
+      if (!e.data || e.data.size === 0) return;
+      const buf = await e.data.arrayBuffer();
+      if (!initSent) {
+        // First chunk contains the codec init header — send separately
+        socket.emit('board:start', { mimeType, initSegment: buf });
+        initSent = true;
+      } else {
+        socket.emit('board:chunk', buf);
+      }
+    };
 
-    if (stream.getAudioTracks().length) {
-      audioProducer = await producerTransport.produce({ track: stream.getAudioTracks()[0] });
-    }
+    mediaRecorder.onerror = (e) => {
+      setStatus('error', 'Recorder error: ' + e.error?.message);
+    };
+
+    mediaRecorder.start(200);  // 200 ms chunks
 
     broadcasting = true;
-    btnStart.disabled = true;
-    btnStop.disabled  = false;
+    btnStop.disabled = false;
     livePill.classList.add('show');
     setStatus('live', '<strong>Live</strong> — broadcasting to all tablets');
 
@@ -341,17 +234,13 @@ async function startBroadcast() {
   }
 }
 
-async function stopBroadcast() {
-  if (videoProducer) { videoProducer.close(); videoProducer = null; }
-  if (audioProducer) { audioProducer.close(); audioProducer = null; }
-  if (producerTransport) { producerTransport.close(); producerTransport = null; }
-  if (preview.srcObject) {
-    preview.srcObject.getTracks().forEach(t => t.stop());
-    preview.srcObject = null;
-  }
+function stopBroadcast() {
+  if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+  if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+  preview.srcObject = null;
   preview.style.display = 'none';
   ph.style.display = 'flex';
-  socket.emit('board:stopBroadcast');
+  socket.emit('board:stop');
   broadcasting = false;
   btnStart.disabled = false;
   btnStop.disabled  = true;

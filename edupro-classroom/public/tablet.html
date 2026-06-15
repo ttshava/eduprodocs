@@ -8,125 +8,70 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --red:#FF0527;--navy:#0f172a;--navy2:#1e293b;--navy3:#334155;
-  --muted:#94a3b8;--light:#f1f5f9;--green:#22c55e;--amber:#f59e0b;
-}
+:root{--red:#FF0527;--navy:#0f172a;--navy2:#1e293b;--navy3:#334155;--muted:#94a3b8;--light:#f1f5f9;--green:#22c55e;--amber:#f59e0b}
 html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 
-/* VIDEO fills entire screen */
-#screen{
-  position:fixed;inset:0;
-  width:100%;height:100%;
-  object-fit:contain;background:#000;
-  display:none;z-index:1;
-}
+#screen{position:fixed;inset:0;width:100%;height:100%;object-fit:contain;background:#000;display:none;z-index:1}
 
-/* OVERLAY */
 #overlay{
   position:fixed;inset:0;z-index:10;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:var(--navy);color:var(--light);
-  gap:18px;padding:32px;text-align:center;
+  background:var(--navy);color:var(--light);gap:16px;padding:32px;text-align:center;
   transition:opacity .4s;
 }
 #overlay.hidden{opacity:0;pointer-events:none}
 
-.ov-logo img{height:36px;width:auto;margin-bottom:4px}
-
-.ov-icon{
-  width:76px;height:76px;border-radius:18px;
-  background:var(--navy2);border:1px solid var(--navy3);
-  display:flex;align-items:center;justify-content:center;
-}
+.ov-logo img{height:36px;width:auto}
+.ov-icon{width:76px;height:76px;border-radius:18px;background:var(--navy2);border:1px solid var(--navy3);display:flex;align-items:center;justify-content:center}
 .ov-icon svg{width:38px;height:38px;color:var(--red)}
-
 .ov-title{font-size:1.25rem;font-weight:800;letter-spacing:-.02em}
-.ov-sub{font-size:.8rem;font-weight:600;color:var(--red);letter-spacing:.07em;text-transform:uppercase;margin-top:-10px}
+.ov-sub{font-size:.8rem;font-weight:600;color:var(--red);letter-spacing:.07em;text-transform:uppercase;margin-top:-8px}
 
-.spinner-ring{
-  width:40px;height:40px;
-  border:3px solid var(--navy3);border-top-color:var(--red);
-  border-radius:50%;animation:spin .9s linear infinite;
-}
+.spinner{width:40px;height:40px;border:3px solid var(--navy3);border-top-color:var(--red);border-radius:50%;animation:spin .9s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-.ov-status{
-  font-size:.93rem;color:var(--muted);
-  max-width:300px;line-height:1.6;
-}
+#ov-status{font-size:.93rem;color:var(--muted);max-width:300px;line-height:1.6}
 
-/* Waiting card (shown when connected, no broadcast yet) */
-.ov-card{
-  background:var(--navy2);border:1px solid var(--navy3);border-radius:14px;
-  padding:16px 20px;max-width:320px;width:100%;
-  display:none;flex-direction:column;gap:10px;
-}
-.ov-card-row{display:flex;align-items:flex-start;gap:10px;font-size:.84rem;color:var(--muted)}
-.ov-card-row svg{width:16px;height:16px;flex-shrink:0;margin-top:2px;color:var(--red)}
-.ov-card-row.success svg{color:var(--green)}
-.ov-card-row.warn svg{color:var(--amber)}
+/* info card shown when waiting */
+.ov-card{background:var(--navy2);border:1px solid var(--navy3);border-radius:14px;padding:16px 20px;max-width:320px;width:100%;display:none;flex-direction:column;gap:10px}
+.ov-row{display:flex;align-items:flex-start;gap:10px;font-size:.84rem;color:var(--muted)}
+.ov-row svg{width:16px;height:16px;flex-shrink:0;margin-top:2px}
+.ov-row.green svg{color:var(--green)}
+.ov-row.red svg{color:var(--red)}
+.ov-row.amber svg{color:var(--amber)}
 
-/* SSL help box */
-.ssl-help{
-  background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);
-  border-radius:12px;padding:14px 18px;max-width:320px;width:100%;
-  display:none;flex-direction:column;gap:8px;
-  font-size:.82rem;color:rgba(245,158,11,.9);line-height:1.55;
-}
-.ssl-help-title{font-weight:700;font-size:.82rem;display:flex;align-items:center;gap:7px}
-.ssl-help-title svg{width:16px;height:16px;flex-shrink:0}
+/* SSL help */
+.ssl-box{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:12px;padding:14px 18px;max-width:320px;width:100%;font-size:.82rem;color:rgba(245,158,11,.9);line-height:1.55;display:none}
+.ssl-title{font-weight:700;display:flex;align-items:center;gap:7px;margin-bottom:6px}
+.ssl-title svg{width:16px;height:16px;flex-shrink:0}
 
-/* LIVE STATUS BAR */
-#statusbar{
-  position:fixed;top:0;left:0;right:0;z-index:20;
-  height:44px;background:rgba(0,0,0,.65);backdrop-filter:blur(12px);
-  display:none;align-items:center;justify-content:space-between;
-  padding:0 18px;border-bottom:1px solid rgba(255,255,255,.08);
-}
+/* LIVE BAR */
+#statusbar{position:fixed;top:0;left:0;right:0;z-index:20;height:44px;background:rgba(0,0,0,.65);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid rgba(255,255,255,.08)}
 #statusbar.show{display:flex}
-
-.live-badge{
-  display:flex;align-items:center;gap:7px;
-  background:rgba(220,38,38,.25);border:1px solid rgba(220,38,38,.4);
-  border-radius:20px;padding:3px 12px;
-  font-size:.73rem;font-weight:700;letter-spacing:.06em;color:#fca5a5;
-}
+.live-badge{display:flex;align-items:center;gap:7px;background:rgba(220,38,38,.25);border:1px solid rgba(220,38,38,.4);border-radius:20px;padding:3px 12px;font-size:.73rem;font-weight:700;letter-spacing:.06em;color:#fca5a5}
 .live-dot{width:7px;height:7px;border-radius:50%;background:#ef4444;animation:pdot 1.5s ease-in-out infinite}
 @keyframes pdot{0%,100%{opacity:1}50%{opacity:.45}}
-
 #sb-viewers{font-size:.8rem;color:rgba(255,255,255,.5)}
 #sb-brand{display:flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.4)}
-#sb-brand img{height:18px;width:auto;opacity:.55}
+#sb-brand img{height:18px;opacity:.55}
 
-/* FULLSCREEN BTN */
-#fs-btn{
-  position:fixed;bottom:20px;right:20px;z-index:30;
-  background:rgba(0,0,0,.55);backdrop-filter:blur(8px);
-  border:1px solid rgba(255,255,255,.2);border-radius:10px;
-  color:white;padding:10px 16px;font-size:.8rem;font-weight:600;
-  font-family:inherit;cursor:pointer;display:none;align-items:center;gap:7px;
-  transition:background .15s;
-}
+/* Fullscreen button */
+#fs-btn{position:fixed;bottom:20px;right:20px;z-index:30;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);border-radius:10px;color:white;padding:10px 16px;font-size:.8rem;font-weight:600;font-family:inherit;cursor:pointer;display:none;align-items:center;gap:7px}
 #fs-btn svg{width:16px;height:16px}
-#fs-btn:hover{background:rgba(0,0,0,.8)}
 </style>
 </head>
 <body>
 
-<video id="screen" autoplay playsinline webkit-playsinline></video>
+<video id="screen" autoplay playsinline muted></video>
 
-<!-- LIVE STATUS BAR -->
 <div id="statusbar">
   <div class="live-badge"><span class="live-dot"></span> LIVE</div>
   <div id="sb-viewers"></div>
   <div id="sb-brand"><img src="/img/logo.svg" alt="Edupro"> Classroom</div>
 </div>
 
-<!-- WAITING OVERLAY -->
 <div id="overlay">
   <div class="ov-logo"><img src="/img/logo.svg" alt="Edupro SMS"></div>
-
   <div class="ov-icon">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
       <rect x="5" y="2" width="14" height="20" rx="2"/>
@@ -134,42 +79,38 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'In
       <circle cx="12" cy="17" r="1" fill="currentColor"/>
     </svg>
   </div>
-
   <div>
     <div class="ov-title">Student Tablet</div>
     <div class="ov-sub">EduPro Classroom</div>
   </div>
 
-  <!-- SSL help — shown on first connect -->
-  <div class="ssl-help" id="ssl-help">
-    <div class="ssl-help-title">
+  <div class="ssl-box" id="ssl-box">
+    <div class="ssl-title">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
       SSL Certificate Warning
     </div>
-    <div>If you see a security warning, tap <strong>Advanced</strong> → <strong>Proceed to 192.168.100.176</strong>. This is a school-local certificate, not a security risk.</div>
+    If you see a security warning, tap <strong>Advanced</strong> → <strong>Proceed to 192.168.100.176</strong>. Safe on your school network.
   </div>
 
-  <div class="spinner-ring" id="spinner"></div>
-  <div class="ov-status" id="ov-status">Connecting to classroom server…</div>
+  <div class="spinner" id="spinner"></div>
+  <div id="ov-status">Connecting…</div>
 
-  <!-- Waiting card -->
   <div class="ov-card" id="ov-card">
-    <div class="ov-card-row success">
+    <div class="ov-row green">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
       <span>Connected to classroom server</span>
     </div>
-    <div class="ov-card-row">
+    <div class="ov-row red">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
       <span>Waiting for teacher to start broadcasting…</span>
     </div>
-    <div class="ov-card-row warn">
+    <div class="ov-row amber">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      <span>Keep this screen open and stay on your school WiFi</span>
+      <span>Keep this screen open on school WiFi</span>
     </div>
   </div>
 </div>
 
-<!-- FULLSCREEN BUTTON -->
 <button id="fs-btn" onclick="goFullscreen()">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
     <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
@@ -178,150 +119,164 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'In
   Fullscreen
 </button>
 
+<!-- Only socket.io needed — no mediasoup-client, no build step -->
 <script src="/socket.io/socket.io.js"></script>
-<script src="/tablet-client.js"></script>
 <script>
 const socket = io(location.origin);
-
-let device, consumerTransport, consumer;
 
 const videoEl   = document.getElementById('screen');
 const overlay   = document.getElementById('overlay');
 const ovStatus  = document.getElementById('ov-status');
 const spinner   = document.getElementById('spinner');
 const ovCard    = document.getElementById('ov-card');
-const sslHelp   = document.getElementById('ssl-help');
+const sslBox    = document.getElementById('ssl-box');
 const statusbar = document.getElementById('statusbar');
 const sbViewers = document.getElementById('sb-viewers');
 const fsBtn     = document.getElementById('fs-btn');
 
-// Show SSL help briefly on load, then hide when connected
-sslHelp.style.display = 'flex';
+// Show SSL tip on load
+sslBox.style.display = 'block';
 
-function setStatus(msg, mode) {
-  // mode: 'loading' | 'waiting' | 'error'
-  ovStatus.textContent = msg;
-  spinner.style.display  = mode === 'loading' ? 'block' : 'none';
-  ovCard.style.display   = mode === 'waiting' ? 'flex'  : 'none';
+// MSE state
+let mediaSource, sourceBuffer;
+const chunkQueue = [];
+let mseReady = false;
+
+function setWaiting(msg) {
+  ovStatus.textContent   = msg;
+  spinner.style.display  = 'none';
+  ovCard.style.display   = 'flex';
+}
+function setLoading(msg) {
+  ovStatus.textContent   = msg;
+  spinner.style.display  = 'block';
+  ovCard.style.display   = 'none';
 }
 
-// ── Socket events ────────────────────────────────────────────────────────────
-socket.on('connect', async () => {
-  sslHelp.style.display = 'none';
-  setStatus('Connected — setting up…', 'loading');
-  await initTransport();
+// ── Socket events ─────────────────────────────────────────────────────────────
+
+socket.on('connect', () => {
+  sslBox.style.display = 'none';
+  setLoading('Connected — joining classroom…');
+  socket.emit('tablet:join');
 });
 
 socket.on('disconnect', () => {
-  showOverlay('Connection lost — reconnecting…', 'loading');
-  hideVideo();
-});
-
-socket.on('board:newProducer', async () => {
-  setStatus('Teacher started — loading stream…', 'loading');
-  await startConsuming();
-});
-
-socket.on('board:stopped', () => {
-  showOverlay('Teacher has stopped broadcasting.', 'waiting');
+  setLoading('Connection lost — reconnecting…');
   hideVideo();
 });
 
 socket.on('server:status', s => {
   sbViewers.textContent = s.viewers + ' student' + (s.viewers !== 1 ? 's' : '') + ' viewing';
+  if (!s.broadcasting && overlay.classList.contains('hidden')) {
+    // Board stopped while we were watching
+    hideVideo();
+    setWaiting('Teacher has stopped broadcasting.');
+  }
 });
 
-// ── Init transport ───────────────────────────────────────────────────────────
-async function initTransport() {
-  try {
-    const params = await new Promise((res, rej) => {
-      socket.emit('tablet:createTransport', {}, d => d.ok ? res(d) : rej(new Error(d.error)));
-    });
+// Server sends this when board starts (or when tablet joins mid-broadcast)
+socket.on('board:start', ({ mimeType, initSegment }) => {
+  setLoading('Loading board stream…');
+  initMSE(mimeType, initSegment);
+});
 
-    device = new mediasoupClient.Device();
-    await device.load({ routerRtpCapabilities: params.rtpCapabilities });
+socket.on('board:chunk', (chunk) => {
+  appendChunk(chunk);
+});
 
-    consumerTransport = device.createRecvTransport(params);
-    consumerTransport.on('connect', ({ dtlsParameters }, cb, errCb) => {
-      socket.emit('tablet:connectTransport', { dtlsParameters }, r => r.ok ? cb() : errCb(new Error(r.error)));
-    });
+socket.on('board:stop', () => {
+  hideVideo();
+  setWaiting('Teacher has stopped broadcasting.');
+});
 
-    if (params.producerExists) {
-      await startConsuming();
-    } else {
-      setStatus('Waiting for teacher to start broadcasting…', 'waiting');
+// ── MediaSource playback ──────────────────────────────────────────────────────
+
+function initMSE(mimeType, initSegment) {
+  // Tear down any previous MSE session
+  if (mediaSource) {
+    try { mediaSource.endOfStream(); } catch(_) {}
+  }
+  chunkQueue.length = 0;
+  mseReady = false;
+  mediaSource = null;
+  sourceBuffer = null;
+  videoEl.src = '';
+  videoEl.load();
+
+  mediaSource = new MediaSource();
+  videoEl.src = URL.createObjectURL(mediaSource);
+
+  mediaSource.addEventListener('sourceopen', () => {
+    try {
+      sourceBuffer = mediaSource.addSourceBuffer(mimeType);
+    } catch (e) {
+      // Try without codec params if specific codec fails
+      try { sourceBuffer = mediaSource.addSourceBuffer('video/webm'); }
+      catch (e2) { setWaiting('Video format not supported on this device: ' + mimeType); return; }
     }
-  } catch (err) {
-    console.error('initTransport:', err);
-    setStatus('Setup error: ' + err.message, 'error');
+
+    sourceBuffer.mode = 'sequence';
+
+    sourceBuffer.addEventListener('updateend', () => {
+      if (chunkQueue.length > 0) {
+        appendFromQueue();
+      } else {
+        mseReady = true;
+      }
+      // Start playing once we have data
+      if (videoEl.paused && videoEl.readyState >= 2) {
+        videoEl.play().then(() => showVideo()).catch(() => showVideo());
+      }
+    });
+
+    sourceBuffer.addEventListener('error', e => console.error('SourceBuffer error', e));
+
+    // Append init segment first
+    const initBuf = initSegment instanceof ArrayBuffer ? initSegment : initSegment.buffer || initSegment;
+    sourceBuffer.appendBuffer(initBuf);
+  }, { once: true });
+
+  // Fallback: show video after 3 seconds regardless
+  setTimeout(() => {
+    if (!overlay.classList.contains('hidden') && videoEl.readyState > 0) {
+      videoEl.play().catch(() => {});
+      showVideo();
+    }
+  }, 3000);
+}
+
+function appendChunk(chunk) {
+  const buf = chunk instanceof ArrayBuffer ? chunk : (chunk.buffer || chunk);
+  chunkQueue.push(buf);
+  if (mseReady && sourceBuffer && !sourceBuffer.updating) {
+    appendFromQueue();
   }
 }
 
-// ── Start consuming ──────────────────────────────────────────────────────────
-async function startConsuming() {
+function appendFromQueue() {
+  if (!sourceBuffer || sourceBuffer.updating || chunkQueue.length === 0) return;
+  mseReady = false;
   try {
-    setStatus('Loading board stream…', 'loading');
-
-    const result = await new Promise((res, rej) => {
-      socket.emit('tablet:consume', { rtpCapabilities: device.rtpCapabilities }, d => d.ok ? res(d) : rej(new Error(d.error)));
-    });
-
-    // Create MediaStream from all consumer tracks (video + optional audio)
-    const tracks = [];
-    for (const p of result.consumers) {
-      const c = await consumerTransport.consume({
-        id:            p.id,
-        producerId:    p.producerId,
-        kind:          p.kind,
-        rtpParameters: p.rtpParameters,
-      });
-      tracks.push(c.track);
-    }
-
-    if (tracks.length === 0) {
-      setStatus('No tracks received from server', 'error');
-      return;
-    }
-
-    const stream = new MediaStream(tracks);
-    videoEl.srcObject = stream;
-
-    let shown = false;
-    function showVideo() {
-      if (shown) return;
-      shown = true;
-      videoEl.style.display = 'block';
-      overlay.classList.add('hidden');
-      statusbar.classList.add('show');
-      fsBtn.style.display = 'flex';
-      videoEl.play().catch(e => console.warn('play():', e));
-    }
-
-    videoEl.addEventListener('loadedmetadata', showVideo, { once: true });
-    videoEl.addEventListener('canplay',        showVideo, { once: true });
-    // Fallback: show video regardless after 2s
-    setTimeout(showVideo, 2000);
-
-    videoEl.play().catch(() => {});
-
-  } catch (err) {
-    console.error('startConsuming:', err);
-    setStatus('Could not receive stream: ' + err.message, 'error');
+    sourceBuffer.appendBuffer(chunkQueue.shift());
+  } catch (e) {
+    console.warn('appendBuffer error:', e);
+    mseReady = true;
   }
 }
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
-function showOverlay(msg, mode) {
-  overlay.classList.remove('hidden');
-  setStatus(msg, mode || 'loading');
+// ── UI helpers ────────────────────────────────────────────────────────────────
+
+function showVideo() {
+  videoEl.style.display = 'block';
+  overlay.classList.add('hidden');
+  statusbar.classList.add('show');
+  fsBtn.style.display = 'flex';
 }
 
 function hideVideo() {
-  if (videoEl.srcObject) {
-    videoEl.srcObject.getTracks().forEach(t => t.stop());
-    videoEl.srcObject = null;
-  }
   videoEl.style.display = 'none';
+  overlay.classList.remove('hidden');
   statusbar.classList.remove('show');
   fsBtn.style.display = 'none';
 }
@@ -334,6 +289,11 @@ function goFullscreen() {
 
 document.addEventListener('click', () => {
   if (!document.fullscreenElement) goFullscreen();
+  // Unmute on user gesture (Android autoplay requires muted, then unmute on tap)
+  if (videoEl.muted) {
+    videoEl.muted = false;
+    videoEl.play().catch(() => { videoEl.muted = true; });
+  }
 }, { once: true });
 </script>
 </body>
