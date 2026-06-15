@@ -158,3 +158,4 @@ cython_debug/
 !downloads/
 !downloads/*.html
 dump.rdb
+.claude/
