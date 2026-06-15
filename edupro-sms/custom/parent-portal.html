@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parent Portal – Edupro SMS</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Arial, sans-serif; background: #f0f0f0; min-height: 100vh; }
+
+/* ── TOP BAR ── */
+.top-bar {
+  background: #1a0a0e; color: #fff;
+  padding: 0 24px;
+  display: flex; justify-content: space-between; align-items: center;
+  height: 48px;
+}
+.top-bar-left { display: flex; align-items: center; gap: 10px; }
+.top-bar-brand { font-size: 18px; font-weight: bold; }
+.top-bar-section { font-size: 13px; color: #bbb; }
+.top-bar-right { font-size: 13px; color: #ccc; }
+.top-bar-right b { color: #fff; }
+.top-bar-right .logout {
+  color: #FF0527; cursor: pointer; margin-left: 10px;
+  text-decoration: none; font-weight: bold;
+}
+.top-bar-right .logout:hover { color: #ff4455; }
+
+/* ── STATUS BAR ── */
+.status-bar {
+  background: #fff; padding: 10px 24px;
+  font-size: 13px; color: #555;
+  border-bottom: 2px solid #FF0527;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.status-bar strong { color: #1a0a0e; }
+.status-paid   { color: #155724; font-weight: bold; }
+.status-owing  { color: #a00;    font-weight: bold; }
+
+/* ── CONTENT ── */
+.content { padding: 24px; max-width: 1100px; margin: 0 auto; }
+
+/* ── PORTAL CARDS GRID ── */
+.portal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 24px;
+}
+@media (max-width: 900px) { .portal-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 500px) { .portal-grid { grid-template-columns: 1fr; } }
+
+.portal-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 28px 20px 20px;
+  box-shadow: 0 1px 6px rgba(0,0,0,.10);
+  text-align: center;
+  display: flex; flex-direction: column; align-items: center;
+}
+.portal-card:hover { box-shadow: 0 4px 18px rgba(255,5,39,.15); }
+.portal-icon { font-size: 40px; margin-bottom: 12px; line-height: 1; }
+.portal-title { font-size: 16px; font-weight: bold; color: #1a0a0e; margin-bottom: 6px; }
+.portal-desc { font-size: 12px; color: #666; margin-bottom: 18px; flex: 1; }
+.portal-btn {
+  display: block; width: 100%;
+  padding: 9px 0; border: none; border-radius: 5px;
+  font-size: 13px; font-weight: bold; cursor: pointer;
+  text-decoration: none; text-align: center;
+}
+.btn-red  { background: #FF0527; color: #fff; }
+.btn-red:hover  { background: #c8021e; }
+.btn-gray { background: #444; color: #fff; }
+.btn-gray:hover { background: #666; }
+
+/* ── RECENT ACTIVITY CARD ── */
+.activity-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.09);
+  margin-bottom: 20px;
+}
+.activity-card h2 {
+  font-size: 15px; font-weight: bold; color: #1a0a0e;
+  border-bottom: 2px solid #FF0527; padding-bottom: 8px; margin-bottom: 14px;
+}
+.activity-table { width: 100%; border-collapse: collapse; }
+.activity-table th {
+  background: #1a0a0e; color: #fff;
+  padding: 10px 14px; font-size: 13px; text-align: left;
+}
+.activity-table td {
+  padding: 9px 14px; font-size: 13px;
+  border-bottom: 1px solid #eee; color: #333;
+}
+.activity-table tr:last-child td { border-bottom: none; }
+.activity-table tr:hover td { background: #fff8f8; }
+
+/* ── BADGES ── */
+.badge {
+  padding: 3px 10px; border-radius: 12px;
+  font-size: 11px; font-weight: bold; white-space: nowrap;
+}
+.badge-green  { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.badge-yellow { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+.badge-red    { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+.badge-blue   { background: #cce5ff; color: #004085; border: 1px solid #b8daff; }
+
+/* ── LOADING / PLACEHOLDER ── */
+.placeholder {
+  text-align: center; padding: 80px 20px; color: #999; font-size: 16px;
+}
+.spinner {
+  display: inline-block; width: 30px; height: 30px;
+  border: 3px solid #eee; border-top-color: #FF0527;
+  border-radius: 50%; animation: spin .7s linear infinite;
+  margin-bottom: 12px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── STUDENT SELECTOR (for multi-child families) ── */
+.student-switcher {
+  background: #fff3cd; border: 1px solid #ffeeba;
+  border-radius: 6px; padding: 10px 16px;
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 18px; font-size: 13px;
+}
+.student-switcher select {
+  padding: 6px 10px; border: 1px solid #ccc;
+  border-radius: 5px; font-size: 13px;
+}
+
+/* ── PRINT ── */
+@media print {
+  .top-bar .logout, .portal-grid { display: none !important; }
+  body { background: #fff; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="top-bar-left">
+    <span class="top-bar-brand">Edupro SMS</span>
+    <span class="top-bar-section">Parent Portal</span>
+  </div>
+  <div class="top-bar-right" id="top-welcome" style="display:none">
+    Welcome, <b id="parent-name">Parent</b>
+    <a class="logout" href="/login">Logout</a>
+  </div>
+</div>
+
+<!-- STATUS BAR -->
+<div class="status-bar" id="status-bar" style="display:none">
+  <span id="status-msg"></span>
+  <span id="status-balance"></span>
+</div>
+
+<!-- CONTENT -->
+<div class="content" id="content">
+  <div class="placeholder">
+    <div class="spinner"></div><br>Loading your dashboard…
+  </div>
+</div>
+
+<script>
+const BASE = window.location.origin;
+
+async function api(method, params = {}) {
+  const qs = new URLSearchParams(params).toString();
+  const res = await fetch(`${BASE}/api/method/${method}?${qs}`, {
+    headers: { "X-Frappe-CSRF-Token": "{{ csrf_token }}" }
+  });
+  const data = await res.json();
+  if (data.exc) throw new Error(data.exc);
+  return data.message;
+}
+
+/* ─── Load dashboard for a given student ─── */
+async function loadDashboard(studentId, year) {
+  const [feesData, studentInfo] = await Promise.all([
+    api("education.api.fees_statement.get_student_fees", { student_id: studentId, year }),
+    api("education.api.parent_portal.get_student_info", { student_id: studentId, year })
+  ]);
+
+  if (!feesData) return;
+
+  // Status bar
+  const bar = document.getElementById("status-bar");
+  bar.style.display = "flex";
+  document.getElementById("status-msg").innerHTML =
+    `<strong>Parent Dashboard</strong> — ${feesData.student_name} &nbsp;|&nbsp;
+     ${feesData.class} &nbsp;|&nbsp; ${year}`;
+
+  const ost = feesData.total_outstanding;
+  const balEl = document.getElementById("status-balance");
+  if (ost === 0) {
+    balEl.innerHTML = `<span class="status-paid">✔ All fees paid</span>`;
+  } else {
+    balEl.innerHTML = `<span class="status-owing">⚠ Balance Due: $${ost.toFixed(2)}</span>`;
+  }
+
+  // Welcome
+  document.getElementById("top-welcome").style.display = "";
+  document.getElementById("parent-name").textContent =
+    studentInfo?.guardian_name || "Parent";
+
+  // Build activity from fees
+  const activity = buildActivity(feesData);
+
+  // Render
+  document.getElementById("content").innerHTML = `
+    <div class="portal-grid">
+
+      <div class="portal-card">
+        <div class="portal-icon">📋</div>
+        <div class="portal-title">Report Card</div>
+        <div class="portal-desc">View &amp; download term report card</div>
+        <a class="portal-btn btn-red"
+           href="/report-card?group=${encodeURIComponent(feesData.class + ' 2026')}&year=${year}"
+           target="_blank">View Report</a>
+      </div>
+
+      <div class="portal-card">
+        <div class="portal-icon">💰</div>
+        <div class="portal-title">Fees Statement</div>
+        <div class="portal-desc">Check fees &amp; payment history</div>
+        <a class="portal-btn btn-red"
+           href="/fees-statement?student=${encodeURIComponent(studentId)}&year=${year}"
+           target="_blank">View Statement</a>
+      </div>
+
+      <div class="portal-card">
+        <div class="portal-icon">🗓</div>
+        <div class="portal-title">Attendance</div>
+        <div class="portal-desc">View attendance record</div>
+        <button class="portal-btn btn-gray" onclick="comingSoon('Attendance')">View</button>
+      </div>
+
+      <div class="portal-card">
+        <div class="portal-icon">📢</div>
+        <div class="portal-title">Notices</div>
+        <div class="portal-desc">School announcements</div>
+        <button class="portal-btn btn-gray" onclick="comingSoon('Notices')">View</button>
+      </div>
+
+    </div>
+
+    <div class="activity-card">
+      <h2>Recent Activity</h2>
+      <table class="activity-table">
+        <thead>
+          <tr>
+            <th style="width:160px">Date</th>
+            <th>Description</th>
+            <th style="width:120px">Amount</th>
+            <th style="width:130px">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${activity}
+        </tbody>
+      </table>
+    </div>`;
+}
+
+function buildActivity(feesData) {
+  const rows = [];
+  const terms = feesData.statement || [];
+
+  // Most recent first
+  for (const t of [...terms].reverse()) {
+    const termShort = t.term.replace("2026 (", "").replace(")","");
+
+    // Report card available if term is past (term 1 only for now)
+    if (t.term.includes("Term 1")) {
+      rows.push(row("12 Apr 2026",
+        `${termShort} Report Card Available`, "—",
+        badge("Available", "badge-green")));
+    }
+
+    // Payments
+    if (t.paid > 0) {
+      rows.push(row(t.due_date,
+        `${termShort} Fees Payment — Cash`,
+        `$${t.paid.toFixed(2)}`,
+        badge("Received", "badge-green")));
+    }
+
+    // Invoice
+    rows.push(row(invoiceDate(t.term),
+      `${termShort} Fee Invoice`,
+      `$${t.grand_total.toFixed(2)}`,
+      badge("Invoiced", "badge-blue")));
+  }
+
+  return rows.slice(0, 8).join("");
+}
+
+function row(date, desc, amount, statusHtml) {
+  return `<tr>
+    <td>${date}</td>
+    <td>${desc}</td>
+    <td>${amount}</td>
+    <td>${statusHtml}</td>
+  </tr>`;
+}
+
+function badge(text, cls) {
+  return `<span class="badge ${cls}">${text}</span>`;
+}
+
+function invoiceDate(term) {
+  if (term.includes("Term 1")) return "13 Jan 2026";
+  if (term.includes("Term 2")) return "12 May 2026";
+  if (term.includes("Term 3")) return "04 Sep 2026";
+  return "—";
+}
+
+function comingSoon(feature) {
+  alert(`${feature} module coming soon.`);
+}
+
+/* ─── Init: fetch the logged-in parent's student(s) ─── */
+async function init() {
+  try {
+    const info = await api("education.api.parent_portal.get_my_students");
+
+    if (!info || !info.students || info.students.length === 0) {
+      // Fallback: show student selector from all students (demo mode)
+      await initDemo();
+      return;
+    }
+
+    if (info.students.length === 1) {
+      await loadDashboard(info.students[0].id, info.year || "2026");
+    } else {
+      // Multi-child: show switcher
+      renderSwitcher(info.students, info.year || "2026");
+    }
+  } catch (e) {
+    // Not logged in or demo mode — show selector
+    await initDemo();
+  }
+}
+
+async function initDemo() {
+  // Demo: let visitor pick any class+student
+  try {
+    const groups = await api("education.api.fees_statement.get_groups", { year: "2026" });
+
+    document.getElementById("status-bar").style.display = "flex";
+    document.getElementById("status-bar").style.background = "#fff3cd";
+    document.getElementById("status-bar").style.borderBottomColor = "#ffc107";
+    document.getElementById("status-msg").innerHTML =
+      `<b>Demo Mode</b> — Select a class and student to preview the parent portal`;
+    document.getElementById("status-balance").textContent = "";
+
+    document.getElementById("content").innerHTML = `
+      <div class="student-switcher">
+        <b>Select Class:</b>
+        <select id="demo-group" onchange="loadDemoStudents()">
+          <option value="">— Pick a class —</option>
+          ${groups.map(g => `<option value="${g}">${g}</option>`).join("")}
+        </select>
+        <b>Student:</b>
+        <select id="demo-student">
+          <option value="">— Pick a student —</option>
+        </select>
+        <button class="portal-btn btn-red" style="width:auto;padding:8px 22px"
+          onclick="loadDemoStudent()">View Portal</button>
+      </div>
+      <div id="demo-cards"></div>`;
+
+    document.getElementById("top-welcome").style.display = "";
+    document.getElementById("parent-name").textContent = "Guest";
+  } catch(e) {
+    document.getElementById("content").innerHTML =
+      `<div class="placeholder">Unable to load portal. Please try again.</div>`;
+  }
+}
+
+async function loadDemoStudents() {
+  const group = document.getElementById("demo-group").value;
+  if (!group) return;
+  const students = await api("education.api.fees_statement.get_students_in_group", { group });
+  const sel = document.getElementById("demo-student");
+  sel.innerHTML = '<option value="">— Pick a student —</option>';
+  (students || []).forEach(s => sel.add(new Option(s.name, s.id)));
+}
+
+async function loadDemoStudent() {
+  const sid = document.getElementById("demo-student").value;
+  if (!sid) { alert("Please select a student."); return; }
+  document.getElementById("demo-cards").innerHTML =
+    `<div class="placeholder"><div class="spinner"></div><br>Loading…</div>`;
+  try {
+    await loadDashboard(sid, "2026");
+  } catch(e) {
+    document.getElementById("demo-cards").innerHTML =
+      `<div class="placeholder">Error: ${e.message}</div>`;
+  }
+}
+
+function renderSwitcher(students, year) {
+  document.getElementById("content").innerHTML = `
+    <div class="student-switcher">
+      <b>Switch Child:</b>
+      <select id="child-sel" onchange="switchChild('${year}')">
+        ${students.map(s => `<option value="${s.id}">${s.name}</option>`).join("")}
+      </select>
+    </div>
+    <div id="child-cards"><div class="placeholder"><div class="spinner"></div><br>Loading…</div></div>`;
+  loadDashboard(students[0].id, year);
+}
+
+async function switchChild(year) {
+  const sid = document.getElementById("child-sel").value;
+  document.getElementById("child-cards").innerHTML =
+    `<div class="placeholder"><div class="spinner"></div><br>Loading…</div>`;
+  await loadDashboard(sid, year);
+}
+
+init();
+</script>
+</body>
+</html>

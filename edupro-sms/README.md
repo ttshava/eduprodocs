@@ -49,6 +49,10 @@ Edupro SMS is a complete school management platform built for Zimbabwe primary s
 ### Parent Portal
 ![Parent Portal](docs/screenshots/06_parent_portal.png)
 
+> **Live URL:** `http://your-school.edupro.co.zw/parent-portal`
+> - Logged-in parents see their child's dashboard automatically
+> - Demo/guest visitors see a class + student selector to preview any student
+
 ---
 
 ## Sample Documents
