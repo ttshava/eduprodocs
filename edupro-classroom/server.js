@@ -90,7 +90,7 @@ app.get('/api/rtp-capabilities', (req, res) => {
 // Status API
 app.get('/api/status', (req, res) => {
   res.json({
-    broadcasting: !!state.producer,
+    broadcasting: !!state.videoProducer,
     viewers:      state.viewers,
     boardConnected: !!state.boardSocketId,
     uptime: process.uptime(),
@@ -117,13 +117,14 @@ const io = new Server(httpsServer, {
 
 // ── Mediasoup State ──────────────────────────────────────────────────────────
 const state = {
-  worker:           null,
-  router:           null,
-  producerTransport: null,
-  producer:          null,
-  boardSocketId:     null,
+  worker:             null,
+  router:             null,
+  producerTransport:  null,
+  videoProducer:      null,   // screen video
+  audioProducer:      null,   // system/mic audio (optional)
+  boardSocketId:      null,
   consumerTransports: new Map(),   // socketId → transport
-  consumers:          new Map(),   // socketId → consumer
+  consumers:          new Map(),   // socketId → { video, audio }
   viewers:            0,
 };
 
@@ -182,20 +183,28 @@ io.on('connection', (socket) => {
 
   socket.on('board:produce', async ({ kind, rtpParameters }, cb) => {
     try {
-      state.producer = await state.producerTransport.produce({ kind, rtpParameters });
-      state.producer.on('transportclose', () => { state.producer = null; });
+      const producer = await state.producerTransport.produce({ kind, rtpParameters });
 
-      // Notify all waiting tablets
-      io.emit('board:newProducer');
-      cb({ ok: true, producerId: state.producer.id });
-      broadcastStatus();
+      if (kind === 'video') {
+        state.videoProducer = producer;
+        producer.on('transportclose', () => { state.videoProducer = null; });
+        // Notify tablets only once video is ready
+        io.emit('board:newProducer');
+        broadcastStatus();
+      } else {
+        state.audioProducer = producer;
+        producer.on('transportclose', () => { state.audioProducer = null; });
+      }
+
+      cb({ ok: true, producerId: producer.id });
     } catch (err) {
       cb({ ok: false, error: err.message });
     }
   });
 
   socket.on('board:stopBroadcast', () => {
-    if (state.producer) { state.producer.close(); state.producer = null; }
+    if (state.videoProducer) { state.videoProducer.close(); state.videoProducer = null; }
+    if (state.audioProducer) { state.audioProducer.close(); state.audioProducer = null; }
     if (state.producerTransport) { state.producerTransport.close(); state.producerTransport = null; }
     state.boardSocketId = null;
     io.emit('board:stopped');
@@ -242,47 +251,48 @@ io.on('connection', (socket) => {
   });
 
   socket.on('tablet:consume', async ({ rtpCapabilities }, cb) => {
-    if (!state.producer) return cb({ ok: false, error: 'Board not broadcasting' });
+    if (!state.videoProducer) return cb({ ok: false, error: 'Board not broadcasting' });
     const transport = state.consumerTransports.get(socket.id);
     if (!transport) return cb({ ok: false, error: 'No transport' });
 
     try {
-      if (!state.router.canConsume({ producerId: state.producer.id, rtpCapabilities })) {
-        return cb({ ok: false, error: 'Cannot consume' });
+      const result = { ok: true, consumers: [] };
+
+      // Always consume video
+      if (state.router.canConsume({ producerId: state.videoProducer.id, rtpCapabilities })) {
+        const vc = await transport.consume({ producerId: state.videoProducer.id, rtpCapabilities, paused: false });
+        result.consumers.push({ id: vc.id, producerId: state.videoProducer.id, kind: vc.kind, rtpParameters: vc.rtpParameters });
+
+        const cleanupViewers = () => {
+          const c = state.consumers.get(socket.id);
+          if (c) {
+            if (c.video) c.video.close();
+            if (c.audio) c.audio.close();
+            state.consumers.delete(socket.id);
+            state.viewers = Math.max(0, state.viewers - 1);
+            broadcastStatus();
+          }
+        };
+        vc.on('transportclose', cleanupViewers);
+        vc.on('producerclose', () => { cleanupViewers(); socket.emit('board:stopped'); });
+
+        const entry = state.consumers.get(socket.id) || {};
+        entry.video = vc;
+        state.consumers.set(socket.id, entry);
       }
-      const consumer = await transport.consume({
-        producerId:      state.producer.id,
-        rtpCapabilities,
-        paused:          false,
-      });
-      state.consumers.set(socket.id, consumer);
 
-      consumer.on('transportclose', () => {
-        if (state.consumers.has(socket.id)) {
-          state.consumers.delete(socket.id);
-          state.viewers = Math.max(0, state.viewers - 1);
-          broadcastStatus();
-        }
-      });
-      consumer.on('producerclose', () => {
-        if (state.consumers.has(socket.id)) {
-          state.consumers.delete(socket.id);
-          state.viewers = Math.max(0, state.viewers - 1);
-          broadcastStatus();
-        }
-        socket.emit('board:stopped');
-      });
-
-      cb({
-        ok:            true,
-        id:            consumer.id,
-        producerId:    state.producer.id,
-        kind:          consumer.kind,
-        rtpParameters: consumer.rtpParameters,
-      });
+      // Optionally consume audio if available
+      if (state.audioProducer && state.router.canConsume({ producerId: state.audioProducer.id, rtpCapabilities })) {
+        const ac = await transport.consume({ producerId: state.audioProducer.id, rtpCapabilities, paused: false });
+        result.consumers.push({ id: ac.id, producerId: state.audioProducer.id, kind: ac.kind, rtpParameters: ac.rtpParameters });
+        const entry = state.consumers.get(socket.id) || {};
+        entry.audio = ac;
+        state.consumers.set(socket.id, entry);
+      }
 
       state.viewers++;
       broadcastStatus();
+      cb(result);
     } catch (err) {
       cb({ ok: false, error: err.message });
     }
@@ -293,7 +303,8 @@ io.on('connection', (socket) => {
     console.log(`[${socket.id}] disconnected`);
 
     if (socket.id === state.boardSocketId) {
-      if (state.producer)         { state.producer.close();          state.producer = null; }
+      if (state.videoProducer)    { state.videoProducer.close();     state.videoProducer = null; }
+      if (state.audioProducer)    { state.audioProducer.close();     state.audioProducer = null; }
       if (state.producerTransport){ state.producerTransport.close(); state.producerTransport = null; }
       state.boardSocketId = null;
       io.emit('board:stopped');
@@ -301,7 +312,9 @@ io.on('connection', (socket) => {
     }
 
     if (state.consumers.has(socket.id)) {
-      state.consumers.get(socket.id).close();
+      const c = state.consumers.get(socket.id);
+      if (c.video) c.video.close();
+      if (c.audio) c.audio.close();
       state.consumers.delete(socket.id);
       state.viewers = Math.max(0, state.viewers - 1);
       broadcastStatus();
@@ -315,7 +328,7 @@ io.on('connection', (socket) => {
 
 function broadcastStatus() {
   io.emit('server:status', {
-    broadcasting: !!state.producer,
+    broadcasting: !!state.videoProducer,
     viewers:      state.viewers,
   });
 }

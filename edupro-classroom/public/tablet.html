@@ -262,23 +262,30 @@ async function startConsuming() {
   try {
     setStatus('Loading board stream…', 'loading');
 
-    const params = await new Promise((res, rej) => {
+    const result = await new Promise((res, rej) => {
       socket.emit('tablet:consume', { rtpCapabilities: device.rtpCapabilities }, d => d.ok ? res(d) : rej(new Error(d.error)));
     });
 
-    // In mediasoup-client v3, consume() is async
-    consumer = await consumerTransport.consume({
-      id:            params.id,
-      producerId:    params.producerId,
-      kind:          params.kind,
-      rtpParameters: params.rtpParameters,
-    });
+    // Create MediaStream from all consumer tracks (video + optional audio)
+    const tracks = [];
+    for (const p of result.consumers) {
+      const c = await consumerTransport.consume({
+        id:            p.id,
+        producerId:    p.producerId,
+        kind:          p.kind,
+        rtpParameters: p.rtpParameters,
+      });
+      tracks.push(c.track);
+    }
 
-    const stream = new MediaStream([consumer.track]);
+    if (tracks.length === 0) {
+      setStatus('No tracks received from server', 'error');
+      return;
+    }
+
+    const stream = new MediaStream(tracks);
     videoEl.srcObject = stream;
 
-    // showVideo is called on whichever event fires first:
-    // loadedmetadata (desktop/Android Chrome) or a timeout fallback
     let shown = false;
     function showVideo() {
       if (shown) return;
@@ -292,10 +299,9 @@ async function startConsuming() {
 
     videoEl.addEventListener('loadedmetadata', showVideo, { once: true });
     videoEl.addEventListener('canplay',        showVideo, { once: true });
-    // Fallback: if neither event fires within 3 s, show anyway
-    setTimeout(showVideo, 3000);
+    // Fallback: show video regardless after 2s
+    setTimeout(showVideo, 2000);
 
-    // Start playing immediately — some browsers need this before events fire
     videoEl.play().catch(() => {});
 
   } catch (err) {
