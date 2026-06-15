@@ -4,339 +4,1079 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Student Dashboard | Edupro SMS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
+/* ── Reset ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#1a1a2e}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
 a{text-decoration:none;color:inherit}
-#sidebar{position:fixed;left:0;top:0;width:220px;height:100vh;background:#1a1a2e;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
-#main{margin-left:220px;min-height:100vh;display:flex;flex-direction:column}
-#topbar{height:52px;background:#fff;border-bottom:1px solid #eee;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
-#content{padding:24px;flex:1}
-.sb-brand{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.1)}
-.sb-brand-name{font-size:17px;font-weight:800;color:#fff}
-.sb-brand-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px}
-.sb-nav{padding:8px 0;flex:1}
-.sb-link{display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:13px;color:rgba(255,255,255,.72);border-left:3px solid transparent;transition:all .15s}
-.sb-link:hover{background:rgba(255,255,255,.07);color:#fff}
-.sb-link.active{background:rgba(192,57,43,.25);border-left-color:#c0392b;color:#fff;font-weight:600}
-.sb-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0}
-.sb-footer{padding:14px 16px;border-top:1px solid rgba(255,255,255,.1)}
-.sb-user{font-size:12px;color:rgba(255,255,255,.5)}
-.sb-logout{font-size:12px;color:rgba(192,57,43,.8);margin-top:4px;cursor:pointer}
-.tb-left{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:#555}
-.tb-right{display:flex;align-items:center;gap:10px}
-.term-pill{padding:5px 12px;background:#f0f0f0;border-radius:20px;font-size:12px;font-weight:600;color:#555}
-.avatar{width:34px;height:34px;border-radius:50%;background:#2563eb;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
-.card{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:20px}
-.card-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#888;margin-bottom:16px}
-.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
-.grid-1{margin-bottom:20px}
-.kpi{display:flex;align-items:center;gap:14px}
-.kpi-icon{width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-.kpi-val{font-size:20px;font-weight:800;line-height:1.2}
-.kpi-lbl{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-top:4px}
-.kpi-tile{border-left:4px solid}
-/* Hero banner */
-.hero{border-radius:12px;padding:24px 28px;margin-bottom:20px;background:linear-gradient(135deg,#1a1a2e 0%,#c0392b 100%);color:#fff;display:flex;justify-content:space-between;align-items:center}
-.hero-name{font-size:22px;font-weight:800;margin-bottom:4px}
-.hero-class{font-size:14px;opacity:.85;margin-bottom:4px}
-.hero-motto{font-size:13px;opacity:.65;font-style:italic}
-.hero-right{text-align:right}
-.stu-id-badge{display:inline-block;background:rgba(255,255,255,.15);padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;margin-bottom:6px}
-.hero-date{font-size:12px;opacity:.65}
-/* Portal cards */
-.portal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
-.portal-card{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:20px;text-align:center;cursor:pointer;transition:all .2s;border:2px solid transparent}
-.portal-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.12);border-color:#f5c6c2}
-.portal-card.disabled{opacity:.6;cursor:default}
-.portal-card.disabled:hover{transform:none;box-shadow:0 2px 8px rgba(0,0,0,.08);border-color:transparent}
-.pc-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 12px}
-.pc-title{font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:4px}
-.pc-desc{font-size:12px;color:#888}
-.pc-btn{display:inline-block;margin-top:12px;padding:7px 16px;border-radius:7px;font-size:12px;font-weight:700;background:#c0392b;color:#fff;border:none;cursor:pointer;transition:background .15s}
-.pc-btn:hover{background:#a93226}
-.pc-btn.grey{background:#e0e0e0;color:#888;cursor:default}
-.pc-badge{display:inline-block;margin-top:8px;padding:2px 8px;background:#f0f0f0;color:#888;border-radius:10px;font-size:10px;font-weight:600}
-/* Table */
-.tbl{width:100%;border-collapse:collapse;font-size:13px}
-.tbl th{background:#f8f9fa;padding:9px 12px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:#666;border-bottom:2px solid #eee}
-.tbl td{padding:9px 12px;border-bottom:1px solid #f5f5f5;vertical-align:middle}
-.tbl tr:last-child td{border-bottom:none}
-.tbl tr:hover td{background:#fef5f5}
-.tbl tfoot td{font-weight:700;background:#f8f9fa;border-top:2px solid #eee}
-.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
-.grade-A,.grade-1{background:#dcfce7;color:#15803d}
-.grade-B,.grade-2{background:#dbeafe;color:#1d4ed8}
-.grade-C,.grade-3{background:#ede9fe;color:#7c3aed}
-.grade-D,.grade-4{background:#fef9c3;color:#854d0e}
-.grade-E,.grade-5{background:#ffedd5;color:#c2410c}
-.grade-U,.grade-6,.grade-7{background:#fee2e2;color:#991b1b}
-.badge-green{background:#dcfce7;color:#166534}
-.badge-red{background:#fee2e2;color:#991b1b}
-.badge-orange{background:#ffedd5;color:#c2410c}
-/* Notices */
-.notice-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid #f5f5f5}
-.notice-item:last-child{border-bottom:none}
-.notice-dot{width:10px;height:10px;border-radius:50%;background:#c0392b;margin-top:4px;flex-shrink:0}
-.notice-text{font-size:13px;color:#1a1a2e;flex:1}
-.notice-date{font-size:11px;color:#aaa;white-space:nowrap;flex-shrink:0}
-/* Fee status */
-.fee-status-ok{color:#16a34a;font-weight:700}
-.fee-status-due{color:#c0392b;font-weight:700}
-.hamburger{display:none;background:none;border:none;font-size:22px;cursor:pointer;margin-right:10px}
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99}
-@media(max-width:768px){
-  #sidebar{transform:translateX(-100%);transition:transform .25s}
-  #sidebar.open{transform:translateX(0)}
-  #main{margin-left:0}
-  .hamburger{display:block}
-  .grid-4,.portal-grid{grid-template-columns:1fr 1fr}
-  .grid-2{grid-template-columns:1fr}
-  .hero{flex-direction:column;gap:14px;text-align:center}
-  .hero-right{text-align:center}
-  .overlay.show{display:block}
+button{cursor:pointer;font-family:inherit}
+
+/* ── Design tokens ── */
+:root{
+  --red:#c0392b;--red-dark:#991b1b;--red-light:#fef2f2;
+  --navy:#0f172a;--navy-mid:#1e293b;--bg:#f8fafc;--border:#e2e8f0;
+  --text:#0f172a;--text-2:#475569;--text-3:#94a3b8;
+  --blue:#3b82f6;--blue-light:#eff6ff;
+  --green:#10b981;--green-light:#ecfdf5;
+  --purple:#8b5cf6;--purple-light:#f5f3ff;
+  --orange:#f59e0b;--orange-light:#fffbeb;
 }
-@media(max-width:480px){.grid-4,.portal-grid{grid-template-columns:1fr}}
+
+/* ── Sidebar ── */
+#sidebar{
+  position:fixed;left:0;top:0;width:260px;height:100vh;
+  background:var(--navy);overflow-y:auto;z-index:200;
+  display:flex;flex-direction:column;
+  transition:transform .28s cubic-bezier(.4,0,.2,1);
+}
+.sb-logo{
+  display:flex;align-items:center;gap:12px;
+  padding:20px 20px 18px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  flex-shrink:0;
+}
+.sb-logo-circle{
+  width:36px;height:36px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,#c0392b,#e74c3c);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:17px;font-weight:700;
+}
+.sb-logo-name{font-size:15px;font-weight:700;color:#fff;line-height:1.2}
+.sb-logo-sub{font-size:11px;color:#64748b;margin-top:1px}
+
+.sb-nav-wrap{flex:1;padding:10px 0;overflow-y:auto}
+.sb-section{
+  font-size:10px;font-weight:700;letter-spacing:.9px;
+  color:#334155;padding:14px 20px 6px;
+}
+.sb-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 16px;margin:2px 12px;
+  border-radius:10px;cursor:pointer;
+  color:rgba(255,255,255,.6);font-size:13.5px;font-weight:500;
+  transition:background .15s,color .15s;
+}
+.sb-item:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.9)}
+.sb-item.active{background:rgba(192,57,43,.18);color:#fff;font-weight:600}
+.sb-item-icon{
+  width:32px;height:32px;border-radius:8px;
+  background:rgba(255,255,255,.06);
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;flex-shrink:0;transition:background .15s;
+}
+.sb-item.active .sb-item-icon{background:#c0392b}
+.sb-item-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.sb-user-card{
+  margin:12px;padding:12px;
+  background:rgba(255,255,255,.06);border-radius:12px;
+  display:flex;align-items:center;gap:10px;flex-shrink:0;
+}
+.sb-avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:var(--red);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;flex-shrink:0;
+}
+.sb-user-name{font-size:13px;font-weight:600;color:#fff;line-height:1.2}
+.sb-user-role{font-size:11px;color:#64748b;margin-top:1px}
+.sb-logout-btn{
+  margin-left:auto;padding:5px 10px;
+  background:rgba(192,57,43,.25);border:none;border-radius:7px;
+  color:rgba(255,100,80,.9);font-size:11px;font-weight:600;
+  transition:background .15s;
+}
+.sb-logout-btn:hover{background:rgba(192,57,43,.4)}
+
+/* ── Overlay (mobile) ── */
+#sidebar-overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);
+  z-index:190;
+}
+
+/* ── Topbar ── */
+#topbar{
+  position:fixed;top:0;left:260px;right:0;height:60px;
+  background:#fff;border-bottom:1px solid var(--border);
+  padding:0 28px;display:flex;align-items:center;
+  justify-content:space-between;z-index:100;
+  transition:left .28s cubic-bezier(.4,0,.2,1);
+}
+.tb-left{display:flex;align-items:center;gap:12px}
+.tb-hamburger{
+  display:none;width:36px;height:36px;border:none;background:none;
+  align-items:center;justify-content:center;border-radius:8px;
+  font-size:20px;color:var(--text-2);
+  transition:background .15s;
+}
+.tb-hamburger:hover{background:var(--bg)}
+.tb-title{font-size:15px;font-weight:600;color:var(--text)}
+.tb-right{display:flex;align-items:center;gap:10px}
+.tb-notif{
+  width:36px;height:36px;border:1px solid var(--border);background:#fff;
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  font-size:16px;cursor:pointer;position:relative;transition:border-color .15s;
+}
+.tb-notif:hover{border-color:var(--red)}
+.tb-notif-dot{
+  position:absolute;top:6px;right:6px;width:7px;height:7px;
+  background:var(--red);border-radius:50%;border:1.5px solid #fff;
+}
+.tb-user{display:flex;align-items:center;gap:8px;cursor:pointer}
+.tb-user-avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,#8b5cf6,#6d28d9);
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;
+}
+.tb-user-name{font-size:13.5px;font-weight:600;color:var(--text)}
+.tb-user-sub{font-size:11px;color:var(--text-3)}
+
+/* ── Main content ── */
+#main{
+  margin-left:260px;padding-top:60px;min-height:100vh;
+  transition:margin-left .28s cubic-bezier(.4,0,.2,1);
+}
+#content{padding:28px}
+
+/* ── Card ── */
+.card{
+  background:#fff;border-radius:16px;
+  box-shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.04);
+  padding:22px;
+}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.card-title{font-size:14px;font-weight:700;color:var(--text)}
+.card-subtitle{font-size:12px;color:var(--text-3);margin-top:2px}
+.card-link{font-size:13px;font-weight:600;color:var(--blue);white-space:nowrap}
+.card-link:hover{text-decoration:underline}
+
+/* ── Skeleton / shimmer ── */
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.skeleton{
+  background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);
+  background-size:200% 100%;
+  animation:shimmer 1.5s infinite;
+  border-radius:8px;
+}
+
+/* ── Hero banner ── */
+.hero{
+  background:linear-gradient(135deg,#0f172a 0%,#1e293b 60%,#312e81 100%);
+  border-radius:20px;padding:28px 32px;
+  margin-bottom:24px;
+  display:flex;align-items:center;justify-content:space-between;
+  overflow:hidden;position:relative;
+}
+.hero-left{display:flex;align-items:center;gap:20px}
+.hero-avatar-circle{
+  width:64px;height:64px;border-radius:50%;
+  background:rgba(255,255,255,.15);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:24px;font-weight:700;
+  flex-shrink:0;border:2px solid rgba(255,255,255,.25);
+}
+.hero-info{}
+.hero-name{font-size:22px;font-weight:700;color:#fff;line-height:1.2}
+.hero-class{font-size:14px;color:rgba(255,255,255,.7);margin-top:4px}
+.hero-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.hero-pill{
+  display:flex;align-items:center;gap:5px;
+  padding:5px 12px;border-radius:20px;
+  background:rgba(255,255,255,.1);
+  font-size:12px;color:rgba(255,255,255,.85);font-weight:500;
+  border:1px solid rgba(255,255,255,.12);
+}
+.hero-right{font-size:80px;opacity:.3;line-height:1;flex-shrink:0}
+
+/* ── KPI grid ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+.kpi-card{display:flex;align-items:center;gap:16px}
+.kpi-icon{
+  width:52px;height:52px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;flex-shrink:0;
+}
+.kpi-body{}
+.kpi-value{font-size:26px;font-weight:800;color:var(--text);line-height:1.1}
+.kpi-label{font-size:10.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--text-3);margin-top:3px}
+.kpi-trend{
+  display:inline-flex;align-items:center;gap:3px;
+  margin-top:5px;font-size:11.5px;font-weight:600;
+  padding:2px 8px;border-radius:20px;
+}
+.kpi-trend.up{background:var(--green-light);color:var(--green)}
+.kpi-trend.down{background:var(--red-light);color:var(--red)}
+.kpi-trend.neutral{background:var(--bg);color:var(--text-3)}
+
+/* ── Middle row ── */
+.mid-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+
+/* ── Marks table ── */
+.marks-table-wrap{overflow-x:auto}
+.marks-table{width:100%;border-collapse:collapse;font-size:13px}
+.marks-table th{
+  padding:8px 12px;text-align:left;
+  font-size:10.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--text-3);border-bottom:2px solid var(--border);
+}
+.marks-table td{padding:10px 12px;border-bottom:1px solid var(--border)}
+.marks-table tr:last-child td{border-bottom:none}
+.marks-table tr:hover td{background:var(--bg)}
+.marks-table .total-row td{
+  font-weight:700;color:var(--text);background:var(--bg);
+  border-top:2px solid var(--border);border-bottom:none;
+}
+.grade-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:26px;height:26px;border-radius:8px;
+  font-size:12px;font-weight:700;
+}
+.grade-A{background:var(--green-light);color:var(--green)}
+.grade-B{background:var(--blue-light);color:var(--blue)}
+.grade-C{background:var(--purple-light);color:var(--purple)}
+.grade-D{background:var(--orange-light);color:var(--orange)}
+.grade-E,.grade-U{background:var(--red-light);color:var(--red)}
+.status-badge{
+  display:inline-block;padding:3px 10px;border-radius:20px;
+  font-size:11px;font-weight:600;
+}
+.status-excellent{background:var(--green-light);color:var(--green)}
+.status-good{background:var(--blue-light);color:var(--blue)}
+.status-satisfactory{background:var(--purple-light);color:var(--purple)}
+.status-needs-work{background:var(--red-light);color:var(--red)}
+
+/* ── Term select ── */
+.term-select{
+  padding:6px 10px;border:1px solid var(--border);border-radius:8px;
+  font-size:12px;font-weight:500;color:var(--text);outline:none;
+  font-family:inherit;background:#fff;cursor:pointer;
+}
+.term-select:focus{border-color:var(--blue)}
+
+/* ── Fee account card ── */
+.fee-term-tabs{display:flex;gap:4px;margin-bottom:16px}
+.fee-tab{
+  padding:6px 14px;border-radius:8px;font-size:12.5px;font-weight:600;
+  border:none;background:var(--bg);color:var(--text-2);
+  transition:background .15s,color .15s;
+}
+.fee-tab.active{background:var(--navy);color:#fff}
+.fee-tab:hover:not(.active){background:var(--border)}
+.fee-table{width:100%;border-collapse:collapse;font-size:13px}
+.fee-table td{padding:8px 0;border-bottom:1px solid var(--border)}
+.fee-table tr:last-child td{border-bottom:none}
+.fee-table .fee-label{color:var(--text-2)}
+.fee-table .fee-amount{text-align:right;font-weight:600;color:var(--text)}
+.fee-divider{border:none;border-top:2px solid var(--border);margin:12px 0}
+.fee-summary-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0}
+.fee-summary-label{font-size:13px;color:var(--text-2)}
+.fee-summary-val{font-size:13px;font-weight:700}
+.fee-paid-badge{
+  padding:3px 10px;border-radius:20px;
+  font-size:11px;font-weight:700;
+  background:var(--green-light);color:var(--green);
+}
+.fee-due-badge-green{
+  padding:3px 10px;border-radius:20px;
+  font-size:11px;font-weight:700;
+  background:var(--green-light);color:var(--green);
+}
+.fee-due-badge-red{
+  padding:3px 10px;border-radius:20px;
+  font-size:11px;font-weight:700;
+  background:var(--red-light);color:var(--red);
+}
+.pay-now-btn{
+  display:block;width:100%;margin-top:16px;
+  padding:11px;border:none;border-radius:10px;
+  background:var(--red);color:#fff;
+  font-size:14px;font-weight:700;
+  transition:background .15s,transform .1s;
+  text-align:center;
+}
+.pay-now-btn:hover{background:var(--red-dark);transform:translateY(-1px)}
+.fee-panel{display:none}
+.fee-panel.active{display:block}
+
+/* ── Bottom row ── */
+.bottom-row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+
+/* ── Quick links grid ── */
+.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.quick-card{
+  border-radius:12px;padding:16px;
+  border:1px solid var(--border);
+  display:flex;flex-direction:column;gap:4px;
+  transition:box-shadow .15s,transform .15s;cursor:pointer;
+}
+.quick-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.10);transform:translateY(-2px)}
+.quick-card-icon{font-size:22px;margin-bottom:4px}
+.quick-card-title{font-size:13.5px;font-weight:700;color:var(--text)}
+.quick-card-desc{font-size:11.5px;color:var(--text-3)}
+.quick-card-arrow{
+  font-size:12px;font-weight:700;margin-top:6px;
+}
+.qc-red{border-top:3px solid var(--red)}
+.qc-red .quick-card-arrow{color:var(--red)}
+.qc-green{border-top:3px solid var(--green)}
+.qc-green .quick-card-arrow{color:var(--green)}
+.qc-blue{border-top:3px solid var(--blue)}
+.qc-blue .quick-card-arrow{color:var(--blue)}
+.qc-orange{border-top:3px solid var(--orange)}
+.qc-orange .quick-card-arrow{color:var(--orange)}
+
+/* ── Notices ── */
+.notice-list{display:flex;flex-direction:column;gap:0}
+.notice-item{
+  display:flex;gap:12px;padding:14px 0;
+  border-bottom:1px solid var(--border);
+}
+.notice-item:last-child{border-bottom:none}
+.notice-bullet{
+  font-size:18px;flex-shrink:0;line-height:1.4;
+}
+.notice-body{flex:1;min-width:0}
+.notice-title{font-size:13.5px;font-weight:700;color:var(--text);line-height:1.3}
+.notice-desc{font-size:12px;color:var(--text-2);margin-top:3px;line-height:1.5}
+.notice-meta{display:flex;align-items:center;gap:8px;margin-top:6px}
+.notice-date{font-size:11px;color:var(--text-3)}
+.notice-badge{
+  padding:2px 8px;border-radius:20px;
+  font-size:10.5px;font-weight:700;
+}
+.nb-important{background:var(--red-light);color:var(--red)}
+
+/* ── Skeleton shapes ── */
+.skel-line{height:14px;border-radius:7px}
+.skel-circle{border-radius:50%}
+
+/* ── Mobile ── */
+@media(max-width:768px){
+  #sidebar{transform:translateX(-100%)}
+  #sidebar.open{transform:translateX(0)}
+  #sidebar-overlay.open{display:block}
+  #topbar{left:0}
+  #main{margin-left:0}
+  .tb-hamburger{display:flex}
+  .kpi-grid{grid-template-columns:1fr 1fr}
+  .kpi-grid .card:last-child{grid-column:1/-1}
+  .mid-row{grid-template-columns:1fr}
+  .bottom-row{grid-template-columns:1fr}
+  .hero{flex-direction:column;align-items:flex-start;gap:12px}
+  .hero-right{display:none}
+  #content{padding:16px}
+}
+@media(max-width:480px){
+  .kpi-grid{grid-template-columns:1fr}
+  .kpi-grid .card:last-child{grid-column:auto}
+  .hero-name{font-size:18px}
+  .quick-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
-<div id="sidebar">
-  <div class="sb-brand"><div class="sb-brand-name">Edupro SMS</div><div class="sb-brand-sub">Student Portal</div></div>
-  <nav class="sb-nav" id="sb-nav"></nav>
-  <div class="sb-footer"><div class="sb-user" id="sb-user">Loading…</div><div class="sb-logout" onclick="location.href='/logout'">Sign out</div></div>
-</div>
-<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 
-<div id="main">
-  <div id="topbar">
-    <div class="tb-left">
-      <button class="hamburger" onclick="toggleSidebar()">☰</button>
-      <span>🎓 Student Dashboard</span>
-    </div>
-    <div class="tb-right">
-      <div class="term-pill" id="term-pill">Term 2 · 2026</div>
-      <div class="avatar" id="top-avatar">S</div>
+<!-- Sidebar overlay (mobile) -->
+<div id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<!-- ════ Sidebar ════ -->
+<aside id="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-circle">E</div>
+    <div>
+      <div class="sb-logo-name">Edupro SMS</div>
+      <div class="sb-logo-sub">School Management</div>
     </div>
   </div>
 
-  <div id="content">
-    <!-- Hero -->
-    <div class="hero">
+  <nav class="sb-nav-wrap" id="sidebar-nav">
+    <!-- rendered by JS -->
+  </nav>
+
+  <div class="sb-user-card">
+    <div class="sb-avatar" id="sb-user-initial">S</div>
+    <div>
+      <div class="sb-user-name" id="sb-user-name">Student</div>
+      <div class="sb-user-role">Student Portal</div>
+    </div>
+    <button class="sb-logout-btn" onclick="location.href='/login'">Logout</button>
+  </div>
+</aside>
+
+<!-- ════ Topbar ════ -->
+<header id="topbar">
+  <div class="tb-left">
+    <button class="tb-hamburger" id="hamburger-btn" onclick="toggleSidebar()" aria-label="Menu">&#9776;</button>
+    <div>
+      <div class="tb-title">Student Dashboard</div>
+    </div>
+  </div>
+  <div class="tb-right">
+    <div class="tb-notif" title="Notifications">
+      🔔
+      <span class="tb-notif-dot"></span>
+    </div>
+    <div class="tb-user">
+      <div class="tb-user-avatar" id="tb-avatar">S</div>
       <div>
-        <div class="hero-name" id="hero-name">Hello, Student! 👋</div>
-        <div class="hero-class" id="hero-class">Loading class info…</div>
-        <div class="hero-motto">Keep up the great work this term!</div>
-      </div>
-      <div class="hero-right">
-        <div class="stu-id-badge" id="hero-id">Student ID</div>
-        <div class="hero-date" id="hero-date"></div>
-      </div>
-    </div>
-
-    <!-- KPI -->
-    <div class="grid-4">
-      <div class="card kpi-tile" style="border-left-color:#2563eb">
-        <div class="kpi"><div class="kpi-icon" style="background:#dbeafe">🏫</div>
-          <div><div class="kpi-val" id="kpi-class">—</div><div class="kpi-lbl">My Class</div></div></div>
-      </div>
-      <div class="card kpi-tile" style="border-left-color:#7c3aed">
-        <div class="kpi"><div class="kpi-icon" style="background:#ede9fe">📚</div>
-          <div><div class="kpi-val" id="kpi-subjects">—</div><div class="kpi-lbl">Subjects</div></div></div>
-      </div>
-      <div class="card kpi-tile" style="border-left-color:#16a34a">
-        <div class="kpi"><div class="kpi-icon" style="background:#dcfce7">📊</div>
-          <div><div class="kpi-val" id="kpi-avg">—</div><div class="kpi-lbl">Latest Average</div></div></div>
-      </div>
-      <div class="card kpi-tile" id="kpi-fee-tile" style="border-left-color:#16a34a">
-        <div class="kpi"><div class="kpi-icon" id="kpi-fee-icon" style="background:#dcfce7">💰</div>
-          <div><div class="kpi-val" id="kpi-fees">—</div><div class="kpi-lbl">Fee Balance</div></div></div>
-      </div>
-    </div>
-
-    <!-- Portal cards -->
-    <div class="portal-grid">
-      <div class="portal-card" onclick="location.href='/report-card'">
-        <div class="pc-icon" style="background:#fee2e2">📋</div>
-        <div class="pc-title">Report Card</div>
-        <div class="pc-desc">View grades and teacher remarks</div>
-        <button class="pc-btn">View Report Card</button>
-      </div>
-      <div class="portal-card" onclick="location.href='/student-marks'">
-        <div class="pc-icon" style="background:#ede9fe">📊</div>
-        <div class="pc-title">My Marks</div>
-        <div class="pc-desc">Scores by subject this term</div>
-        <button class="pc-btn">View Marks</button>
-      </div>
-      <div class="portal-card" onclick="location.href='/fees-statement'">
-        <div class="pc-icon" style="background:#dcfce7">💰</div>
-        <div class="pc-title">Fees Statement</div>
-        <div class="pc-desc">Billing and payment history</div>
-        <button class="pc-btn">View Statement</button>
-      </div>
-      <div class="portal-card disabled">
-        <div class="pc-icon" style="background:#f0f0f0">📆</div>
-        <div class="pc-title">Attendance</div>
-        <div class="pc-desc">Your attendance record</div>
-        <div class="pc-badge">Coming Soon</div>
-      </div>
-    </div>
-
-    <!-- Marks + Fees -->
-    <div class="grid-2">
-      <div class="card">
-        <div class="card-title">My Marks This Term</div>
-        <table class="tbl">
-          <thead><tr><th>Subject</th><th>Score</th><th>Grade</th><th>Remarks</th></tr></thead>
-          <tbody id="marks-table"><tr><td colspan="4" style="text-align:center;color:#aaa;padding:20px">Loading marks…</td></tr></tbody>
-        </table>
-        <div style="margin-top:12px;text-align:right">
-          <a href="/report-card" style="font-size:12px;color:#c0392b;font-weight:600">Download Report Card →</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">Fee Summary</div>
-        <table class="tbl">
-          <thead><tr><th>Term</th><th>Billed</th><th>Paid</th><th>Outstanding</th><th>Status</th></tr></thead>
-          <tbody id="fees-table"><tr><td colspan="5" style="text-align:center;color:#aaa;padding:20px">Loading fees…</td></tr></tbody>
-          <tfoot><tr><td><strong>Total</strong></td><td id="ft-billed">—</td><td id="ft-paid">—</td><td id="ft-out" style="color:#c0392b">—</td><td></td></tr></tfoot>
-        </table>
-        <div style="margin-top:12px;text-align:right">
-          <a href="/fees-statement" style="font-size:12px;color:#c0392b;font-weight:600">View full statement →</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Notices -->
-    <div class="card grid-1">
-      <div class="card-title">📢 School Notices</div>
-      <div id="notices-list">
-        <div class="notice-item"><div class="notice-dot"></div><div class="notice-text">Term 2 examinations begin 4 August 2026</div><div class="notice-date">Jun 2026</div></div>
-        <div class="notice-item"><div class="notice-dot" style="background:#2563eb"></div><div class="notice-text">Sports Day: 25 July 2026 — All students must participate</div><div class="notice-date">Jun 2026</div></div>
-        <div class="notice-item"><div class="notice-dot" style="background:#d97706"></div><div class="notice-text">School fees deadline for Term 2: 30 June 2026</div><div class="notice-date">Jun 2026</div></div>
-        <div class="notice-item"><div class="notice-dot" style="background:#7c3aed"></div><div class="notice-text">Term 2 parent-teacher meetings: 18 July 2026</div><div class="notice-date">Jun 2026</div></div>
+        <div class="tb-user-name" id="tb-user-name">Loading…</div>
+        <div class="tb-user-sub">Student</div>
       </div>
     </div>
   </div>
-</div>
+</header>
+
+<!-- ════ Main content ════ -->
+<main id="main">
+  <div id="content">
+
+    <!-- ── Hero Banner ── -->
+    <div class="hero" id="hero-banner">
+      <div class="hero-left">
+        <div class="hero-avatar-circle" id="hero-avatar">S</div>
+        <div class="hero-info">
+          <div class="hero-name skeleton skel-line" id="hero-name" style="width:200px;height:22px">&nbsp;</div>
+          <div class="hero-class skeleton skel-line" id="hero-class" style="width:240px;height:14px;margin-top:6px">&nbsp;</div>
+          <div class="hero-pills" id="hero-pills">
+            <span class="hero-pill skeleton" style="width:110px;height:26px">&nbsp;</span>
+            <span class="hero-pill skeleton" style="width:130px;height:26px">&nbsp;</span>
+            <span class="hero-pill skeleton" style="width:110px;height:26px">&nbsp;</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-right">🎓</div>
+    </div>
+
+    <!-- ── KPI Grid ── -->
+    <div class="kpi-grid" id="kpi-grid">
+      <!-- Term Average -->
+      <div class="card kpi-card">
+        <div class="kpi-icon" style="background:var(--blue-light)">📊</div>
+        <div class="kpi-body">
+          <div class="kpi-value skeleton skel-line" id="kpi-avg" style="width:70px;height:26px">&nbsp;</div>
+          <div class="kpi-label">Term Average</div>
+          <span class="kpi-trend neutral skeleton skel-line" id="kpi-avg-trend" style="width:90px;height:18px;display:inline-block">&nbsp;</span>
+        </div>
+      </div>
+      <!-- Fee Balance -->
+      <div class="card kpi-card">
+        <div class="kpi-icon" id="kpi-fee-icon" style="background:var(--green-light)">💰</div>
+        <div class="kpi-body">
+          <div class="kpi-value skeleton skel-line" id="kpi-fee-balance" style="width:80px;height:26px">&nbsp;</div>
+          <div class="kpi-label">Fee Balance</div>
+          <span class="kpi-trend neutral skeleton skel-line" id="kpi-fee-status" style="width:80px;height:18px;display:inline-block">&nbsp;</span>
+        </div>
+      </div>
+      <!-- Class Rank -->
+      <div class="card kpi-card">
+        <div class="kpi-icon" style="background:var(--orange-light)">🏆</div>
+        <div class="kpi-body">
+          <div class="kpi-value skeleton skel-line" id="kpi-rank" style="width:60px;height:26px">&nbsp;</div>
+          <div class="kpi-label">Class Position</div>
+          <span class="kpi-trend neutral skeleton skel-line" id="kpi-rank-sub" style="width:90px;height:18px;display:inline-block">&nbsp;</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Middle Row ── -->
+    <div class="mid-row">
+
+      <!-- Marks card -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">My Marks</div>
+            <div class="card-subtitle" id="marks-term-label">Term 2 · 2026</div>
+          </div>
+          <select class="term-select" id="marks-term-select" onchange="onTermChange(this.value)">
+            <option value="1">Term 1 2026</option>
+            <option value="2" selected>Term 2 2026</option>
+            <option value="3">Term 3 2026</option>
+          </select>
+        </div>
+        <div class="marks-table-wrap">
+          <table class="marks-table">
+            <thead>
+              <tr>
+                <th>Subject</th>
+                <th>Score</th>
+                <th>Grade</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="marks-tbody">
+              <!-- skeleton rows -->
+              <tr><td colspan="4"><div class="skeleton skel-line" style="height:14px;margin:8px 0"></div></td></tr>
+              <tr><td colspan="4"><div class="skeleton skel-line" style="height:14px;margin:8px 0"></div></td></tr>
+              <tr><td colspan="4"><div class="skeleton skel-line" style="height:14px;margin:8px 0"></div></td></tr>
+              <tr><td colspan="4"><div class="skeleton skel-line" style="height:14px;margin:8px 0"></div></td></tr>
+              <tr><td colspan="4"><div class="skeleton skel-line" style="height:14px;margin:8px 0"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Fee account card -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Fee Account</div>
+            <div class="card-subtitle">Current term billing</div>
+          </div>
+          <a class="card-link" href="/fees-statement">View Statement →</a>
+        </div>
+
+        <!-- Term tabs -->
+        <div class="fee-term-tabs">
+          <button class="fee-tab" id="fee-term-1" onclick="switchFeeTerm(1)">Term 1</button>
+          <button class="fee-tab active" id="fee-term-2" onclick="switchFeeTerm(2)">Term 2</button>
+          <button class="fee-tab" id="fee-term-3" onclick="switchFeeTerm(3)">Term 3</button>
+        </div>
+
+        <!-- Term 1 panel -->
+        <div class="fee-panel" id="fee-panel-1">
+          <table class="fee-table" id="fee-breakdown-1">
+            <tbody>
+              <tr><td class="fee-label">Tuition</td><td class="fee-amount">$30.00</td></tr>
+              <tr><td class="fee-label">Building Levy</td><td class="fee-amount">$20.00</td></tr>
+              <tr><td class="fee-label">School Levy</td><td class="fee-amount">$10.00</td></tr>
+              <tr><td class="fee-label" style="font-weight:700;color:var(--text)">Total</td><td class="fee-amount" style="color:var(--text)">$60.00</td></tr>
+            </tbody>
+          </table>
+          <hr class="fee-divider">
+          <div class="fee-summary-row">
+            <span class="fee-summary-label">Amount Paid</span>
+            <div style="display:flex;align-items:center;gap:10px">
+              <span class="fee-summary-val" id="fee-paid-1">$60.00</span>
+              <span class="fee-paid-badge">Paid</span>
+            </div>
+          </div>
+          <div class="fee-summary-row">
+            <span class="fee-summary-label">Balance Due</span>
+            <div style="display:flex;align-items:center;gap:10px">
+              <span class="fee-summary-val" id="fee-balance-1">$0.00</span>
+              <span class="fee-due-badge-green">Cleared</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Term 2 panel (active) -->
+        <div class="fee-panel active" id="fee-panel-2">
+          <table class="fee-table" id="fee-breakdown-2">
+            <tbody>
+              <tr><td class="fee-label">Tuition</td><td class="fee-amount">$30.00</td></tr>
+              <tr><td class="fee-label">Building Levy</td><td class="fee-amount">$20.00</td></tr>
+              <tr><td class="fee-label">School Levy</td><td class="fee-amount">$10.00</td></tr>
+              <tr><td class="fee-label" style="font-weight:700;color:var(--text)">Total</td><td class="fee-amount" id="fee-total-2" style="color:var(--text)">$60.00</td></tr>
+            </tbody>
+          </table>
+          <hr class="fee-divider">
+          <div class="fee-summary-row">
+            <span class="fee-summary-label">Amount Paid</span>
+            <div style="display:flex;align-items:center;gap:10px">
+              <span class="fee-summary-val" id="fee-paid-2">$40.00</span>
+              <span class="fee-paid-badge" id="fee-paid-badge-2">Partial</span>
+            </div>
+          </div>
+          <div class="fee-summary-row">
+            <span class="fee-summary-label">Balance Due</span>
+            <div style="display:flex;align-items:center;gap:10px">
+              <span class="fee-summary-val" id="fee-balance-2" style="color:var(--red)">$20.00</span>
+              <span class="fee-due-badge-red" id="fee-due-badge-2">Outstanding</span>
+            </div>
+          </div>
+          <button class="pay-now-btn" id="pay-now-2" onclick="alert('Redirecting to payment gateway…')">💳 Pay Now — $20.00</button>
+        </div>
+
+        <!-- Term 3 panel -->
+        <div class="fee-panel" id="fee-panel-3">
+          <table class="fee-table">
+            <tbody>
+              <tr><td class="fee-label">Tuition</td><td class="fee-amount">$30.00</td></tr>
+              <tr><td class="fee-label">Building Levy</td><td class="fee-amount">$20.00</td></tr>
+              <tr><td class="fee-label">School Levy</td><td class="fee-amount">$10.00</td></tr>
+              <tr><td class="fee-label" style="font-weight:700;color:var(--text)">Total</td><td class="fee-amount" style="color:var(--text)">$60.00</td></tr>
+            </tbody>
+          </table>
+          <hr class="fee-divider">
+          <div class="fee-summary-row">
+            <span class="fee-summary-label">Amount Paid</span>
+            <div style="display:flex;align-items:center;gap:10px">
+              <span class="fee-summary-val">$0.00</span>
+              <span class="fee-due-badge-red">Unpaid</span>
+            </div>
+          </div>
+          <div class="fee-summary-row">
+            <span class="fee-summary-label">Balance Due</span>
+            <div style="display:flex;align-items:center;gap:10px">
+              <span class="fee-summary-val" style="color:var(--red)">$60.00</span>
+              <span class="fee-due-badge-red">Outstanding</span>
+            </div>
+          </div>
+          <button class="pay-now-btn" onclick="alert('Redirecting to payment gateway…')">💳 Pay Now — $60.00</button>
+        </div>
+      </div>
+    </div><!-- /mid-row -->
+
+    <!-- ── Bottom Row ── -->
+    <div class="bottom-row">
+
+      <!-- Quick links -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Quick Links</div>
+        </div>
+        <div class="quick-grid">
+          <a href="/report-card" class="quick-card qc-red">
+            <div class="quick-card-icon">📋</div>
+            <div class="quick-card-title">View Report Card</div>
+            <div class="quick-card-desc">Download your term report</div>
+            <div class="quick-card-arrow">View →</div>
+          </a>
+          <a href="/fees-statement" class="quick-card qc-green">
+            <div class="quick-card-icon">💰</div>
+            <div class="quick-card-title">Fees Statement</div>
+            <div class="quick-card-desc">View full payment history</div>
+            <div class="quick-card-arrow">View →</div>
+          </a>
+          <a href="/student-marks" class="quick-card qc-blue">
+            <div class="quick-card-icon">📊</div>
+            <div class="quick-card-title">My Marks</div>
+            <div class="quick-card-desc">All subject scores</div>
+            <div class="quick-card-arrow">View →</div>
+          </a>
+          <a href="/student-notices" class="quick-card qc-orange">
+            <div class="quick-card-icon">📢</div>
+            <div class="quick-card-title">Notices</div>
+            <div class="quick-card-desc">School announcements</div>
+            <div class="quick-card-arrow">View →</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- School notices -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Latest Notices</div>
+          <a class="card-link" href="/student-notices">View All →</a>
+        </div>
+        <div class="notice-list">
+          <div class="notice-item">
+            <div class="notice-bullet">🔔</div>
+            <div class="notice-body">
+              <div class="notice-title">Term 2 Examinations</div>
+              <div class="notice-desc">Exams begin Monday 14 June. Students must bring exam slips.</div>
+              <div class="notice-meta">
+                <span class="notice-date">14 Jun 2026</span>
+                <span class="notice-badge nb-important">Important</span>
+              </div>
+            </div>
+          </div>
+          <div class="notice-item">
+            <div class="notice-bullet">📢</div>
+            <div class="notice-body">
+              <div class="notice-title">Prize Giving Ceremony</div>
+              <div class="notice-desc">Annual prize giving on 25 June at 10am in the school hall.</div>
+              <div class="notice-meta">
+                <span class="notice-date">10 Jun 2026</span>
+              </div>
+            </div>
+          </div>
+          <div class="notice-item">
+            <div class="notice-bullet">📋</div>
+            <div class="notice-body">
+              <div class="notice-title">Report Card Collection</div>
+              <div class="notice-desc">Parents to collect report cards on 28 June 2026.</div>
+              <div class="notice-meta">
+                <span class="notice-date">8 Jun 2026</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /bottom-row -->
+  </div><!-- /content -->
+</main><!-- /main -->
 
 <script>
-const NAV=[
-  {id:'dashboard',icon:'🏠',label:'Dashboard',href:'/student-dashboard'},
-  {id:'reportcard',icon:'📋',label:'My Report Card',href:'/report-card'},
-  {id:'marks',icon:'📊',label:'My Marks',href:'/student-marks'},
-  {id:'fees',icon:'💰',label:'Fees Statement',href:'/fees-statement'},
-  {id:'attendance',icon:'📆',label:'My Attendance',href:'/student-attendance'},
-  {id:'notices',icon:'📢',label:'Notices Board',href:'/student-notices'},
-  {id:'profile',icon:'👤',label:'My Profile',href:'/student-profile'},
+/* ══════════════════════════════════════════════
+   NAV DEFINITION
+══════════════════════════════════════════════ */
+const NAV = [
+  {section:'MAIN', id:'dashboard', icon:'🏠', label:'Dashboard', href:'/student-dashboard'},
+  {id:'reports',  icon:'📋', label:'My Report Card',  href:'/report-card'},
+  {id:'fees',     icon:'💰', label:'Fees Statement',   href:'/fees-statement'},
+  {section:'PORTAL', id:'marks',    icon:'📊', label:'My Marks',       href:'/student-marks'},
+  {id:'notices',  icon:'📢', label:'School Notices',  href:'/student-notices'},
+  {id:'calendar', icon:'📅', label:'Calendar',         href:'/student-calendar'},
+  {id:'profile',  icon:'👤', label:'My Profile',       href:'/student-profile'},
 ];
-function renderSidebar(active){
-  document.getElementById('sb-nav').innerHTML=NAV.map(n=>
-    `<a href="${n.href}" class="sb-link${n.id===active?' active':''}"><span class="sb-icon">${n.icon}</span>${n.label}</a>`
-  ).join('');
-}
-function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show');}
-function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
-let _csrf='';
-async function getCSRF(){if(_csrf)return _csrf;const r=await fetch('/api/method/education.api.parent_portal.get_csrf_token');_csrf=(await r.json()).message||'';return _csrf;}
-async function apiGet(m,p={}){const r=await fetch(`/api/method/${m}?${new URLSearchParams(p)}`,{headers:{'X-Frappe-CSRF-Token':await getCSRF()}});if(r.status===401||r.status===403){location.href='/login';return null;}const j=await r.json();if(j.exc_type)throw new Error(j.exception||j.exc_type);return j.message;}
-function fmt(n){return'$'+parseFloat(n||0).toFixed(2);}
-const REMARKS={A:'Excellent',B:'Very Good',C:'Good',D:'Satisfactory',E:'Needs Improvement',U:'Unsatisfactory',1:'Distinction',2:'Merit',3:'Credit',4:'Pass',5:'Pass',6:'Needs Improvement',7:'Below Expectations'};
 
+/* ══════════════════════════════════════════════
+   SIDEBAR RENDERER
+══════════════════════════════════════════════ */
+function renderSidebar(activeId, nav){
+  const wrap = document.getElementById('sidebar-nav');
+  if(!wrap) return;
+  let html = '';
+  nav.forEach(item => {
+    if(item.section){
+      html += `<div class="sb-section">${item.section}</div>`;
+    }
+    const active = item.id === activeId ? ' active' : '';
+    html += `
+      <a href="${item.href||'#'}" class="sb-item${active}" data-id="${item.id}">
+        <span class="sb-item-icon">${item.icon}</span>
+        <span class="sb-item-label">${item.label}</span>
+      </a>`;
+  });
+  wrap.innerHTML = html;
+}
+
+/* ══════════════════════════════════════════════
+   CSRF + API HELPERS
+══════════════════════════════════════════════ */
+let _csrf = '';
+async function getCSRF(){
+  if(_csrf) return _csrf;
+  try{
+    const r = await fetch('/api/method/education.api.parent_portal.get_csrf_token');
+    _csrf = (await r.json()).message || '';
+  }catch(e){ _csrf = ''; }
+  return _csrf;
+}
+async function apiGet(method, params={}){
+  const qs = new URLSearchParams(params).toString();
+  const url = `/api/method/${method}${qs ? '?'+qs : ''}`;
+  const r = await fetch(url, {headers:{'X-Frappe-CSRF-Token': await getCSRF()}});
+  if(r.status===401 || r.status===403){ location.href='/login'; return null; }
+  const j = await r.json();
+  if(j.exc_type) throw new Error(j.exception || j.exc_type);
+  return j.message;
+}
+
+/* ══════════════════════════════════════════════
+   GRADES / STATUS HELPERS
+══════════════════════════════════════════════ */
+function getGrade(score){
+  if(score>=80) return 'A';
+  if(score>=65) return 'B';
+  if(score>=50) return 'C';
+  if(score>=40) return 'D';
+  if(score>=30) return 'E';
+  return 'U';
+}
+function getStatus(score){
+  if(score>=80) return {label:'Excellent', cls:'status-excellent'};
+  if(score>=65) return {label:'Good',      cls:'status-good'};
+  if(score>=50) return {label:'Satisfactory', cls:'status-satisfactory'};
+  return {label:'Needs Work', cls:'status-needs-work'};
+}
+function fmtMoney(v){
+  if(v==null) return '—';
+  return '$'+Number(v).toFixed(2);
+}
+function initial(name){
+  if(!name) return 'S';
+  return name.trim()[0].toUpperCase();
+}
+
+/* ══════════════════════════════════════════════
+   REMOVE SKELETON FROM ELEMENT
+══════════════════════════════════════════════ */
+function clearSkeleton(el){
+  if(!el) return;
+  el.classList.remove('skeleton','skel-line','skel-circle');
+  el.style.width='';
+  el.style.height='';
+}
+
+/* ══════════════════════════════════════════════
+   POPULATE HERO
+══════════════════════════════════════════════ */
+function populateHero(data){
+  const name  = data.student_name || 'Student';
+  const grade = data.student_group || data.grade || '—';
+  const school= data.school || 'Sunshine Primary School';
+  const id    = data.student || data.name || '—';
+  const avg   = data.average != null ? Math.round(data.average)+'%' : '—%';
+  const term  = data.term || 'Term 2';
+  const year  = data.year || new Date().getFullYear();
+
+  /* Avatar */
+  const avEl = document.getElementById('hero-avatar');
+  if(avEl){ clearSkeleton(avEl); avEl.textContent = initial(name); }
+
+  /* Name */
+  const nameEl = document.getElementById('hero-name');
+  if(nameEl){ clearSkeleton(nameEl); nameEl.textContent = name; }
+
+  /* Class */
+  const classEl = document.getElementById('hero-class');
+  if(classEl){ clearSkeleton(classEl); classEl.textContent = `${grade} · ${school}`; }
+
+  /* Pills */
+  const pillsEl = document.getElementById('hero-pills');
+  if(pillsEl){
+    pillsEl.innerHTML = `
+      <span class="hero-pill">📅 ${term} · ${year}</span>
+      <span class="hero-pill" id="hero-id">🎓 Student ID: ${id}</span>
+      <span class="hero-pill" id="hero-avg">⭐ Average: ${avg}</span>`;
+  }
+
+  /* Topbar / sidebar user */
+  const tbName = document.getElementById('tb-user-name');
+  if(tbName) tbName.textContent = name;
+  const tbAv = document.getElementById('tb-avatar');
+  if(tbAv) tbAv.textContent = initial(name);
+  const sbName = document.getElementById('sb-user-name');
+  if(sbName) sbName.textContent = name;
+  const sbInit = document.getElementById('sb-user-initial');
+  if(sbInit) sbInit.textContent = initial(name);
+}
+
+/* ══════════════════════════════════════════════
+   POPULATE KPIs
+══════════════════════════════════════════════ */
+function populateKPIs(data){
+  /* Average */
+  const avgEl = document.getElementById('kpi-avg');
+  const avgTrend = document.getElementById('kpi-avg-trend');
+  const avg = data.average != null ? Math.round(data.average) : null;
+  if(avgEl){
+    clearSkeleton(avgEl);
+    avgEl.textContent = avg!=null ? avg+'%' : '—';
+  }
+  if(avgTrend){
+    clearSkeleton(avgTrend);
+    const prev = data.prev_average;
+    if(prev!=null && avg!=null){
+      const diff = Math.round(avg - prev);
+      if(diff>0){
+        avgTrend.className='kpi-trend up';
+        avgTrend.textContent='▲ '+diff+'% vs last term';
+      }else if(diff<0){
+        avgTrend.className='kpi-trend down';
+        avgTrend.textContent='▼ '+Math.abs(diff)+'% vs last term';
+      }else{
+        avgTrend.className='kpi-trend neutral';
+        avgTrend.textContent='= Same as last term';
+      }
+    }else{
+      avgTrend.className='kpi-trend neutral';
+      avgTrend.textContent='Term 2 · 2026';
+    }
+  }
+
+  /* Fee balance */
+  const feeEl = document.getElementById('kpi-fee-balance');
+  const feeStatus = document.getElementById('kpi-fee-status');
+  const feeIcon = document.getElementById('kpi-fee-icon');
+  const balance = data.fee_balance!=null ? data.fee_balance : null;
+  if(feeEl){
+    clearSkeleton(feeEl);
+    feeEl.textContent = balance!=null ? fmtMoney(balance) : '—';
+    if(balance!=null && balance>0){ feeEl.style.color='var(--red)'; }
+    else{ feeEl.style.color='var(--green)'; }
+  }
+  if(feeIcon){
+    if(balance!=null && balance>0){ feeIcon.style.background='var(--red-light)'; }
+    else{ feeIcon.style.background='var(--green-light)'; }
+  }
+  if(feeStatus){
+    clearSkeleton(feeStatus);
+    if(balance!=null && balance>0){
+      feeStatus.className='kpi-trend down';
+      feeStatus.textContent='⚠ Balance outstanding';
+    }else{
+      feeStatus.className='kpi-trend up';
+      feeStatus.textContent='✓ Paid up';
+    }
+  }
+
+  /* Rank */
+  const rankEl = document.getElementById('kpi-rank');
+  const rankSub = document.getElementById('kpi-rank-sub');
+  const rank = data.rank || data.class_position;
+  const totalStudents = data.total_students;
+  if(rankEl){
+    clearSkeleton(rankEl);
+    rankEl.textContent = rank ? (typeof rank==='number' ? rank+'th' : rank) : '—';
+  }
+  if(rankSub){
+    clearSkeleton(rankSub);
+    rankSub.className='kpi-trend neutral';
+    rankSub.textContent = totalStudents ? `Out of ${totalStudents} students` : 'Class ranking';
+  }
+}
+
+/* ══════════════════════════════════════════════
+   POPULATE MARKS TABLE
+══════════════════════════════════════════════ */
+function populateMarks(marks){
+  const tbody = document.getElementById('marks-tbody');
+  if(!tbody) return;
+  if(!marks || !marks.length){
+    tbody.innerHTML='<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--text-3);font-size:13px">No marks recorded for this term.</td></tr>';
+    return;
+  }
+
+  let totalScore = 0;
+  let rowsHtml = '';
+  marks.forEach(m => {
+    const score = m.score != null ? Number(m.score) : null;
+    const grade = score!=null ? getGrade(score) : '—';
+    const st    = score!=null ? getStatus(score) : {label:'—', cls:''};
+    totalScore  += score || 0;
+    const scoreDisp = score!=null ? `${score}<span style="color:var(--text-3);font-size:11px">/100</span>` : '—';
+    rowsHtml += `
+      <tr>
+        <td style="font-weight:500">${m.subject||m.course||'—'}</td>
+        <td>${scoreDisp}</td>
+        <td><span class="grade-badge grade-${grade}">${grade}</span></td>
+        <td><span class="status-badge ${st.cls}">${st.label}</span></td>
+      </tr>`;
+  });
+
+  const avg = marks.length ? Math.round(totalScore/marks.length) : 0;
+  const avgGrade = getGrade(avg);
+  rowsHtml += `
+    <tr class="total-row">
+      <td>Average</td>
+      <td>${avg}<span style="color:var(--text-3);font-size:11px">/100</span></td>
+      <td><span class="grade-badge grade-${avgGrade}">${avgGrade}</span></td>
+      <td><span class="status-badge ${getStatus(avg).cls}">${getStatus(avg).label}</span></td>
+    </tr>`;
+  tbody.innerHTML = rowsHtml;
+}
+
+/* ══════════════════════════════════════════════
+   POPULATE FEES (dynamic data override)
+══════════════════════════════════════════════ */
+function populateFees(feeData){
+  if(!feeData) return;
+  /* Override Term 2 dynamic values if API returns them */
+  const paid    = feeData.amount_paid    != null ? feeData.amount_paid    : 40;
+  const total   = feeData.total_billed   != null ? feeData.total_billed   : 60;
+  const balance = feeData.balance_due    != null ? feeData.balance_due    : (total - paid);
+
+  const totalEl = document.getElementById('fee-total-2');
+  if(totalEl) totalEl.textContent = fmtMoney(total);
+
+  const paidEl = document.getElementById('fee-paid-2');
+  if(paidEl) paidEl.textContent = fmtMoney(paid);
+
+  const balEl = document.getElementById('fee-balance-2');
+  if(balEl){
+    balEl.textContent = fmtMoney(balance);
+    balEl.style.color = balance>0 ? 'var(--red)' : 'var(--green)';
+  }
+
+  const dueBadge = document.getElementById('fee-due-badge-2');
+  const paidBadge = document.getElementById('fee-paid-badge-2');
+  const payBtn = document.getElementById('pay-now-2');
+
+  if(balance<=0){
+    if(dueBadge){ dueBadge.className='fee-due-badge-green'; dueBadge.textContent='Cleared'; }
+    if(paidBadge){ paidBadge.textContent='Paid'; }
+    if(payBtn) payBtn.style.display='none';
+  }else{
+    if(dueBadge){ dueBadge.className='fee-due-badge-red'; dueBadge.textContent='Outstanding'; }
+    if(payBtn){ payBtn.style.display='block'; payBtn.textContent=`💳 Pay Now — ${fmtMoney(balance)}`; }
+  }
+}
+
+/* ══════════════════════════════════════════════
+   TERM TAB SWITCH (fees)
+══════════════════════════════════════════════ */
+function switchFeeTerm(t){
+  [1,2,3].forEach(n=>{
+    const tab  = document.getElementById(`fee-term-${n}`);
+    const panel= document.getElementById(`fee-panel-${n}`);
+    if(tab)  tab.classList.toggle('active', n===t);
+    if(panel)panel.classList.toggle('active', n===t);
+  });
+}
+
+/* ══════════════════════════════════════════════
+   MARKS TERM SELECT
+══════════════════════════════════════════════ */
+let _allMarksData = null;
+function onTermChange(termVal){
+  const lbl = document.getElementById('marks-term-label');
+  if(lbl) lbl.textContent = `Term ${termVal} · 2026`;
+  if(_allMarksData){
+    const key = `term${termVal}_marks`;
+    populateMarks(_allMarksData[key] || _allMarksData.marks || []);
+  }
+}
+
+/* ══════════════════════════════════════════════
+   MOBILE SIDEBAR
+══════════════════════════════════════════════ */
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('open');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('open');
+}
+
+/* ══════════════════════════════════════════════
+   MAIN INIT
+══════════════════════════════════════════════ */
 async function initPage(){
-  document.getElementById('hero-date').textContent=new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  /* 1. Render sidebar */
+  renderSidebar('dashboard', NAV);
 
-  let studentId=null, groupId=null;
+  /* 2. Fetch data */
   try{
-    const u=await apiGet('frappe.auth.get_logged_user');
-    if(u){
-      const parts=(u||'').split('@')[0].split('.');
-      const name=parts.map(p=>p[0]?.toUpperCase()+p.slice(1)).join(' ');
-      document.getElementById('sb-user').textContent=name;
-      document.getElementById('top-avatar').textContent=name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-    }
-  }catch(e){}
+    const data = await apiGet('education.api.parent_portal.get_student_portal_data');
+    if(!data) return; /* redirect handled inside apiGet */
 
-  try{
-    // Try to get student data via parent portal
-    const students=await apiGet('education.api.parent_portal.get_my_students',{year:'2026'});
-    if(students&&students.length){
-      const s=students[0];
-      studentId=s.student_id||s.name;
-      groupId=s.group_id;
-      document.getElementById('hero-name').textContent=`Hello, ${s.student_name||s.name}! 👋`;
-      document.getElementById('hero-class').textContent=`${s.class_name||''} · Academic Year 2026`;
-      document.getElementById('hero-id').textContent=studentId;
-      document.getElementById('kpi-class').textContent=s.class_name||'—';
-      document.getElementById('sb-user').textContent=s.student_name||s.name;
-    }
-  }catch(e){}
+    _allMarksData = data;
 
-  if(groupId){
-    try{
-      const sheet=await apiGet('education.api.marks_entry.get_marks_sheet',{group:groupId,year:'2026',term:'2026 (Term 2)'});
-      if(sheet){
-        document.getElementById('kpi-subjects').textContent=sheet.subjects.length;
-        const student=sheet.students.find(s=>s.id===studentId)||sheet.students[0];
-        if(student&&sheet.subjects.length){
-          let total=0,count=0;
-          const rows=sheet.subjects.map(sub=>{
-            const sc=student.scores[sub]||{};
-            const score=sc.score!==undefined?sc.score:'—';
-            const grade=sc.grade||'—';
-            if(score!=='—'){total+=score;count++;}
-            return`<tr>
-              <td>${sub}</td>
-              <td><strong>${score}</strong></td>
-              <td><span class="badge grade-${grade}">${grade}</span></td>
-              <td style="color:#888">${REMARKS[grade]||'—'}</td>
-            </tr>`;
-          }).join('');
-          document.getElementById('marks-table').innerHTML=rows;
-          if(count>0){
-            const avg=(total/count).toFixed(1);
-            document.getElementById('kpi-avg').textContent=avg+'%';
-          }
-        } else {
-          document.getElementById('marks-table').innerHTML='<tr><td colspan="4" style="text-align:center;color:#aaa;padding:20px">Marks not yet available for this term.</td></tr>';
-        }
-      }
-    }catch(e){
-      document.getElementById('marks-table').innerHTML='<tr><td colspan="4" style="text-align:center;color:#aaa;padding:20px">Could not load marks.</td></tr>';
-    }
-  } else {
-    document.getElementById('marks-table').innerHTML='<tr><td colspan="4" style="text-align:center;color:#aaa;padding:20px">Log in to view your marks.</td></tr>';
-  }
+    /* 3. Populate sections */
+    populateHero(data);
+    populateKPIs(data);
+    populateMarks(data.marks || data.term2_marks || []);
+    populateFees(data.fee_data || data.fees || data);
 
-  if(studentId){
-    try{
-      const info=await apiGet('education.api.parent_portal.get_student_info',{student_id:studentId,year:'2026'});
-      if(info&&info.fees){
-        const fees=info.fees;
-        let totB=0,totP=0,totO=0;
-        document.getElementById('fees-table').innerHTML=fees.terms.map(t=>{
-          totB+=t.grand_total||0;totP+=t.paid||0;totO+=t.outstanding||0;
-          const badge=t.status==='Paid'?'badge-green':t.status==='Partial'?'badge-orange':'badge-red';
-          return`<tr><td>${t.term}</td><td>${fmt(t.grand_total)}</td><td>${fmt(t.paid)}</td>
-            <td>${fmt(t.outstanding)}</td><td><span class="badge ${badge}">${t.status}</span></td></tr>`;
-        }).join('');
-        document.getElementById('ft-billed').textContent=fmt(totB);
-        document.getElementById('ft-paid').textContent=fmt(totP);
-        document.getElementById('ft-out').textContent=fmt(totO);
-        document.getElementById('kpi-fees').textContent=fmt(totO);
-        if(totO>0){
-          document.getElementById('kpi-fee-tile').style.borderLeftColor='#c0392b';
-          document.getElementById('kpi-fee-icon').style.background='#fee2e2';
-          document.getElementById('kpi-fee-icon').textContent='⚠️';
-        }
-      }
-    }catch(e){}
+  }catch(err){
+    console.warn('Student portal data error:', err);
+    /* Graceful fallback — clear skeletons with dashes */
+    const ids = ['hero-name','hero-class','kpi-avg','kpi-fee-balance','kpi-rank'];
+    ids.forEach(id=>{
+      const el = document.getElementById(id);
+      if(el){ clearSkeleton(el); el.textContent = el.id==='hero-name'?'Student':el.id==='hero-class'?'Grade — · —':'—'; }
+    });
+    const avgTrend = document.getElementById('kpi-avg-trend');
+    if(avgTrend){ clearSkeleton(avgTrend); avgTrend.textContent=''; }
+    const feeStatus = document.getElementById('kpi-fee-status');
+    if(feeStatus){ clearSkeleton(feeStatus); feeStatus.textContent=''; }
+    const rankSub = document.getElementById('kpi-rank-sub');
+    if(rankSub){ clearSkeleton(rankSub); rankSub.textContent=''; }
+    const heroAvEl = document.getElementById('hero-avatar');
+    if(heroAvEl){ clearSkeleton(heroAvEl); heroAvEl.textContent='S'; }
+    const heroName = document.getElementById('hero-name');
+    if(heroName){ clearSkeleton(heroName); heroName.textContent='Student'; }
+    const heroClass = document.getElementById('hero-class');
+    if(heroClass){ clearSkeleton(heroClass); heroClass.textContent='Grade — · —'; }
+    const pillsEl = document.getElementById('hero-pills');
+    if(pillsEl) pillsEl.innerHTML='<span class="hero-pill">📅 Term 2 · 2026</span>';
+    const tbody = document.getElementById('marks-tbody');
+    if(tbody) tbody.innerHTML='<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--text-3);font-size:13px">Unable to load marks. Please refresh.</td></tr>';
   }
 }
 
-renderSidebar('dashboard');
-initPage();
+/* ── Boot ── */
+document.addEventListener('DOMContentLoaded', initPage);
 </script>
 </body>
 </html>
