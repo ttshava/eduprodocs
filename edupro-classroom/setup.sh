@@ -40,11 +40,6 @@ echo ""
 echo "🔐  Generating SSL certificate…"
 npm run certs
 
-# ── Build mediasoup-client bundles ───────────────────────────────────────────
-echo ""
-echo "🔨  Bundling browser clients…"
-npm run build
-
 # ── pm2 (optional auto-start) ────────────────────────────────────────────────
 echo ""
 if command -v pm2 &>/dev/null; then

@@ -1,22 +1,40 @@
 /**
  * Generate self-signed SSL certificate for local LAN use.
- * WebRTC and getUserMedia require HTTPS even on a local network.
+ * Validates existing cert IP — regenerates automatically if IP changed.
  * Run: node scripts/gen-certs.js
  */
 const { execSync } = require('child_process');
-const fs = require('fs');
+const fs   = require('fs');
 const path = require('path');
 
 const CERTS_DIR = path.join(__dirname, '..', 'certs');
-const KEY  = path.join(CERTS_DIR, 'key.pem');
-const CERT = path.join(CERTS_DIR, 'cert.pem');
+const KEY       = path.join(CERTS_DIR, 'key.pem');
+const CERT      = path.join(CERTS_DIR, 'cert.pem');
 const SERVER_IP = '192.168.1.188';
 
 if (!fs.existsSync(CERTS_DIR)) fs.mkdirSync(CERTS_DIR, { recursive: true });
 
+// ── Validate existing cert matches current SERVER_IP ─────────────────────────
 if (fs.existsSync(KEY) && fs.existsSync(CERT)) {
-  console.log('✅  SSL certs already exist in ./certs/ — skipping generation.');
-  process.exit(0);
+  let certIP = null;
+  try {
+    const info = execSync(`openssl x509 -in "${CERT}" -text -noout`, { encoding: 'utf8', stdio: ['pipe','pipe','pipe'] });
+    const sanMatch = info.match(/IP Address:(\d+\.\d+\.\d+\.\d+)/);
+    const cnMatch  = info.match(/CN\s*=\s*(\d+\.\d+\.\d+\.\d+)/);
+    certIP = (sanMatch && sanMatch[1]) || (cnMatch && cnMatch[1]);
+  } catch (_) { /* openssl read failed — regenerate */ }
+
+  if (certIP === SERVER_IP) {
+    console.log(`✅  SSL certs already valid for ${SERVER_IP} — skipping generation.`);
+    process.exit(0);
+  } else if (certIP) {
+    console.log(`🔄  Cert IP (${certIP}) does not match SERVER_IP (${SERVER_IP}) — regenerating…`);
+  } else {
+    console.log('🔄  Could not verify existing cert — regenerating to be safe…');
+  }
+  // Remove stale certs
+  try { fs.unlinkSync(KEY); } catch (_) {}
+  try { fs.unlinkSync(CERT); } catch (_) {}
 }
 
 console.log('🔐 Generating self-signed SSL certificate for', SERVER_IP, '...');

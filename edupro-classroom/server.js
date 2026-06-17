@@ -47,14 +47,27 @@ app.get('/api/devices', (req, res) => {
 });
 
 // ── SSL ──────────────────────────────────────────────────────────────────────
+const KEY_PATH  = path.join(__dirname, 'certs', 'key.pem');
+const CERT_PATH = path.join(__dirname, 'certs', 'cert.pem');
+
+if (!fs.existsSync(KEY_PATH) || !fs.existsSync(CERT_PATH)) {
+  console.log('🔐  SSL certs not found — generating now…');
+  try {
+    require('child_process').execSync(`node "${path.join(__dirname, 'scripts', 'gen-certs.js')}"`, { stdio: 'inherit' });
+  } catch (e) {
+    console.error('❌  Auto cert generation failed. Run manually: npm run certs');
+    process.exit(1);
+  }
+}
+
 let sslOptions;
 try {
   sslOptions = {
-    key:  fs.readFileSync(path.join(__dirname, 'certs', 'key.pem')),
-    cert: fs.readFileSync(path.join(__dirname, 'certs', 'cert.pem')),
+    key:  fs.readFileSync(KEY_PATH),
+    cert: fs.readFileSync(CERT_PATH),
   };
 } catch (e) {
-  console.error('❌  SSL certs not found. Run: npm run certs');
+  console.error('❌  Could not read SSL certs. Run: npm run certs');
   process.exit(1);
 }
 
@@ -223,6 +236,16 @@ io.on('connection', (socket) => {
 });
 
 // ── Boot ─────────────────────────────────────────────────────────────────────
+httpsServer.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`❌  Port ${SERVER_PORT} is already in use.`);
+    console.error(`    Stop the other program using port ${SERVER_PORT}, or edit server.js and change SERVER_PORT.`);
+  } else {
+    console.error('❌  Server error:', err.message);
+  }
+  process.exit(1);
+});
+
 httpsServer.listen(SERVER_PORT, '0.0.0.0', () => {
   console.log('');
   console.log('╔══════════════════════════════════════════════════════╗');

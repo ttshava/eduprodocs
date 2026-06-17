@@ -40,12 +40,6 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
-REM Build browser bundles
-echo.
-echo Bundling browser clients...
-call npm run build
-if %errorlevel% neq 0 ( echo ERROR: Build failed & pause & exit /b 1 )
-
 echo.
 echo ============================================================
 echo   Setup complete!
