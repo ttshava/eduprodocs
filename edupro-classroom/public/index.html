@@ -12,7 +12,7 @@
   --red:#FF0527;--red-dark:#c8021e;--red-light:rgba(255,5,39,.1);
   --navy:#0f172a;--navy2:#1e293b;--navy3:#334155;
   --slate:#64748b;--muted:#94a3b8;--light:#f1f5f9;
-  --white:#fff;--green:#22c55e;
+  --white:#fff;--green:#22c55e;--amber:#f59e0b;
 }
 body{
   font-family:'Inter',system-ui,sans-serif;
@@ -29,11 +29,11 @@ body{
   box-shadow:0 1px 12px rgba(0,0,0,.3);
   flex-shrink:0;
 }
-.topbar-logo img{height:32px;width:auto;display:block}
+.topbar img{height:32px;width:auto;display:block}
 
 /* ── HERO ── */
 .hero{
-  padding:60px 28px 48px;
+  padding:48px 28px 40px;
   background:linear-gradient(135deg, var(--navy) 0%, #1a0a10 50%, #200a0a 100%);
   border-bottom:1px solid var(--navy3);
   position:relative;overflow:hidden;
@@ -44,74 +44,53 @@ body{
   background:radial-gradient(circle, rgba(255,5,39,.12) 0%, transparent 70%);
   pointer-events:none;
 }
-.hero-inner{max-width:900px;margin:0 auto}
+.hero-inner{max-width:960px;margin:0 auto}
 .hero-eyebrow{
   display:inline-flex;align-items:center;gap:8px;
   background:rgba(255,5,39,.12);border:1px solid rgba(255,5,39,.25);
   border-radius:20px;padding:4px 14px;
   font-size:.75rem;font-weight:700;letter-spacing:.06em;
-  color:rgba(255,120,120,.9);text-transform:uppercase;margin-bottom:16px;
+  color:rgba(255,120,120,.9);text-transform:uppercase;margin-bottom:14px;
 }
 .hero-eyebrow svg{width:12px;height:12px}
-.hero h1{
-  font-size:clamp(1.8rem, 4vw, 2.8rem);
-  font-weight:800;letter-spacing:-.03em;line-height:1.1;
-  margin-bottom:10px;
-}
+.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-bottom:8px}
 .hero h1 span{color:var(--red)}
-.hero-sub{font-size:1rem;color:var(--muted);max-width:520px;line-height:1.65;margin-bottom:28px}
-.hero-stats{
-  display:flex;gap:28px;flex-wrap:wrap;
-  padding-top:24px;border-top:1px solid rgba(255,255,255,.07);
-}
-.hero-stat strong{display:block;font-size:1.5rem;font-weight:800;color:var(--white);line-height:1;margin-bottom:3px}
-.hero-stat span{font-size:.8rem;color:var(--muted)}
+.hero-sub{font-size:.95rem;color:var(--muted);max-width:500px;line-height:1.65;margin-bottom:24px}
+.hero-stats{display:flex;gap:24px;flex-wrap:wrap;padding-top:20px;border-top:1px solid rgba(255,255,255,.07)}
+.hero-stat strong{display:block;font-size:1.4rem;font-weight:800;color:var(--white);line-height:1;margin-bottom:2px}
+.hero-stat span{font-size:.78rem;color:var(--muted)}
 
 /* ── MAIN ── */
-.main{flex:1;padding:36px 28px;max-width:960px;margin:0 auto;width:100%}
+.main{flex:1;padding:32px 28px;max-width:960px;margin:0 auto;width:100%}
 
 /* ── SECTION TITLE ── */
 .section-title{
   font-size:.72rem;font-weight:700;text-transform:uppercase;
-  letter-spacing:.1em;color:var(--slate);margin-bottom:16px;
+  letter-spacing:.1em;color:var(--slate);margin-bottom:14px;
   display:flex;align-items:center;gap:8px;
 }
 .section-title::after{content:'';flex:1;height:1px;background:var(--navy3)}
 
 /* ── ROLE CARDS ── */
-.role-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:36px}
+.role-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:32px}
 .role-card{
-  background:var(--navy2);border:1px solid var(--navy3);border-radius:16px;
-  padding:28px;text-decoration:none;color:inherit;
-  transition:all .18s;display:flex;flex-direction:column;gap:16px;
+  background:var(--navy2);border:1px solid var(--navy3);border-radius:14px;
+  padding:24px;text-decoration:none;color:inherit;
+  transition:all .18s;display:flex;flex-direction:column;gap:14px;
   position:relative;overflow:hidden;
 }
 .role-card:hover{border-color:var(--red);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.4)}
-.role-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:3px;
-  background:var(--card-accent,var(--navy3));transition:background .18s;
-}
+.role-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--card-accent,var(--navy3));transition:background .18s}
 .role-card:hover::before{background:var(--red)}
 .board-card{--card-accent:rgba(255,5,39,.5)}
 .tablet-card{--card-accent:rgba(34,197,94,.4)}
-
-.role-icon{
-  width:52px;height:52px;border-radius:14px;
-  background:var(--icon-bg, rgba(255,5,39,.12));
-  border:1px solid var(--icon-border, rgba(255,5,39,.2));
-  display:flex;align-items:center;justify-content:center;
-  color:var(--icon-color, var(--red));
-}
-.role-icon svg{width:26px;height:26px}
+.role-icon{width:48px;height:48px;border-radius:12px;background:var(--icon-bg,rgba(255,5,39,.12));border:1px solid var(--icon-border,rgba(255,5,39,.2));display:flex;align-items:center;justify-content:center;color:var(--icon-color,var(--red))}
+.role-icon svg{width:24px;height:24px}
 .board-card .role-icon{--icon-bg:rgba(255,5,39,.12);--icon-border:rgba(255,5,39,.25);--icon-color:var(--red)}
 .tablet-card .role-icon{--icon-bg:rgba(34,197,94,.1);--icon-border:rgba(34,197,94,.2);--icon-color:var(--green)}
-
-.role-card-title{font-size:1.1rem;font-weight:700;margin-bottom:4px}
-.role-card-desc{font-size:.85rem;color:var(--muted);line-height:1.55}
-.role-card-footer{
-  display:flex;align-items:center;gap:6px;
-  font-size:.82rem;font-weight:600;margin-top:4px;
-}
+.role-card-title{font-size:1.05rem;font-weight:700;margin-bottom:3px}
+.role-card-desc{font-size:.83rem;color:var(--muted);line-height:1.55}
+.role-card-footer{display:flex;align-items:center;gap:6px;font-size:.82rem;font-weight:600;margin-top:4px}
 .board-card .role-card-footer{color:var(--red)}
 .tablet-card .role-card-footer{color:var(--green)}
 .role-card-footer svg{width:14px;height:14px;transition:transform .15s}
@@ -120,65 +99,73 @@ body{
 /* ── STATUS PANEL ── */
 .status-panel{
   background:var(--navy2);border:1px solid var(--navy3);border-radius:14px;
-  padding:20px 24px;margin-bottom:36px;
-  display:flex;align-items:center;gap:16px;
+  padding:18px 22px;margin-bottom:32px;display:flex;align-items:center;gap:14px;
 }
-.status-indicator{
-  width:12px;height:12px;border-radius:50%;
-  background:var(--navy3);flex-shrink:0;transition:all .3s;
-}
-.status-indicator.live{
-  background:var(--green);
-  box-shadow:0 0 12px rgba(34,197,94,.5);
-  animation:glow 2s ease-in-out infinite;
-}
+.status-indicator{width:12px;height:12px;border-radius:50%;background:var(--navy3);flex-shrink:0;transition:all .3s}
+.status-indicator.live{background:var(--green);box-shadow:0 0 12px rgba(34,197,94,.5);animation:glow 2s ease-in-out infinite}
 @keyframes glow{0%,100%{box-shadow:0 0 8px rgba(34,197,94,.4)}50%{box-shadow:0 0 20px rgba(34,197,94,.7)}}
 .status-info{flex:1}
 .status-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--slate);margin-bottom:2px}
-#status-text{font-size:.9rem;color:var(--muted)}
+#status-text{font-size:.88rem;color:var(--muted)}
 #status-text strong{color:var(--light);font-weight:600}
-.status-viewers{
-  background:var(--navy3);border-radius:8px;padding:8px 16px;
-  text-align:center;flex-shrink:0;
+.status-viewers{background:var(--navy3);border-radius:8px;padding:7px 14px;text-align:center;flex-shrink:0}
+.status-viewers .num{font-size:1.3rem;font-weight:800;color:var(--light);display:block}
+.status-viewers .lbl{font-size:.7rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+
+/* ── DEVICE LIST ── */
+.device-list{margin-bottom:32px}
+.device-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.device-card{
+  background:var(--navy2);border:1px solid var(--navy3);border-radius:12px;
+  padding:14px 16px;display:flex;align-items:center;gap:12px;
+  transition:border-color .15s;
 }
-.status-viewers .num{font-size:1.4rem;font-weight:800;color:var(--light);display:block}
-.status-viewers .lbl{font-size:.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.device-card.sharing{border-color:rgba(34,197,94,.3)}
+.device-avatar{
+  width:38px;height:38px;border-radius:10px;
+  background:var(--navy3);border:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--muted);flex-shrink:0;
+}
+.device-avatar svg{width:18px;height:18px}
+.device-info{flex:1;min-width:0}
+.device-name{font-size:.88rem;font-weight:600;color:var(--light);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.device-badge{font-size:.7rem;font-weight:600;margin-top:2px;display:flex;align-items:center;gap:4px}
+.badge-online{color:var(--green)}
+.badge-sharing{color:var(--amber)}
+.device-badge svg{width:10px;height:10px}
+.watch-btn{
+  padding:5px 10px;border-radius:7px;border:1px solid rgba(34,197,94,.3);
+  background:rgba(34,197,94,.08);color:var(--green);
+  font-size:.75rem;font-weight:600;cursor:pointer;
+  font-family:inherit;white-space:nowrap;flex-shrink:0;
+  transition:all .15s;text-decoration:none;display:none;
+}
+.watch-btn:hover{background:rgba(34,197,94,.18);border-color:rgba(34,197,94,.5)}
+.device-card.sharing .watch-btn{display:inline-flex;align-items:center;gap:4px}
+.watch-btn svg{width:12px;height:12px}
+
+#no-devices{
+  text-align:center;padding:32px;color:var(--slate);font-size:.88rem;
+  background:var(--navy2);border:1px dashed var(--navy3);border-radius:12px;
+}
+#no-devices svg{width:36px;height:36px;margin:0 auto 10px;display:block;opacity:.4}
 
 /* ── QR SECTION ── */
 .qr-section{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap}
-.qr-box{
-  background:var(--navy2);border:1px solid var(--navy3);border-radius:14px;
-  padding:20px;display:flex;flex-direction:column;align-items:center;gap:12px;
-  flex-shrink:0;
-}
-.qr-wrap{background:#fff;border-radius:10px;padding:12px;display:inline-block}
-.qr-box img{display:block}
-.qr-url{
-  font-size:.78rem;font-family:'Courier New',monospace;
-  color:var(--slate);background:var(--navy3);
-  border-radius:6px;padding:6px 12px;letter-spacing:.02em;
-}
-.qr-instructions{
-  flex:1;min-width:200px;display:flex;flex-direction:column;gap:12px;
-}
-.qr-step{
-  display:flex;gap:12px;align-items:flex-start;
-  background:var(--navy2);border:1px solid var(--navy3);border-radius:12px;
-  padding:14px 16px;
-}
-.qr-step-num{
-  width:28px;height:28px;border-radius:50%;
-  background:var(--red);color:#fff;font-size:.8rem;font-weight:800;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-.qr-step-text strong{display:block;font-size:.88rem;font-weight:600;color:var(--light);margin-bottom:2px}
-.qr-step-text span{font-size:.8rem;color:var(--muted)}
+.qr-box{background:var(--navy2);border:1px solid var(--navy3);border-radius:14px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0}
+.qr-wrap{background:#fff;border-radius:10px;padding:10px;display:inline-block}
+.qr-url{font-size:.75rem;font-family:'Courier New',monospace;color:var(--slate);background:var(--navy3);border-radius:6px;padding:5px 10px;letter-spacing:.02em}
+.qr-instructions{flex:1;min-width:200px;display:flex;flex-direction:column;gap:10px}
+.qr-step{display:flex;gap:10px;align-items:flex-start;background:var(--navy2);border:1px solid var(--navy3);border-radius:10px;padding:12px 14px}
+.qr-step-num{width:26px;height:26px;border-radius:50%;background:var(--red);color:#fff;font-size:.78rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.qr-step-text strong{display:block;font-size:.86rem;font-weight:600;color:var(--light);margin-bottom:2px}
+.qr-step-text span{font-size:.78rem;color:var(--muted)}
 
-@media(max-width:580px){
+@media(max-width:600px){
   .role-cards{grid-template-columns:1fr}
   .status-panel{flex-wrap:wrap}
-  .hero{padding:40px 20px 32px}
-  .main{padding:24px 20px}
+  .hero,.main{padding-left:20px;padding-right:20px}
 }
 </style>
 </head>
@@ -186,7 +173,7 @@ body{
 
 <!-- TOP BAR -->
 <div class="topbar">
-  <img src="/img/logo.svg" alt="Edupro SMS" style="height:32px;width:auto">
+  <img src="/img/logo.svg" alt="Edupro SMS">
 </div>
 
 <!-- HERO -->
@@ -197,12 +184,12 @@ body{
       EduPro Classroom
     </div>
     <h1>Screen Sharing<br><span>Offline LAN</span></h1>
-    <p class="hero-sub">Broadcast your screen from the board to up to 40 student tablets — no internet required. Works entirely on your local school network.</p>
+    <p class="hero-sub">Broadcast your screen from the board to up to 40 student tablets — no internet required.</p>
     <div class="hero-stats">
       <div class="hero-stat"><strong>40</strong><span>Max tablets</span></div>
       <div class="hero-stat"><strong>LAN</strong><span>Offline only</span></div>
       <div class="hero-stat"><strong>&lt;1s</strong><span>Latency</span></div>
-      <div class="hero-stat"><strong>HD</strong><span>1080p video</span></div>
+      <div class="hero-stat"><strong id="stat-devices">0</strong><span>Devices online</span></div>
     </div>
   </div>
 </div>
@@ -263,42 +250,56 @@ body{
     </div>
   </div>
 
+  <!-- CONNECTED DEVICES -->
+  <div class="section-title">Connected devices</div>
+  <div class="device-list">
+    <div id="no-devices">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="5" y="2" width="14" height="20" rx="2"/>
+        <line x1="9" y1="6" x2="15" y2="6"/>
+        <circle cx="12" cy="17" r="1" fill="currentColor"/>
+      </svg>
+      No tablets connected yet.<br>Students can scan the QR code below to join.
+    </div>
+    <div class="device-grid" id="device-grid" style="display:none"></div>
+  </div>
+
   <!-- QR CODE -->
   <div class="section-title">Connect tablets</div>
   <div class="qr-section">
     <div class="qr-box">
       <div class="qr-wrap">
-        <img src="/qr" width="180" height="180" alt="QR Code for tablet URL">
+        <img src="/qr" width="160" height="160" alt="QR Code">
       </div>
-      <div class="qr-url">https://192.168.100.176:3000/tablet</div>
+      <div class="qr-url">https://192.168.1.188:3000/tablet</div>
     </div>
     <div class="qr-instructions">
       <div class="qr-step">
         <div class="qr-step-num">1</div>
         <div class="qr-step-text">
           <strong>Connect to school WiFi</strong>
-          <span>Ensure tablets are on the same LAN as this server (192.168.100.176)</span>
+          <span>Tablets must be on the same network as this server (192.168.1.188)</span>
         </div>
       </div>
       <div class="qr-step">
         <div class="qr-step-num">2</div>
         <div class="qr-step-text">
           <strong>Scan QR code or open URL</strong>
-          <span>Open the camera app and scan, or type the URL in any browser</span>
+          <span>Open the camera app and scan, or type the URL in Chrome</span>
         </div>
       </div>
       <div class="qr-step">
         <div class="qr-step-num">3</div>
         <div class="qr-step-text">
           <strong>Accept SSL certificate (one-time)</strong>
-          <span>Tap <strong style="color:var(--light)">Advanced</strong> → <strong style="color:var(--light)">Proceed to 192.168.100.176</strong>. Required for WebRTC — safe on your school network.</span>
+          <span>Tap <strong style="color:var(--light)">Advanced</strong> → <strong style="color:var(--light)">Proceed to 192.168.1.188</strong></span>
         </div>
       </div>
       <div class="qr-step">
         <div class="qr-step-num">4</div>
         <div class="qr-step-text">
-          <strong>Start broadcasting</strong>
-          <span>On the board, click "Start Broadcasting" — all tablets receive instantly</span>
+          <strong>Teacher clicks "Start Broadcasting"</strong>
+          <span>All connected tablets receive the board stream instantly</span>
         </div>
       </div>
     </div>
@@ -308,21 +309,26 @@ body{
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
-const socket = io();
-const dot    = document.getElementById('status-dot');
-const text   = document.getElementById('status-text');
-const count  = document.getElementById('viewer-count');
+const socket   = io();
+const dot      = document.getElementById('status-dot');
+const text     = document.getElementById('status-text');
+const count    = document.getElementById('viewer-count');
+const statDev  = document.getElementById('stat-devices');
+const grid     = document.getElementById('device-grid');
+const noDevs   = document.getElementById('no-devices');
 
 socket.on('connect', () => {
   dot.classList.remove('live');
   text.innerHTML = 'Server ready — <strong>waiting for broadcast</strong>';
   fetch('/api/status').then(r => r.json()).then(updateStatus).catch(() => {});
+  fetch('/api/devices').then(r => r.json()).then(renderDevices).catch(() => {});
 });
 socket.on('disconnect', () => {
   dot.classList.remove('live');
   text.innerHTML = '<strong>Disconnected</strong> — reconnecting…';
 });
 socket.on('server:status', updateStatus);
+socket.on('devices:update', renderDevices);
 
 function updateStatus(s) {
   count.textContent = s.viewers;
@@ -333,6 +339,47 @@ function updateStatus(s) {
     dot.classList.remove('live');
     text.innerHTML = 'Server ready — <strong>board not broadcasting</strong>';
   }
+}
+
+function renderDevices(devices) {
+  statDev.textContent = devices.length;
+  if (devices.length === 0) {
+    noDevs.style.display = 'block';
+    grid.style.display = 'none';
+    return;
+  }
+  noDevs.style.display = 'none';
+  grid.style.display = 'grid';
+  grid.innerHTML = devices.map(d => `
+    <div class="device-card${d.sharing ? ' sharing' : ''}">
+      <div class="device-avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="5" y="2" width="14" height="20" rx="2"/>
+          <line x1="9" y1="6" x2="15" y2="6"/>
+          <circle cx="12" cy="17" r="1" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="device-info">
+        <div class="device-name" title="${esc(d.name)}">${esc(d.name)}</div>
+        <div class="device-badge">
+          ${d.sharing
+            ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+               <span class="badge-sharing">Sharing screen</span>`
+            : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+               <span class="badge-online">Online</span>`
+          }
+        </div>
+      </div>
+      <a class="watch-btn" href="/teacher/view?id=${esc(d.socketId)}" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Watch
+      </a>
+    </div>
+  `).join('');
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 </script>
 </body>

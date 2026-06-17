@@ -16,48 +16,64 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'In
 #overlay{
   position:fixed;inset:0;z-index:10;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:var(--navy);color:var(--light);gap:16px;padding:32px;text-align:center;
+  background:var(--navy);color:var(--light);gap:14px;padding:32px;text-align:center;
   transition:opacity .4s;
 }
 #overlay.hidden{opacity:0;pointer-events:none}
 
-.ov-logo img{height:36px;width:auto}
-.ov-icon{width:76px;height:76px;border-radius:18px;background:var(--navy2);border:1px solid var(--navy3);display:flex;align-items:center;justify-content:center}
-.ov-icon svg{width:38px;height:38px;color:var(--red)}
-.ov-title{font-size:1.25rem;font-weight:800;letter-spacing:-.02em}
-.ov-sub{font-size:.8rem;font-weight:600;color:var(--red);letter-spacing:.07em;text-transform:uppercase;margin-top:-8px}
+.ov-logo img{height:34px;width:auto}
+.ov-icon{width:72px;height:72px;border-radius:18px;background:var(--navy2);border:1px solid var(--navy3);display:flex;align-items:center;justify-content:center}
+.ov-icon svg{width:36px;height:36px;color:var(--red)}
+.ov-title{font-size:1.2rem;font-weight:800;letter-spacing:-.02em}
+.ov-sub{font-size:.78rem;font-weight:600;color:var(--red);letter-spacing:.07em;text-transform:uppercase;margin-top:-6px}
 
-.spinner{width:40px;height:40px;border:3px solid var(--navy3);border-top-color:var(--red);border-radius:50%;animation:spin .9s linear infinite}
+.spinner{width:38px;height:38px;border:3px solid var(--navy3);border-top-color:var(--red);border-radius:50%;animation:spin .9s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-#ov-status{font-size:.93rem;color:var(--muted);max-width:300px;line-height:1.6}
+#ov-status{font-size:.9rem;color:var(--muted);max-width:300px;line-height:1.6}
 
-/* info card shown when waiting */
-.ov-card{background:var(--navy2);border:1px solid var(--navy3);border-radius:14px;padding:16px 20px;max-width:320px;width:100%;display:none;flex-direction:column;gap:10px}
-.ov-row{display:flex;align-items:flex-start;gap:10px;font-size:.84rem;color:var(--muted)}
-.ov-row svg{width:16px;height:16px;flex-shrink:0;margin-top:2px}
+.ov-card{background:var(--navy2);border:1px solid var(--navy3);border-radius:14px;padding:14px 18px;max-width:300px;width:100%;display:none;flex-direction:column;gap:9px}
+.ov-row{display:flex;align-items:flex-start;gap:10px;font-size:.83rem;color:var(--muted)}
+.ov-row svg{width:15px;height:15px;flex-shrink:0;margin-top:2px}
 .ov-row.green svg{color:var(--green)}
 .ov-row.red svg{color:var(--red)}
 .ov-row.amber svg{color:var(--amber)}
 
-/* SSL help */
-.ssl-box{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:12px;padding:14px 18px;max-width:320px;width:100%;font-size:.82rem;color:rgba(245,158,11,.9);line-height:1.55;display:none}
-.ssl-title{font-weight:700;display:flex;align-items:center;gap:7px;margin-bottom:6px}
-.ssl-title svg{width:16px;height:16px;flex-shrink:0}
+.ssl-box{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:12px;padding:12px 16px;max-width:300px;width:100%;font-size:.8rem;color:rgba(245,158,11,.9);line-height:1.55;display:none}
+.ssl-title{font-weight:700;display:flex;align-items:center;gap:7px;margin-bottom:5px}
+.ssl-title svg{width:15px;height:15px;flex-shrink:0}
 
 /* LIVE BAR */
-#statusbar{position:fixed;top:0;left:0;right:0;z-index:20;height:44px;background:rgba(0,0,0,.65);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid rgba(255,255,255,.08)}
+#statusbar{position:fixed;top:0;left:0;right:0;z-index:20;height:44px;background:rgba(0,0,0,.65);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid rgba(255,255,255,.08)}
 #statusbar.show{display:flex}
-.live-badge{display:flex;align-items:center;gap:7px;background:rgba(220,38,38,.25);border:1px solid rgba(220,38,38,.4);border-radius:20px;padding:3px 12px;font-size:.73rem;font-weight:700;letter-spacing:.06em;color:#fca5a5}
+.live-badge{display:flex;align-items:center;gap:7px;background:rgba(220,38,38,.25);border:1px solid rgba(220,38,38,.4);border-radius:20px;padding:3px 12px;font-size:.72rem;font-weight:700;letter-spacing:.06em;color:#fca5a5}
 .live-dot{width:7px;height:7px;border-radius:50%;background:#ef4444;animation:pdot 1.5s ease-in-out infinite}
 @keyframes pdot{0%,100%{opacity:1}50%{opacity:.45}}
-#sb-viewers{font-size:.8rem;color:rgba(255,255,255,.5)}
-#sb-brand{display:flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.4)}
-#sb-brand img{height:18px;opacity:.55}
+#sb-viewers{font-size:.78rem;color:rgba(255,255,255,.5)}
+#sb-brand{display:flex;align-items:center;gap:6px;font-size:.76rem;font-weight:600;color:rgba(255,255,255,.4)}
+#sb-brand img{height:16px;opacity:.5}
+
+/* Share screen button (shown when live) */
+#share-btn{
+  position:fixed;bottom:20px;right:20px;z-index:30;
+  background:rgba(0,0,0,.6);backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.2);border-radius:10px;
+  color:white;padding:10px 16px;font-size:.78rem;font-weight:600;
+  font-family:inherit;cursor:pointer;display:none;align-items:center;gap:7px;
+  transition:all .15s;
+}
+#share-btn.sharing{border-color:rgba(34,197,94,.5);color:var(--green)}
+#share-btn svg{width:15px;height:15px}
 
 /* Fullscreen button */
-#fs-btn{position:fixed;bottom:20px;right:20px;z-index:30;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);border-radius:10px;color:white;padding:10px 16px;font-size:.8rem;font-weight:600;font-family:inherit;cursor:pointer;display:none;align-items:center;gap:7px}
-#fs-btn svg{width:16px;height:16px}
+#fs-btn{
+  position:fixed;bottom:20px;left:20px;z-index:30;
+  background:rgba(0,0,0,.55);backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.2);border-radius:10px;
+  color:white;padding:10px 16px;font-size:.78rem;font-weight:600;
+  font-family:inherit;cursor:pointer;display:none;align-items:center;gap:7px;
+}
+#fs-btn svg{width:15px;height:15px}
 </style>
 </head>
 <body>
@@ -89,7 +105,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'In
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
       SSL Certificate Warning
     </div>
-    If you see a security warning, tap <strong>Advanced</strong> → <strong>Proceed to 192.168.100.176</strong>. Safe on your school network.
+    If you see a security warning, tap <strong>Advanced</strong> → <strong>Proceed to 192.168.1.188</strong>. Safe on your school network.
   </div>
 
   <div class="spinner" id="spinner"></div>
@@ -119,11 +135,16 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'In
   Fullscreen
 </button>
 
-<!-- Only socket.io needed — no mediasoup-client, no build step -->
+<button id="share-btn" onclick="toggleShare()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+  </svg>
+  <span id="share-label">Share My Screen</span>
+</button>
+
 <script src="/socket.io/socket.io.js"></script>
 <script>
-const socket = io(location.origin);
-
+const socket    = io(location.origin);
 const videoEl   = document.getElementById('screen');
 const overlay   = document.getElementById('overlay');
 const ovStatus  = document.getElementById('ov-status');
@@ -133,8 +154,27 @@ const sslBox    = document.getElementById('ssl-box');
 const statusbar = document.getElementById('statusbar');
 const sbViewers = document.getElementById('sb-viewers');
 const fsBtn     = document.getElementById('fs-btn');
+const shareBtn  = document.getElementById('share-btn');
+const shareLbl  = document.getElementById('share-label');
 
-// Show SSL tip on load
+// Detect friendly device name from user agent
+function getDeviceName() {
+  const ua = navigator.userAgent;
+  if (/iPad/.test(ua))    return 'iPad';
+  if (/iPhone/.test(ua))  return 'iPhone';
+  // Android model
+  const am = ua.match(/Android[^;]*;\s*([^)]+)\)/);
+  if (am) return am[1].trim().replace(/Build\/.*/,'').trim().substring(0,30);
+  // Desktop / other
+  if (/Windows/.test(ua)) return 'Windows PC';
+  if (/Mac/.test(ua))     return 'Mac';
+  if (/Linux/.test(ua))   return 'Linux Device';
+  return 'Tablet';
+}
+
+const deviceName = getDeviceName();
+
+// Show SSL tip briefly on load
 sslBox.style.display = 'block';
 
 // MSE state
@@ -143,14 +183,14 @@ const chunkQueue = [];
 let mseReady = false;
 
 function setWaiting(msg) {
-  ovStatus.textContent   = msg;
-  spinner.style.display  = 'none';
-  ovCard.style.display   = 'flex';
+  ovStatus.textContent  = msg;
+  spinner.style.display = 'none';
+  ovCard.style.display  = 'flex';
 }
 function setLoading(msg) {
-  ovStatus.textContent   = msg;
-  spinner.style.display  = 'block';
-  ovCard.style.display   = 'none';
+  ovStatus.textContent  = msg;
+  spinner.style.display = 'block';
+  ovCard.style.display  = 'none';
 }
 
 // ── Socket events ─────────────────────────────────────────────────────────────
@@ -158,7 +198,7 @@ function setLoading(msg) {
 socket.on('connect', () => {
   sslBox.style.display = 'none';
   setLoading('Connected — joining classroom…');
-  socket.emit('tablet:join');
+  socket.emit('tablet:join', { name: deviceName });
 });
 
 socket.on('disconnect', () => {
@@ -169,13 +209,11 @@ socket.on('disconnect', () => {
 socket.on('server:status', s => {
   sbViewers.textContent = s.viewers + ' student' + (s.viewers !== 1 ? 's' : '') + ' viewing';
   if (!s.broadcasting && overlay.classList.contains('hidden')) {
-    // Board stopped while we were watching
     hideVideo();
     setWaiting('Teacher has stopped broadcasting.');
   }
 });
 
-// Server sends this when board starts (or when tablet joins mid-broadcast)
 socket.on('board:start', ({ mimeType, initSegment }) => {
   setLoading('Loading board stream…');
   initMSE(mimeType, initSegment);
@@ -190,13 +228,17 @@ socket.on('board:stop', () => {
   setWaiting('Teacher has stopped broadcasting.');
 });
 
+// ── On connect, show waiting card after a moment ──────────────────────────────
+setTimeout(() => {
+  if (overlay.style.display !== 'none' && !overlay.classList.contains('hidden')) {
+    setWaiting('Waiting for teacher to start broadcasting…');
+  }
+}, 2000);
+
 // ── MediaSource playback ──────────────────────────────────────────────────────
 
 function initMSE(mimeType, initSegment) {
-  // Tear down any previous MSE session
-  if (mediaSource) {
-    try { mediaSource.endOfStream(); } catch(_) {}
-  }
+  if (mediaSource) { try { mediaSource.endOfStream(); } catch(_) {} }
   chunkQueue.length = 0;
   mseReady = false;
   mediaSource = null;
@@ -211,33 +253,22 @@ function initMSE(mimeType, initSegment) {
     try {
       sourceBuffer = mediaSource.addSourceBuffer(mimeType);
     } catch (e) {
-      // Try without codec params if specific codec fails
       try { sourceBuffer = mediaSource.addSourceBuffer('video/webm'); }
-      catch (e2) { setWaiting('Video format not supported on this device: ' + mimeType); return; }
+      catch (e2) { setWaiting('Video format not supported: ' + mimeType); return; }
     }
-
     sourceBuffer.mode = 'sequence';
-
     sourceBuffer.addEventListener('updateend', () => {
-      if (chunkQueue.length > 0) {
-        appendFromQueue();
-      } else {
-        mseReady = true;
-      }
-      // Start playing once we have data
+      if (chunkQueue.length > 0) appendFromQueue();
+      else mseReady = true;
       if (videoEl.paused && videoEl.readyState >= 2) {
         videoEl.play().then(() => showVideo()).catch(() => showVideo());
       }
     });
-
     sourceBuffer.addEventListener('error', e => console.error('SourceBuffer error', e));
-
-    // Append init segment first
-    const initBuf = initSegment instanceof ArrayBuffer ? initSegment : initSegment.buffer || initSegment;
+    const initBuf = initSegment instanceof ArrayBuffer ? initSegment : (initSegment.buffer || initSegment);
     sourceBuffer.appendBuffer(initBuf);
   }, { once: true });
 
-  // Fallback: show video after 3 seconds regardless
   setTimeout(() => {
     if (!overlay.classList.contains('hidden') && videoEl.readyState > 0) {
       videoEl.play().catch(() => {});
@@ -249,19 +280,69 @@ function initMSE(mimeType, initSegment) {
 function appendChunk(chunk) {
   const buf = chunk instanceof ArrayBuffer ? chunk : (chunk.buffer || chunk);
   chunkQueue.push(buf);
-  if (mseReady && sourceBuffer && !sourceBuffer.updating) {
-    appendFromQueue();
-  }
+  if (mseReady && sourceBuffer && !sourceBuffer.updating) appendFromQueue();
 }
 
 function appendFromQueue() {
   if (!sourceBuffer || sourceBuffer.updating || chunkQueue.length === 0) return;
   mseReady = false;
+  try { sourceBuffer.appendBuffer(chunkQueue.shift()); }
+  catch (e) { console.warn('appendBuffer error:', e); mseReady = true; }
+}
+
+// ── Reverse screen share ──────────────────────────────────────────────────────
+
+let shareRecorder = null;
+let shareInitSent = false;
+
+const SHARE_CODECS = [
+  'video/webm;codecs=vp8,opus',
+  'video/webm;codecs=vp9,opus',
+  'video/webm;codecs=vp8',
+  'video/webm',
+];
+
+async function toggleShare() {
+  if (shareRecorder) {
+    shareRecorder.stop();
+    return;
+  }
   try {
-    sourceBuffer.appendBuffer(chunkQueue.shift());
+    const stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: false });
+    const mime = SHARE_CODECS.find(m => MediaRecorder.isTypeSupported(m)) || 'video/webm';
+    shareRecorder = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 500_000 });
+
+    shareRecorder.ondataavailable = async (e) => {
+      if (!e.data || e.data.size === 0) return;
+      const buf = await e.data.arrayBuffer();
+      if (!shareInitSent) {
+        socket.emit('tablet:screen:start', { mimeType: mime, initSegment: buf });
+        shareInitSent = true;
+      } else {
+        socket.emit('tablet:screen:chunk', buf);
+      }
+    };
+
+    shareRecorder.onstop = () => {
+      shareRecorder  = null;
+      shareInitSent  = false;
+      socket.emit('tablet:screen:stop');
+      shareBtn.classList.remove('sharing');
+      shareLbl.textContent = 'Share My Screen';
+      stream.getTracks().forEach(t => t.stop());
+    };
+
+    stream.getVideoTracks()[0].onended = () => {
+      if (shareRecorder) shareRecorder.stop();
+    };
+
+    shareRecorder.start(200);
+    shareBtn.classList.add('sharing');
+    shareLbl.textContent = 'Stop Sharing';
   } catch (e) {
-    console.warn('appendBuffer error:', e);
-    mseReady = true;
+    if (e.name !== 'NotAllowedError') {
+      alert('Screen sharing not available on this device: ' + e.message);
+    }
   }
 }
 
@@ -271,14 +352,19 @@ function showVideo() {
   videoEl.style.display = 'block';
   overlay.classList.add('hidden');
   statusbar.classList.add('show');
-  fsBtn.style.display = 'flex';
+  fsBtn.style.display    = 'flex';
+  // Show share button only if getDisplayMedia is available
+  if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
+    shareBtn.style.display = 'flex';
+  }
 }
 
 function hideVideo() {
-  videoEl.style.display = 'none';
+  videoEl.style.display  = 'none';
   overlay.classList.remove('hidden');
   statusbar.classList.remove('show');
-  fsBtn.style.display = 'none';
+  fsBtn.style.display    = 'none';
+  shareBtn.style.display = 'none';
 }
 
 function goFullscreen() {
@@ -289,7 +375,6 @@ function goFullscreen() {
 
 document.addEventListener('click', () => {
   if (!document.fullscreenElement) goFullscreen();
-  // Unmute on user gesture (Android autoplay requires muted, then unmute on tap)
   if (videoEl.muted) {
     videoEl.muted = false;
     videoEl.play().catch(() => { videoEl.muted = true; });

@@ -53,9 +53,9 @@ echo.
 echo   Start the server:  npm start
 echo   Or double-click:   start.bat
 echo.
-echo   Dashboard : https://192.168.100.176:3000
-echo   Board     : https://192.168.100.176:3000/board
-echo   Tablet    : https://192.168.100.176:3000/tablet
+echo   Dashboard : https://192.168.1.188:3000
+echo   Board     : https://192.168.1.188:3000/board
+echo   Tablet    : https://192.168.1.188:3000/tablet
 echo ============================================================
 echo.
 pause

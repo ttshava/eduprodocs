@@ -6,7 +6,7 @@
 Teacher's Computer / Interactive Board
             │  (screen capture)
             ▼
-   EduPro Server  ──  192.168.100.176:3000
+   EduPro Server  ──  192.168.1.188:3000
             │  (socket.io relay on school WiFi)
      ┌──────┼──────┬──────────┐
      ▼      ▼      ▼          ▼
@@ -25,7 +25,7 @@ Teacher's Computer / Interactive Board
 | OpenSSL | Pre-installed on Linux/Mac; [Win32OpenSSL](https://slproweb.com/products/Win32OpenSSL.html) on Windows |
 | Network | All devices on the **same WiFi or LAN** |
 | Tablets | Any Android or iOS device with Chrome or Safari |
-| Server IP | Fixed at `192.168.100.176` (see [Changing IP](#changing-the-server-ip)) |
+| Server IP | Fixed at `192.168.1.188` (see [Changing IP](#changing-the-server-ip)) |
 
 ---
 
@@ -89,9 +89,9 @@ You will see this in the terminal — keep it open while teaching:
 ╔══════════════════════════════════════════════════════╗
 ║        🎓  EduPro Classroom Server  Ready            ║
 ╠══════════════════════════════════════════════════════╣
-║  Dashboard: https://192.168.100.176:3000             ║
-║  Board:     https://192.168.100.176:3000/board       ║
-║  Tablet:    https://192.168.100.176:3000/tablet      ║
+║  Dashboard: https://192.168.1.188:3000             ║
+║  Board:     https://192.168.1.188:3000/board       ║
+║  Tablet:    https://192.168.1.188:3000/tablet      ║
 ╚══════════════════════════════════════════════════════╝
 ```
 
@@ -102,13 +102,13 @@ You will see this in the terminal — keep it open while teaching:
 On the **teacher's computer**, open **Google Chrome** and go to:
 
 ```
-https://192.168.100.176:3000/board
+https://192.168.1.188:3000/board
 ```
 
 You will see a security warning (self-signed SSL certificate). Do this **once**:
 
 1. Click **Advanced**
-2. Click **Proceed to 192.168.100.176 (unsafe)**
+2. Click **Proceed to 192.168.1.188 (unsafe)**
 
 The Board page loads. Chrome will remember this — you won't see the warning again.
 
@@ -134,7 +134,7 @@ The top bar on the Board page shows:
 👥 12 watching   ● LIVE
 ```
 
-The **Dashboard** (`https://192.168.100.176:3000`) shows:
+The **Dashboard** (`https://192.168.1.188:3000`) shows:
 - Live/offline status
 - Number of tablets watching
 - QR code for students to scan
@@ -175,7 +175,7 @@ Open **Google Chrome** on your tablet and do one of the following:
 
 **Option B — Type the URL manually**
 ```
-https://192.168.100.176:3000/tablet
+https://192.168.1.188:3000/tablet
 ```
 
 ---
@@ -189,7 +189,7 @@ This is normal. Do the following:
 | | Action |
 |-|--------|
 | **1** | Tap **Advanced** (at the bottom of the warning page) |
-| **2** | Tap **Proceed to 192.168.100.176 (unsafe)** |
+| **2** | Tap **Proceed to 192.168.1.188 (unsafe)** |
 | **3** | The EduPro Student Tablet page loads |
 
 > You only need to do this **once per tablet**. Chrome remembers it from then on.
@@ -226,7 +226,7 @@ When the teacher clicks **Start Broadcasting**, your screen automatically shows 
 
 ## Dashboard Reference
 
-Open at: `https://192.168.100.176:3000`
+Open at: `https://192.168.1.188:3000`
 
 | Element | Meaning |
 |---------|---------|
@@ -262,7 +262,7 @@ Open at: `https://192.168.100.176:3000`
 ### SSL warning appears every time
 
 Chrome was cleared or it's a new browser. Do the one-time acceptance again:
-**Advanced → Proceed to 192.168.100.176 (unsafe)**
+**Advanced → Proceed to 192.168.1.188 (unsafe)**
 
 ---
 
@@ -305,7 +305,7 @@ The tablet video starts **muted** (required for Android autoplay).
 
 | Item | Value |
 |------|-------|
-| Server IP | `192.168.100.176` (must be fixed/static) |
+| Server IP | `192.168.1.188` (must be fixed/static) |
 | Port | `3000` TCP |
 | Protocol | HTTPS + WebSocket |
 | Internet | Not required |
@@ -321,7 +321,7 @@ If your server machine has a different IP address:
 
 1. Edit `server.js` line 17:
    ```js
-   const SERVER_IP = '192.168.100.176';  // ← replace with your IP
+   const SERVER_IP = '192.168.1.188';  // ← replace with your IP
    ```
 
 2. Update the URL in `public/index.html` (the QR URL text), `public/board.html` (info card), and `public/tablet.html` (SSL help text)

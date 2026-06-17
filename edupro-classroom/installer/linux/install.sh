@@ -8,7 +8,7 @@ set -euo pipefail
 INSTALL_DIR="$HOME/EduPro/classroom"
 DESKTOP_LAUNCHER="$HOME/Desktop/EduPro-Classroom.sh"
 SYSTEMD_SERVICE="/etc/systemd/system/edupro-classroom.service"
-SERVER_IP="192.168.100.176"
+SERVER_IP="192.168.1.188"
 PORT="3000"
 
 # Source directory (two levels up from this script)
@@ -98,13 +98,13 @@ cd "$INSTALL_DIR"
 
 # Open dashboard in default browser (background)
 if command -v xdg-open &>/dev/null; then
-    (sleep 2 && xdg-open "https://192.168.100.176:3000") &
+    (sleep 2 && xdg-open "https://192.168.1.188:3000") &
 elif command -v open &>/dev/null; then
-    (sleep 2 && open "https://192.168.100.176:3000") &
+    (sleep 2 && open "https://192.168.1.188:3000") &
 fi
 
 echo "Starting EduPro Classroom server..."
-echo "Dashboard: https://192.168.100.176:3000"
+echo "Dashboard: https://192.168.1.188:3000"
 echo "Press Ctrl+C to stop."
 node server.js
 LAUNCHER

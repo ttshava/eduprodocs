@@ -1,8 +1,8 @@
 /**
  * EduPro Classroom — Stream Relay Server
  * Architecture: Board MediaRecorder → socket.io relay → Tablet MediaSource API
- * No mediasoup-client, no build step, no WebRTC library needed on client.
- * IP: 192.168.100.176  Port: 3000
+ * Reverse view: Tablet MediaRecorder → socket.io relay → Teacher viewer
+ * IP: 192.168.1.188  Port: 3000
  */
 
 'use strict';
@@ -14,7 +14,7 @@ const express = require('express');
 const { Server } = require('socket.io');
 const QRCode     = require('qrcode');
 
-const SERVER_IP   = '192.168.100.176';
+const SERVER_IP   = '192.168.1.188';
 const SERVER_PORT = 3000;
 
 // ── Express + HTTPS ──────────────────────────────────────────────────────────
@@ -28,9 +28,10 @@ app.get('/qr', async (req, res) => {
   res.send(svg);
 });
 
-app.get('/',       (_, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
-app.get('/board',  (_, res) => res.sendFile(path.join(__dirname, 'public', 'board.html')));
-app.get('/tablet', (_, res) => res.sendFile(path.join(__dirname, 'public', 'tablet.html')));
+app.get('/',             (_, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
+app.get('/board',        (_, res) => res.sendFile(path.join(__dirname, 'public', 'board.html')));
+app.get('/tablet',       (_, res) => res.sendFile(path.join(__dirname, 'public', 'tablet.html')));
+app.get('/teacher/view', (_, res) => res.sendFile(path.join(__dirname, 'public', 'teacher-view.html')));
 
 app.get('/api/status', (req, res) => {
   res.json({
@@ -39,6 +40,10 @@ app.get('/api/status', (req, res) => {
     boardConnected: !!state.boardSocketId,
     uptime:         process.uptime(),
   });
+});
+
+app.get('/api/devices', (req, res) => {
+  res.json(devicesSnapshot());
 });
 
 // ── SSL ──────────────────────────────────────────────────────────────────────
@@ -57,7 +62,7 @@ const httpsServer = https.createServer(sslOptions, app);
 const io = new Server(httpsServer, {
   cors: { origin: '*' },
   transports: ['websocket', 'polling'],
-  maxHttpBufferSize: 5e6,   // 5 MB — allow large video chunks
+  maxHttpBufferSize: 5e6,
 });
 
 // ── State ─────────────────────────────────────────────────────────────────────
@@ -65,13 +70,26 @@ const state = {
   boardSocketId: null,
   broadcasting:  false,
   mimeType:      null,
-  initSegment:   null,   // first webm chunk (contains codec init data)
+  initSegment:   null,
   viewers:       0,
-  tabletSockets: new Set(),
+  // Map<socketId, { socketId, name, sharing, mimeType, initSegment }>
+  devices: new Map(),
 };
+
+function devicesSnapshot() {
+  return Array.from(state.devices.values()).map(d => ({
+    socketId: d.socketId,
+    name:     d.name,
+    sharing:  d.sharing,
+  }));
+}
 
 function broadcastStatus() {
   io.emit('server:status', { broadcasting: state.broadcasting, viewers: state.viewers });
+}
+
+function broadcastDevices() {
+  io.emit('devices:update', devicesSnapshot());
 }
 
 // ── Socket.io ────────────────────────────────────────────────────────────────
@@ -80,20 +98,16 @@ io.on('connection', (socket) => {
 
   // ── BOARD ──────────────────────────────────────────────────────────────────
 
-  // Board sends codec info + first init segment
   socket.on('board:start', ({ mimeType, initSegment }) => {
     state.boardSocketId = socket.id;
     state.broadcasting  = true;
     state.mimeType      = mimeType;
     state.initSegment   = Buffer.from(initSegment);
-
-    // Tell all connected tablets to start playing
     socket.broadcast.emit('board:start', { mimeType, initSegment });
     broadcastStatus();
     console.log(`📡 Board broadcasting  mimeType=${mimeType}`);
   });
 
-  // Board sends a video/audio chunk — relay to all tablets
   socket.on('board:chunk', (chunk) => {
     socket.broadcast.emit('board:chunk', chunk);
   });
@@ -110,18 +124,76 @@ io.on('connection', (socket) => {
 
   // ── TABLET ──────────────────────────────────────────────────────────────────
 
-  socket.on('tablet:join', () => {
-    state.tabletSockets.add(socket.id);
+  socket.on('tablet:join', ({ name } = {}) => {
+    const deviceName = (name || 'Tablet').toString().substring(0, 40);
+    state.devices.set(socket.id, {
+      socketId:    socket.id,
+      name:        deviceName,
+      sharing:     false,
+      mimeType:    null,
+      initSegment: null,
+    });
     state.viewers++;
     broadcastStatus();
+    broadcastDevices();
+    console.log(`📱 Tablet joined: ${deviceName} [${socket.id}]`);
 
-    // If board is already broadcasting, send the init segment immediately
+    // Late join: send stored board init segment immediately
     if (state.broadcasting && state.initSegment) {
       socket.emit('board:start', {
         mimeType:    state.mimeType,
         initSegment: state.initSegment,
       });
     }
+  });
+
+  // ── TABLET REVERSE SCREEN SHARE ────────────────────────────────────────────
+
+  // Tablet starts sharing its screen to the teacher
+  socket.on('tablet:screen:start', ({ mimeType, initSegment }) => {
+    const dev = state.devices.get(socket.id);
+    if (!dev) return;
+    dev.sharing     = true;
+    dev.mimeType    = mimeType;
+    dev.initSegment = Buffer.from(initSegment);
+    broadcastDevices();
+    // Notify anyone already watching this tablet
+    io.to('watch:' + socket.id).emit('tablet:screen:start', { mimeType, initSegment });
+    console.log(`👁  Tablet sharing screen: ${dev.name}`);
+  });
+
+  socket.on('tablet:screen:chunk', (chunk) => {
+    io.to('watch:' + socket.id).emit('tablet:screen:chunk', chunk);
+  });
+
+  socket.on('tablet:screen:stop', () => {
+    const dev = state.devices.get(socket.id);
+    if (dev) {
+      dev.sharing = false; dev.mimeType = null; dev.initSegment = null;
+      broadcastDevices();
+      io.to('watch:' + socket.id).emit('tablet:screen:stop');
+      console.log(`👁  Tablet stopped sharing: ${dev.name}`);
+    }
+  });
+
+  // ── TEACHER VIEWER ─────────────────────────────────────────────────────────
+
+  // Teacher requests to watch a specific tablet's screen
+  socket.on('teacher:watch', (tabletId) => {
+    socket.join('watch:' + tabletId);
+    const dev = state.devices.get(tabletId);
+    // If tablet is already sharing, send its init segment immediately
+    if (dev && dev.sharing && dev.initSegment) {
+      socket.emit('tablet:screen:start', {
+        mimeType:    dev.mimeType,
+        initSegment: dev.initSegment,
+      });
+    }
+    console.log(`👁  Teacher watching: ${dev ? dev.name : tabletId}`);
+  });
+
+  socket.on('teacher:unwatch', (tabletId) => {
+    socket.leave('watch:' + tabletId);
   });
 
   // ── Disconnect ───────────────────────────────────────────────────────────────
@@ -137,10 +209,15 @@ io.on('connection', (socket) => {
       broadcastStatus();
     }
 
-    if (state.tabletSockets.has(socket.id)) {
-      state.tabletSockets.delete(socket.id);
+    if (state.devices.has(socket.id)) {
+      const dev = state.devices.get(socket.id);
+      if (dev.sharing) {
+        io.to('watch:' + socket.id).emit('tablet:screen:stop');
+      }
+      state.devices.delete(socket.id);
       state.viewers = Math.max(0, state.viewers - 1);
       broadcastStatus();
+      broadcastDevices();
     }
   });
 });
@@ -151,10 +228,9 @@ httpsServer.listen(SERVER_PORT, '0.0.0.0', () => {
   console.log('╔══════════════════════════════════════════════════════╗');
   console.log('║        🎓  EduPro Classroom Server  Ready            ║');
   console.log('╠══════════════════════════════════════════════════════╣');
-  console.log(`║  Dashboard: https://${SERVER_IP}:${SERVER_PORT}/              ║`);
-  console.log(`║  Board:     https://${SERVER_IP}:${SERVER_PORT}/board         ║`);
-  console.log(`║  Tablet:    https://${SERVER_IP}:${SERVER_PORT}/tablet        ║`);
-  console.log(`║  QR Code:   https://${SERVER_IP}:${SERVER_PORT}/qr            ║`);
+  console.log(`║  Dashboard: https://${SERVER_IP}:${SERVER_PORT}             ║`);
+  console.log(`║  Board:     https://${SERVER_IP}:${SERVER_PORT}/board       ║`);
+  console.log(`║  Tablet:    https://${SERVER_IP}:${SERVER_PORT}/tablet      ║`);
   console.log('╠══════════════════════════════════════════════════════╣');
   console.log('║  Accept the SSL warning on first visit (self-signed) ║');
   console.log('╚══════════════════════════════════════════════════════╝');

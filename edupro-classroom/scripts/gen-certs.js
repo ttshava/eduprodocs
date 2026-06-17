@@ -10,7 +10,7 @@ const path = require('path');
 const CERTS_DIR = path.join(__dirname, '..', 'certs');
 const KEY  = path.join(CERTS_DIR, 'key.pem');
 const CERT = path.join(CERTS_DIR, 'cert.pem');
-const SERVER_IP = '192.168.100.176';
+const SERVER_IP = '192.168.1.188';
 
 if (!fs.existsSync(CERTS_DIR)) fs.mkdirSync(CERTS_DIR, { recursive: true });
 

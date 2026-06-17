@@ -175,12 +175,12 @@ echo     - Double-click "EduPro Classroom" on your Desktop, OR
 echo     - Open Start Menu ^> EduPro ^> EduPro Classroom
 echo.
 echo   Once running, open these URLs in Chrome:
-echo     Dashboard : https://192.168.100.176:3000
-echo     Board     : https://192.168.100.176:3000/board
-echo     Tablets   : https://192.168.100.176:3000/tablet
+echo     Dashboard : https://192.168.1.188:3000
+echo     Board     : https://192.168.1.188:3000/board
+echo     Tablets   : https://192.168.1.188:3000/tablet
 echo.
 echo   IMPORTANT: On first visit, accept the SSL warning in Chrome:
-echo     Click Advanced ^> Proceed to 192.168.100.176 (unsafe)
+echo     Click Advanced ^> Proceed to 192.168.1.188 (unsafe)
 echo.
 echo  ============================================================
 echo.

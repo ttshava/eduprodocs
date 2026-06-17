@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduPro — Tablet View</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--red:#FF0527;--navy:#0f172a;--navy2:#1e293b;--navy3:#334155;--muted:#94a3b8;--light:#f1f5f9;--green:#22c55e}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+
+#screen{position:fixed;inset:0;width:100%;height:100%;object-fit:contain;background:#000;display:none;z-index:1}
+
+#overlay{
+  position:fixed;inset:0;z-index:10;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:var(--navy);color:var(--light);gap:14px;padding:32px;text-align:center;
+  transition:opacity .4s;
+}
+#overlay.hidden{opacity:0;pointer-events:none}
+
+.ov-logo img{height:30px;width:auto}
+.ov-icon{width:68px;height:68px;border-radius:16px;background:var(--navy2);border:1px solid var(--navy3);display:flex;align-items:center;justify-content:center}
+.ov-icon svg{width:34px;height:34px;color:var(--green)}
+.ov-title{font-size:1.1rem;font-weight:800;letter-spacing:-.02em}
+.ov-sub{font-size:.76rem;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-top:-6px}
+#ov-device-name{font-size:1rem;font-weight:700;color:var(--green);margin-top:4px}
+
+.spinner{width:36px;height:36px;border:3px solid var(--navy3);border-top-color:var(--green);border-radius:50%;animation:spin .9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+#ov-status{font-size:.88rem;color:var(--muted);max-width:280px;line-height:1.6}
+
+.ov-card{background:var(--navy2);border:1px solid var(--navy3);border-radius:14px;padding:14px 18px;max-width:300px;width:100%;display:none;flex-direction:column;gap:9px}
+.ov-row{display:flex;align-items:flex-start;gap:10px;font-size:.82rem;color:var(--muted)}
+.ov-row svg{width:14px;height:14px;flex-shrink:0;margin-top:2px;color:var(--muted)}
+.ov-row.tip svg{color:var(--green)}
+
+/* TOP BAR */
+#topbar{
+  position:fixed;top:0;left:0;right:0;z-index:20;height:48px;
+  background:rgba(0,0,0,.7);backdrop-filter:blur(14px);
+  display:none;align-items:center;justify-content:space-between;
+  padding:0 18px;border-bottom:1px solid rgba(255,255,255,.08);
+}
+#topbar.show{display:flex}
+.tb-left{display:flex;align-items:center;gap:10px}
+.tb-logo img{height:20px;opacity:.7}
+#tb-device{font-size:.85rem;font-weight:700;color:var(--light)}
+.live-badge{display:flex;align-items:center;gap:6px;background:rgba(34,197,94,.2);border:1px solid rgba(34,197,94,.35);border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:700;letter-spacing:.06em;color:#86efac}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pdot 1.5s ease-in-out infinite}
+@keyframes pdot{0%,100%{opacity:1}50%{opacity:.4}}
+.tb-back{display:flex;align-items:center;gap:5px;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.5);text-decoration:none;padding:6px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.1);transition:all .15s}
+.tb-back:hover{color:var(--light);border-color:rgba(255,255,255,.25)}
+.tb-back svg{width:14px;height:14px}
+
+/* Fullscreen button */
+#fs-btn{position:fixed;bottom:20px;right:20px;z-index:30;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);border-radius:10px;color:white;padding:9px 14px;font-size:.76rem;font-weight:600;font-family:inherit;cursor:pointer;display:none;align-items:center;gap:6px}
+#fs-btn svg{width:14px;height:14px}
+</style>
+</head>
+<body>
+
+<video id="screen" autoplay playsinline></video>
+
+<div id="topbar">
+  <div class="tb-left">
+    <div class="tb-logo"><img src="/img/logo.svg" alt="Edupro"></div>
+    <div id="tb-device">Tablet Screen</div>
+    <div class="live-badge"><span class="live-dot"></span> LIVE</div>
+  </div>
+  <a class="tb-back" href="/">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Dashboard
+  </a>
+</div>
+
+<div id="overlay">
+  <div class="ov-logo"><img src="/img/logo.svg" alt="Edupro SMS"></div>
+  <div class="ov-icon">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+      <circle cx="12" cy="12" r="3"/>
+    </svg>
+  </div>
+  <div>
+    <div class="ov-title">Tablet Viewer</div>
+    <div class="ov-sub">Teacher View</div>
+  </div>
+  <div id="ov-device-name"></div>
+
+  <div class="spinner" id="spinner"></div>
+  <div id="ov-status">Connecting…</div>
+
+  <div class="ov-card" id="ov-card">
+    <div class="ov-row tip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span>Waiting for the student to click <strong style="color:var(--light)">"Share My Screen"</strong> on their tablet.</span>
+    </div>
+    <div class="ov-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="9" y1="6" x2="15" y2="6"/></svg>
+      <span>The student must be connected and viewing the classroom stream.</span>
+    </div>
+  </div>
+</div>
+
+<button id="fs-btn" onclick="goFullscreen()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
+    <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+  </svg>
+  Fullscreen
+</button>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+// Get tablet socket ID from URL param ?id=xxx
+const params   = new URLSearchParams(location.search);
+const tabletId = params.get('id') || '';
+
+const socket   = io(location.origin);
+const videoEl  = document.getElementById('screen');
+const overlay  = document.getElementById('overlay');
+const ovStatus = document.getElementById('ov-status');
+const spinner  = document.getElementById('spinner');
+const ovCard   = document.getElementById('ov-card');
+const topbar   = document.getElementById('topbar');
+const tbDevice = document.getElementById('tb-device');
+const devName  = document.getElementById('ov-device-name');
+const fsBtn    = document.getElementById('fs-btn');
+
+// MSE state
+let mediaSource, sourceBuffer;
+const chunkQueue = [];
+let mseReady = false;
+
+function setWaiting(msg) {
+  ovStatus.textContent  = msg;
+  spinner.style.display = 'none';
+  ovCard.style.display  = 'flex';
+}
+function setLoading(msg) {
+  ovStatus.textContent  = msg;
+  spinner.style.display = 'block';
+  ovCard.style.display  = 'none';
+}
+
+if (!tabletId) {
+  setWaiting('No tablet ID specified. Return to Dashboard and click "Watch" on a device.');
+}
+
+socket.on('connect', () => {
+  if (!tabletId) return;
+  setLoading('Connecting to tablet…');
+  socket.emit('teacher:watch', tabletId);
+
+  // Fetch device name from devices list
+  fetch('/api/devices').then(r => r.json()).then(devices => {
+    const dev = devices.find(d => d.socketId === tabletId);
+    if (dev) {
+      devName.textContent = dev.name;
+      tbDevice.textContent = dev.name;
+      document.title = 'Watching: ' + dev.name + ' — EduPro';
+    }
+  }).catch(() => {});
+});
+
+socket.on('disconnect', () => {
+  setLoading('Connection lost — reconnecting…');
+  hideVideo();
+});
+
+// Tablet started sharing its screen
+socket.on('tablet:screen:start', ({ mimeType, initSegment }) => {
+  setLoading('Loading tablet screen…');
+  initMSE(mimeType, initSegment);
+});
+
+socket.on('tablet:screen:chunk', (chunk) => {
+  appendChunk(chunk);
+});
+
+socket.on('tablet:screen:stop', () => {
+  hideVideo();
+  setWaiting('Student stopped sharing their screen.');
+});
+
+// If device list updates and our tablet disappears, show disconnect message
+socket.on('devices:update', (devices) => {
+  if (tabletId && !devices.find(d => d.socketId === tabletId)) {
+    hideVideo();
+    setWaiting('Tablet has disconnected.');
+    devName.textContent = '';
+  }
+});
+
+// ── MediaSource ───────────────────────────────────────────────────────────────
+
+function initMSE(mimeType, initSegment) {
+  if (mediaSource) { try { mediaSource.endOfStream(); } catch(_) {} }
+  chunkQueue.length = 0;
+  mseReady = false;
+  mediaSource = null;
+  sourceBuffer = null;
+  videoEl.src = '';
+  videoEl.load();
+
+  mediaSource = new MediaSource();
+  videoEl.src = URL.createObjectURL(mediaSource);
+
+  mediaSource.addEventListener('sourceopen', () => {
+    try {
+      sourceBuffer = mediaSource.addSourceBuffer(mimeType);
+    } catch (e) {
+      try { sourceBuffer = mediaSource.addSourceBuffer('video/webm'); }
+      catch (e2) { setWaiting('Video format not supported: ' + mimeType); return; }
+    }
+    sourceBuffer.mode = 'sequence';
+    sourceBuffer.addEventListener('updateend', () => {
+      if (chunkQueue.length > 0) appendFromQueue();
+      else mseReady = true;
+      if (videoEl.paused && videoEl.readyState >= 2) {
+        videoEl.play().then(() => showVideo()).catch(() => showVideo());
+      }
+    });
+    const initBuf = initSegment instanceof ArrayBuffer ? initSegment : (initSegment.buffer || initSegment);
+    sourceBuffer.appendBuffer(initBuf);
+  }, { once: true });
+
+  setTimeout(() => {
+    if (!overlay.classList.contains('hidden') && videoEl.readyState > 0) {
+      videoEl.play().catch(() => {});
+      showVideo();
+    }
+  }, 3000);
+}
+
+function appendChunk(chunk) {
+  const buf = chunk instanceof ArrayBuffer ? chunk : (chunk.buffer || chunk);
+  chunkQueue.push(buf);
+  if (mseReady && sourceBuffer && !sourceBuffer.updating) appendFromQueue();
+}
+
+function appendFromQueue() {
+  if (!sourceBuffer || sourceBuffer.updating || chunkQueue.length === 0) return;
+  mseReady = false;
+  try { sourceBuffer.appendBuffer(chunkQueue.shift()); }
+  catch (e) { console.warn('appendBuffer error:', e); mseReady = true; }
+}
+
+function showVideo() {
+  videoEl.style.display = 'block';
+  overlay.classList.add('hidden');
+  topbar.classList.add('show');
+  fsBtn.style.display = 'flex';
+}
+
+function hideVideo() {
+  videoEl.style.display = 'none';
+  overlay.classList.remove('hidden');
+  topbar.classList.remove('show');
+  fsBtn.style.display = 'none';
+}
+
+function goFullscreen() {
+  const el = document.documentElement;
+  if (el.requestFullscreen)            el.requestFullscreen();
+  else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+}
+
+// Show waiting card after brief delay if no stream starts
+setTimeout(() => {
+  if (!overlay.classList.contains('hidden')) {
+    setWaiting('Waiting for student to share their screen…');
+  }
+}, 3000);
+</script>
+</body>
+</html>
