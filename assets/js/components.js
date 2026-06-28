@@ -6,7 +6,7 @@
 (function () {
   // Detect root path relative to current page location
   const depth = (window.location.pathname.match(/\//g) || []).length - 1;
-  const root = depth <= 1 ? './' : '../';
+  const root = depth < 1 ? './' : '../'.repeat(depth);
 
   /* ─── NAV HTML ─── */
   const navHTML = `
