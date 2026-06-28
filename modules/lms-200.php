@@ -8,6 +8,7 @@ $breadcrumbs      = [
   ['name' => 'Modules', 'url' => 'https://edupro.co.zw/index.php#modules'],
   ['name' => 'Moodle LMS', 'url' => ''],
 ];
+require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/site-config.php';
 $schema_json = ld_json([
   '@context' => 'https://schema.org',
   '@type'    => 'Service',
@@ -18,8 +19,7 @@ $schema_json = ld_json([
   'url' => SITE_URL . '/modules/lms-200.php',
   'serviceType' => 'Learning Management System',
 ]);
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/site-config.php';
-include    $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 ?>
 
 <!-- ═══ LMS HERO ═══════════════════════════════════════════════════════ -->
