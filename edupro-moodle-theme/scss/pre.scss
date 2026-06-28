@@ -1,0 +1,40 @@
+// ── Edupro Boost — Brand variables (injected BEFORE Boost) ──────────
+// These override Bootstrap / Boost defaults before compilation.
+
+// Brand palette
+$edupro-red:        #FF0527;
+$edupro-dark:       #0f172a;
+$edupro-mid:        #1e293b;
+$edupro-muted:      #64748b;
+$edupro-light:      #f8fafc;
+$edupro-border:     #e2e8f0;
+
+// Bootstrap overrides
+$primary:           $edupro-red;
+$secondary:         $edupro-mid;
+$body-bg:           $edupro-light;
+$body-color:        $edupro-mid;
+$headings-color:    $edupro-dark;
+$link-color:        $edupro-red;
+$link-hover-color:  darken($edupro-red, 10%);
+
+// Typography
+$font-family-sans-serif: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+$font-size-base:    1rem;
+$line-height-base:  1.65;
+$headings-font-weight: 700;
+
+// Border radius
+$border-radius:     .5rem;
+$border-radius-lg:  .75rem;
+$border-radius-sm:  .375rem;
+
+// Navbar
+$navbar-dark-color:         rgba(255,255,255,.9);
+$navbar-dark-hover-color:   #fff;
+$navbar-dark-active-color:  #fff;
+$navbar-padding-y:          .75rem;
+
+// Card
+$card-border-color:         $edupro-border;
+$card-cap-bg:               $edupro-light;
