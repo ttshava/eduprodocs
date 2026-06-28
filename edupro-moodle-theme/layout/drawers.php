@@ -14,9 +14,9 @@ $templatecontext = (object)[
     'hasblocks'                   => (bool)$PAGE->blocks->region_has_content('side-pre', $OUTPUT),
     'bodyattributes'              => $OUTPUT->body_attributes(),
     'forceblockdrawer'            => false,
-    'activitynavigation'          => $OUTPUT->activity_navigation(),
-    'regionmainsettingsmenu'      => $OUTPUT->region_main_settings_menu(),
-    'hasregionmainsettingsmenu'   => (bool)$OUTPUT->region_main_settings_menu(),
+    'activitynavigation'          => method_exists($OUTPUT, 'activity_navigation') ? $OUTPUT->activity_navigation() : '',
+    'regionmainsettingsmenu'      => method_exists($OUTPUT, 'region_main_settings_menu') ? $OUTPUT->region_main_settings_menu() : '',
+    'hasregionmainsettingsmenu'   => method_exists($OUTPUT, 'region_main_settings_menu') && (bool)$OUTPUT->region_main_settings_menu(),
 ];
 
 echo $OUTPUT->doctype();
@@ -46,14 +46,19 @@ echo $OUTPUT->doctype();
     <?php } // FIX #6: pr-0 → pe-0 (Bootstrap 5) ?>
 
         <div id="course-index">
-            <?php echo $OUTPUT->render_from_template('core_courseformat/local/courseindex/drawer', $templatecontext); ?>
+            <?php
+            // course index drawer is only available inside a course context
+            if ($PAGE->context->contextlevel == CONTEXT_COURSE && $PAGE->context->instanceid != SITEID) {
+                echo $OUTPUT->render_from_template('core_courseformat/local/courseindex/drawer', $templatecontext);
+            }
+            ?>
         </div>
 
         <div class="main-inner">
             <div id="topofscroll" class="main-content">
-                <?php echo $OUTPUT->course_content_header(); ?>
-                <?php echo $OUTPUT->activity_header(); ?>
-                <?php if ($PAGE->get_show_intro_editor()) { ?>
+                <?php if (method_exists($OUTPUT, 'course_content_header')) echo $OUTPUT->course_content_header(); ?>
+                <?php if (method_exists($OUTPUT, 'activity_header')) echo $OUTPUT->activity_header(); ?>
+                <?php if (method_exists($PAGE, 'get_show_intro_editor') && $PAGE->get_show_intro_editor()) { ?>
                     <?php echo $OUTPUT->render_from_template('core/activity_intro', $templatecontext); ?>
                 <?php } ?>
                 <?php if ($templatecontext->hasregionmainsettingsmenu) { ?>
@@ -62,7 +67,7 @@ echo $OUTPUT->doctype();
                 <section id="region-main" aria-label="<?php echo get_string('content', 'moodle'); ?>">
                     <?php
                     echo core_renderer::MAIN_CONTENT_TOKEN;
-                    echo $OUTPUT->course_content_footer();
+                    if (method_exists($OUTPUT, 'course_content_footer')) echo $OUTPUT->course_content_footer();
                     ?>
                 </section>
             </div>
