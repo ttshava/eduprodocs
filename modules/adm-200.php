@@ -1,6 +1,7 @@
 <?php
 $page_title       = 'Admission &amp; Enrolment | Edupro SMS';
 $current_page     = 'modules';
+$breadcrumbs = [['name'=>'Home','url'=>'https://edupro.co.zw/'],['name'=>'Modules','url'=>'https://edupro.co.zw/index.php#modules'],['name'=>'Admissions Management','url'=>'']];
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/site-config.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 ?>

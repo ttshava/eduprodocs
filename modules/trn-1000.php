@@ -1,6 +1,7 @@
 <?php
 $page_title       = 'Capacity Building &amp; Training | Edupro SMS';
 $current_page     = 'modules';
+$breadcrumbs = [['name'=>'Home','url'=>'https://edupro.co.zw/'],['name'=>'Modules','url'=>'https://edupro.co.zw/index.php#modules'],['name'=>'Training require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/site-config.php';amp; Support','url'=>'']];
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/site-config.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 ?>
