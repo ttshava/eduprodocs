@@ -103,9 +103,10 @@ function theme_edupro_boost_get_head_meta() {
         $meta .= '<meta name="twitter:image" content="' . s($ogimage) . '">' . "\n";
     }
     $meta .= '<meta name="theme-color" content="#FF0527">' . "\n";
+    // Edupro primary font — Inter
     $meta .= '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
     $meta .= '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
-    $meta .= '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">' . "\n";
+    $meta .= '<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900;1,14..32,400&display=swap" rel="stylesheet">' . "\n";
 
     return $meta;
 }

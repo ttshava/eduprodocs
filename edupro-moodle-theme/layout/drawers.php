@@ -113,10 +113,11 @@ foreach ($allcourses as $c) {
     <!-- Brand column -->
     <div class="edupro-footer-brand">
       <a href="<?php echo s($wwwroot); ?>">
-        <img src="<?php echo $OUTPUT->image_url('logo', 'theme_edupro_boost'); ?>"
+        <img src="https://edupro.co.zw/assets/img/logo.png"
              alt="Edupro SMS Logo"
              class="edupro-logo"
-             width="140" height="40">
+             width="140" height="40"
+             onerror="this.style.display='none'">
       </a>
       <p><?php echo get_string('footerdesc', 'theme_edupro_boost'); ?></p>
 
