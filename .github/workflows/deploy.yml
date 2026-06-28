@@ -1,0 +1,43 @@
+name: Deploy to edupro.co.zw
+
+on:
+  push:
+    branches:
+      - main          # runs automatically on every push to main
+  workflow_dispatch:  # also allows manual trigger from GitHub Actions tab
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to cPanel via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server:           ${{ secrets.FTP_HOST }}
+          username:         ${{ secrets.FTP_USERNAME }}
+          password:         ${{ secrets.FTP_PASSWORD }}
+          port:             21
+          protocol:         ftp
+          local-dir:        ./        # root of this repo
+          server-dir:       /public_html/
+          dangerous-clean-slate: false   # safe: only uploads changed files
+
+          # Exclude dev/internal files — these must NOT go to public_html
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/README.md
+            **/README.rst
+            **/lumache.py
+            **/pyproject.toml
+            **/dump.rdb
+            **/docs/**
+            **/edupro-sms/**
+            **/edupro-classroom/**
+            **/.github/**
+            **/node_modules/**
+            **/*.log
