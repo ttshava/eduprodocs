@@ -1,0 +1,263 @@
+<?php
+$page_title       = 'Admission &amp; Enrolment | Edupro SMS';
+$current_page     = 'modules';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/site-config.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
+?>
+
+<!-- Module Hero -->
+<section class="module-hero">
+  <div class="container">
+    <div class="module-hero-breadcrumb">
+      <a href="/index.php">Home</a>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      <a href="/index.php#modules">Modules</a>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      <span>Admission &amp; Enrolment</span>
+    </div>
+    <div class="module-hero-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="56" height="56"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+    </div>
+    <div class="module-code badge badge-red" style="margin-bottom:12px;">ADM-200</div>
+    <h1>Admission &amp; Enrolment</h1>
+    <p>From the first parent enquiry to the moment a learner sits in their allocated class, ADM-200 guides your registrar through every step. Designed for ECD through Form 6 in both government-aided and independent Zimbabwean schools.</p>
+    <div class="module-tags">
+      <span class="module-tag">Offline Capable</span>
+      <span class="module-tag">ZIMSEC Ready</span>
+      <span class="module-tag">Cambridge Ready</span>
+      <span class="module-tag">ECD – Form 6</span>
+      <span class="module-tag">Transfer Students</span>
+    </div>
+  </div>
+</section>
+
+<!-- 5-Step Admission Workflow -->
+<section class="section">
+  <div class="container">
+    <h2 class="heading">The 5-Step Admission Workflow</h2>
+    <p class="subheading">ADM-200 structures admissions into clear, trackable stages so nothing falls through the cracks at term opening or mid-year.</p>
+    <div class="how-it-works">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3>Inquiry Registration</h3>
+          <p>Record the parent's enquiry — preferred grade, entry date, and contact details. The system assigns a unique inquiry reference number and logs the date. Inquiries appear on the registrar's dashboard for follow-up.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h3>Application Form Completion</h3>
+          <p>Issue a customisable digital (or printable) application form. Collect all required documents: birth certificate, health card, previous school report/transfer letter, and parent ID. The system flags any missing documents with a red indicator.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h3>Assessment &amp; Placement Decision</h3>
+          <p>Record entry assessment scores, interview notes, and the placement committee's decision. Mark the application as Approved, Waitlisted, or Declined with a reason. Declined applications are retained for record-keeping.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <h3>Acceptance Letter &amp; Fee Payment</h3>
+          <p>Generate a formal acceptance letter with the school's letterhead, accepted grade, subject combination, and registration fee amount. Once the registration fee is recorded (via FIN-500), the application advances to final placement.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">5</div>
+        <div class="step-content">
+          <h3>Class Placement &amp; Profile Creation</h3>
+          <p>Assign the learner to a specific class stream (e.g., 3B, Form 2 Arts). The system automatically creates a full SIM-100 student profile, assigns an admission number, and makes the learner visible to their class teacher.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="section section-gray">
+  <div class="container">
+    <h2 class="heading">Admission Module Features</h2>
+    <p class="subheading">Every tool your registrar needs to run a smooth, professional admissions process across all levels.</p>
+    <div class="feature-list">
+      <div class="feature-row">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+        </div>
+        <div class="feature-content">
+          <h3>Customisable Application Forms</h3>
+          <p>Tailor application forms for each level — ECD forms collect different data from Form 5 A-Level forms. Add or remove fields without any coding knowledge.</p>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <div class="feature-content">
+          <h3>Document Checklist Management</h3>
+          <p>Configure a per-grade document checklist. The system prevents placement to a class until all mandatory documents are marked received, ensuring compliance with Ministry requirements.</p>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        </div>
+        <div class="feature-content">
+          <h3>Waiting List Management</h3>
+          <p>When a class reaches maximum capacity, new applicants go onto a waiting list ranked by application date. If a place opens, the next applicant is automatically flagged for contact.</p>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div class="feature-content">
+          <h3>Automated Acceptance Letters</h3>
+          <p>One-click generation of professional acceptance letters and offer-of-place notices. Letters include the school's logo, term start date, uniform requirements, and fees summary.</p>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <div class="feature-content">
+          <h3>Subject Combination Selection</h3>
+          <p>For Form 1, Form 5, and entry to specialist programmes, the admission form presents available ZIMSEC and Cambridge subject combinations. Student selections are saved directly to their SIM-100 profile.</p>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="feature-content">
+          <h3>Bulk Term-Start Enrolment</h3>
+          <p>At the start of a new term, re-enrol all returning students in a single operation. Bulk progression moves all Grade 2 students to Grade 3, all Form 1 students to Form 2, and so on.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ECD through Form 6 -->
+<section class="section">
+  <div class="container">
+    <h2 class="heading">ECD Through Form 6 Coverage</h2>
+    <p class="subheading">Admission requirements differ significantly between school levels. ADM-200 has separate configurations for each stage of the Zimbabwean education system.</p>
+    <div class="grid-2">
+      <div class="card">
+        <h3 class="card-title">Early Childhood Development (ECD A &amp; B)</h3>
+        <ul class="check-list">
+          <li>Age-based eligibility check (birth certificate verified)</li>
+          <li>ECD health card and vaccination requirements</li>
+          <li>Parent/guardian consent forms</li>
+          <li>Half-day and full-day session placement</li>
+          <li>Sibling priority placement rules</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="card-title">Primary School (Grade 1 – Grade 7)</h3>
+        <ul class="check-list">
+          <li>Grade 1 age-cut-off compliance (Ministry rule)</li>
+          <li>Transfer letter verification for Grades 2–7</li>
+          <li>Class stream allocation (A, B, C streams)</li>
+          <li>Previous academic results capture</li>
+          <li>Boarding vs day-school categorisation</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="card-title">Secondary School (Form 1 – Form 4)</h3>
+        <ul class="check-list">
+          <li>Grade 7 ZIMSEC results requirement</li>
+          <li>Subject combination selection at Form 1 entry</li>
+          <li>School fees structure selection at admission</li>
+          <li>Day/boarding/weekly-boarding status</li>
+          <li>Form 4 ZIMSEC candidate registration trigger</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="card-title">Sixth Form (Form 5 – Form 6)</h3>
+        <ul class="check-list">
+          <li>O-Level results upload and minimum entry requirements check</li>
+          <li>A-Level subject combination selection (ZIMSEC/Cambridge)</li>
+          <li>Bursary and scholarship capture</li>
+          <li>Internal vs external (new) student distinction</li>
+          <li>Form 6 ZIMSEC/Cambridge candidate registration</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Transfer Students -->
+<section class="section section-gray">
+  <div class="container">
+    <h2 class="heading">Handling Transfer Students</h2>
+    <p class="subheading">Inter-school transfers are common in Zimbabwe. ADM-200 handles both incoming and outgoing transfers cleanly and generates the required Ministry documentation.</p>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="32" height="32"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        </div>
+        <h3 class="card-title">Incoming Transfers</h3>
+        <p>Record the previous school's EMIS number, transfer letter reference, and outstanding fees status. Map the student to the correct class based on academic records.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="32" height="32"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>
+        </div>
+        <h3 class="card-title">Transfer Letters Out</h3>
+        <p>Generate official school transfer letters for departing students with one click. Letters include academic progress summary, fees clearance status, and signature fields.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="32" height="32"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <h3 class="card-title">Academic Continuity</h3>
+        <p>Attach scanned copies of the student's most recent report card to their transfer record, ensuring their class teacher at the new school can calibrate expectations from day one.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Explore Other Modules -->
+<section class="section section-gray">
+  <div class="container">
+    <h2 class="heading text-center" style="margin-bottom:32px;">Explore Other Modules</h2>
+    <div class="grid-3">
+      <a href="/modules/sim-100.php" class="card module-card">
+        <div class="module-code badge badge-red">SIM-100</div>
+        <h3 class="card-title">Student Information Management</h3>
+        <p>The central database for all learner records — demographics, medical, academic history — available offline.</p>
+      </a>
+      <a href="/modules/att-300.php" class="card module-card">
+        <div class="module-code badge badge-red">ATT-300</div>
+        <h3 class="card-title">Attendance Management</h3>
+        <p>Daily session registers, absenteeism analytics, and automatic parent SMS alerts — all working offline.</p>
+      </a>
+      <a href="/modules/fin-500.php" class="card module-card">
+        <div class="module-code badge badge-red">FIN-500</div>
+        <h3 class="card-title">School Fees Management</h3>
+        <p>Invoicing, EcoCash payments, debtor tracking, and financial reports across USD and ZiG currencies.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <h2>Ready to Deploy Admission &amp; Enrolment?</h2>
+    <p>Contact our Harare team for a live demonstration of this module.</p>
+    <div class="cta-actions">
+      <a href="tel:+263788111611" class="btn btn-white btn-lg">Call +263 788 111 611</a>
+      <a href="/getting-started.php" class="btn btn-outline-white btn-lg">Get Started</a>
+    </div>
+  </div>
+</section>
+
+
+
+
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>

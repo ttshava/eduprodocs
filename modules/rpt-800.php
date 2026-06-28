@@ -1,0 +1,280 @@
+<?php
+$page_title       = 'Academic Reporting System | Edupro SMS';
+$current_page     = 'modules';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/site-config.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
+?>
+
+<!-- Module Hero -->
+<section class="module-hero">
+  <div class="container">
+    <div class="module-hero-breadcrumb">
+      <a href="/index.php">Home</a>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      <a href="/index.php#modules">Modules</a>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      <span>Academic Reporting System</span>
+    </div>
+    <div class="module-hero-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="56" height="56"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+    </div>
+    <div class="module-code badge badge-red" style="margin-bottom:12px;">RPT-800</div>
+    <h1>Academic Reporting System</h1>
+    <p>End-of-term report card processing is one of the most stressful tasks for Zimbabwean school staff. RPT-800 eliminates manual calculations, printing errors, and the risk of reports going home unsigned — by generating professional PDF report cards in bulk for every student in minutes.</p>
+    <div class="module-tags">
+      <span class="module-tag">Offline Capable</span>
+      <span class="module-tag">ZIMSEC Report Cards</span>
+      <span class="module-tag">Cambridge Grading</span>
+      <span class="module-tag">Bulk PDF Export</span>
+      <span class="module-tag">Excel Mark Upload</span>
+    </div>
+  </div>
+</section>
+
+<!-- Documentation Quick-Access Banner -->
+<div style="background:#fff7ed;border-top:3px solid #FF0527;border-bottom:1px solid #fde68a;">
+  <div class="container" style="padding-top:18px;padding-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <span style="font-size:2rem;line-height:1;">📖</span>
+      <div>
+        <div style="font-weight:800;font-size:1rem;color:#111827;">Administrator Configuration Guide available</div>
+        <div style="font-size:.85rem;color:#6b7280;margin-top:2px;">Step-by-step setup: academic years, grading scales, mark entry, report card generation, PDF printing &amp; email.</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <a href="/modules/rpt-800-guide.php" style="display:inline-flex;align-items:center;gap:7px;background:#FF0527;color:#fff;font-weight:700;font-size:.9rem;padding:10px 22px;border-radius:8px;text-decoration:none;white-space:nowrap;">Read the Guide →</a>
+      <a href="/modules/rpt-800-guide.php#end-of-term" style="display:inline-flex;align-items:center;gap:7px;background:#fff;color:#FF0527;font-weight:700;font-size:.9rem;padding:10px 22px;border-radius:8px;text-decoration:none;border:2px solid #FF0527;white-space:nowrap;">End-of-Term Checklist</a>
+    </div>
+  </div>
+</div>
+
+<!-- ZIMSEC Report Cards -->
+<section class="section">
+  <div class="container">
+    <h2 class="heading">ZIMSEC Report Card Generation</h2>
+    <p class="subheading">Zimbabwe's primary and secondary school report cards follow different formats mandated by the Ministry. RPT-800 handles both with appropriate grading scales and layout.</p>
+    <div class="feature-list">
+      <div class="feature-row">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="feature-content">
+          <h3>Primary School (ECD – Grade 7): Competency-Based Reports</h3>
+          <p>Primary reports use the Zimbabwe Curriculum Framework competency levels: Exceeds Expectations (EE), Meets Expectations (ME), Approaching Expectations (AE), and Below Expectations (BE). RPT-800 applies the correct descriptors for each subject area: Languages, Mathematics, Science, Social Studies, Arts, and Physical Education.</p>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <div class="feature-content">
+          <h3>Secondary School (Form 1 – Form 4): Percentage &amp; Letter Grade</h3>
+          <p>Secondary reports display subject marks as percentages with letter grade equivalents. RPT-800 calculates total marks, subject averages, class position, and term aggregate automatically from uploaded teacher marks.</p>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="feature-content">
+          <h3>Grade Boundary Configuration</h3>
+          <p>The school sets its own grade boundaries (e.g., A: 80–100, B: 70–79, C: 60–69). These are applied consistently across all subjects and all classes. Changes to boundaries for special terms (e.g., a difficult exam paper) can be made per-term.</p>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        </div>
+        <div class="feature-content">
+          <h3>Attendance on Report Card</h3>
+          <p>Each student's attendance percentage from ATT-300 is automatically pulled onto the report card. No manual entry required — if ATT-300 is in use, attendance appears on every report with days present, days absent, and percentage attendance for the term.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Cambridge Report Cards -->
+<section class="section section-gray">
+  <div class="container">
+    <h2 class="heading">Cambridge Report Card Generation</h2>
+    <p class="subheading">For schools offering Cambridge IGCSE and A-Level programmes, RPT-800 generates Cambridge-standard progress reports used for parent communication and predicted grade submissions.</p>
+    <div class="grid-2">
+      <div class="card">
+        <h3 class="card-title">Cambridge Grading Scale</h3>
+        <ul class="check-list">
+          <li>A* to U grading scale applied per Cambridge subject</li>
+          <li>Raw mark to grade conversion using Cambridge grade boundaries</li>
+          <li>UMS (Uniform Mark Scale) component tracking for A-Level</li>
+          <li>Predicted grade calculation based on internal assessment averages</li>
+          <li>Component breakdown: Paper 1, Paper 2, Paper 3 marks shown separately</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="card-title">Cambridge-Specific Features</h3>
+        <ul class="check-list">
+          <li>IGCSE coursework submission status on report</li>
+          <li>Oral and listening component scores for language subjects</li>
+          <li>Practical assessment scores for sciences</li>
+          <li>A-Level predicted grades for UCAS applications</li>
+          <li>Cambridge Centre number and candidate number on report</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Excel Mark Upload -->
+<section class="section">
+  <div class="container">
+    <h2 class="heading">Excel Bulk Mark Upload</h2>
+    <p class="subheading">Teachers in Zimbabwe are comfortable with Excel. RPT-800 meets them where they are — accepting marks via a standardised Excel template without requiring teachers to log into the system to enter marks one by one.</p>
+    <div class="how-it-works">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3>Download the Mark Template</h3>
+          <p>The Head of Department or class teacher downloads a pre-populated Excel template from RPT-800. The template includes student names, admission numbers, and subject columns — no manual list creation needed.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h3>Enter Marks in Excel</h3>
+          <p>Teachers enter marks in the familiar Excel environment — typing scores, using formulas, and copy-pasting from their own mark books. The template validates that all entries are within the correct range (0–100) before allowing save.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h3>Upload to RPT-800</h3>
+          <p>The completed Excel file is uploaded to RPT-800 via a simple drag-and-drop interface. The system validates every row — flagging missing student names, out-of-range marks, or formula errors — before importing.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <h3>Automated Calculations Run</h3>
+          <p>Once marks are imported, RPT-800 instantly calculates: subject totals, class averages, standard deviations, individual student aggregates, class positions, and grade distributions — no manual computation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Report Card Design -->
+<section class="section section-gray">
+  <div class="container">
+    <h2 class="heading">Professional Report Card Design</h2>
+    <p class="subheading">Every report card carries your school's identity and meets the professional standard parents expect — without the hours of manual formatting in Word or Excel.</p>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="36" height="36"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
+        </div>
+        <h3 class="card-title">School Branding</h3>
+        <p>School name, motto, logo, and colours applied to every report card. The school address and contact details appear in the report header — a professional impression every term.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="36" height="36"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <h3 class="card-title">Teacher &amp; Head Remarks</h3>
+        <p>Class teacher's comment field on each report. Headmaster's end-of-term message printed at the bottom. Both can be typed once and applied to the whole class or customised per student.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="36" height="36"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+        <h3 class="card-title">Signature Lines</h3>
+        <p>Headmaster signature line, class teacher signature line, and parent acknowledgement signature line are included on every report. Signature images can be embedded digitally if preferred.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PDF Generation & Analytics -->
+<section class="section">
+  <div class="container">
+    <h2 class="heading">PDF Generation &amp; Class Analytics</h2>
+    <p class="subheading">From individual student PDFs to whole-grade batch exports and management analytics — RPT-800 covers the full end-of-term workflow.</p>
+    <div class="grid-2">
+      <div class="card">
+        <h3 class="card-title">PDF Export Options</h3>
+        <ul class="check-list">
+          <li>Individual student PDF (single report, any time)</li>
+          <li>Batch export: entire class as separate PDFs in a ZIP file</li>
+          <li>Batch export: entire grade (all classes) at once</li>
+          <li>Whole-school batch export for end-of-year</li>
+          <li>WhatsApp/email distribution via COM-400 in one action</li>
+          <li>Reprint: regenerate corrected report after mark amendment</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="card-title">Class Performance Analytics</h3>
+        <ul class="check-list">
+          <li>Class mean, median, and standard deviation per subject</li>
+          <li>Subject pass rate and distinction rate</li>
+          <li>Top 10 students per class and per grade</li>
+          <li>Subject comparison: which subjects performed best/worst</li>
+          <li>Term-on-term class performance trend</li>
+          <li>Individual student performance trajectory (3-term view)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Explore Other Modules -->
+<section class="section section-gray">
+  <div class="container">
+    <h2 class="heading text-center" style="margin-bottom:32px;">Explore Other Modules</h2>
+    <div class="grid-3">
+      <a href="/modules/lms-200.php" class="card module-card">
+        <div class="module-code badge badge-red">LMS-200</div>
+        <h3 class="card-title">Moodle LMS Integration</h3>
+        <p>Moodle quiz and assignment grades export directly into RPT-800 mark templates, eliminating double entry for digital assessments.</p>
+      </a>
+      <a href="/modules/att-300.php" class="card module-card">
+        <div class="module-code badge badge-red">ATT-300</div>
+        <h3 class="card-title">Attendance Management</h3>
+        <p>Attendance data from ATT-300 is automatically included on every report card — percentage presence and days absent per term.</p>
+      </a>
+      <a href="/modules/com-400.php" class="card module-card">
+        <div class="module-code badge badge-red">COM-400</div>
+        <h3 class="card-title">Communications Portal</h3>
+        <p>RPT-800 PDFs are distributed to parents via WhatsApp and email through COM-400 — no printing or physical distribution needed.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Admin Guide CTA -->
+<section class="section" style="background:#1a0a0e;padding:56px 0;">
+  <div class="container" style="text-align:center;">
+    <div style="font-size:2.5rem;margin-bottom:16px;">📖</div>
+    <h2 style="color:#fff;font-size:1.6rem;font-weight:800;margin:0 0 12px;">Ready to configure Academic Reporting?</h2>
+    <p style="color:rgba(255,255,255,.7);max-width:600px;margin:0 auto 28px;line-height:1.7;">The Administrator Guide walks you through every step — from first login to generating and emailing report cards at end of term. Includes ZIMSEC subject codes, grading scales, and a 11-step end-of-term checklist.</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+      <a href="/modules/rpt-800-guide.php" style="display:inline-flex;align-items:center;gap:8px;background:#FF0527;color:#fff;font-weight:700;font-size:1rem;padding:14px 32px;border-radius:10px;text-decoration:none;">Open Administrator Guide →</a>
+      <a href="/modules/rpt-800-guide.php#end-of-term" style="display:inline-flex;align-items:center;gap:8px;background:transparent;color:#fff;font-weight:700;font-size:1rem;padding:14px 32px;border-radius:10px;text-decoration:none;border:2px solid rgba(255,255,255,.4);">End-of-Term Checklist</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <h2>Ready to Deploy Academic Reporting System?</h2>
+    <p>Contact our Harare team for a live demonstration of this module.</p>
+    <div class="cta-actions">
+      <a href="tel:+263788111611" class="btn btn-white btn-lg">Call +263 788 111 611</a>
+      <a href="/getting-started.php" class="btn btn-outline-white btn-lg">Get Started</a>
+    </div>
+  </div>
+</section>
+
+
+
+
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>

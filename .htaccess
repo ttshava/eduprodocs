@@ -1,0 +1,31 @@
+Options -Indexes
+DirectoryIndex index.php index.html
+
+# Redirect .html to .php (301 permanent)
+RewriteEngine On
+
+# Skip if the file or directory actually exists as-is
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Redirect HTML pages at root
+RewriteRule ^index\.html$ /index.php [R=301,L]
+RewriteRule ^pricing\.html$ /pricing.php [R=301,L]
+RewriteRule ^faq\.html$ /faq.php [R=301,L]
+RewriteRule ^subjects\.html$ /subjects.php [R=301,L]
+RewriteRule ^getting-started\.html$ /getting-started.php [R=301,L]
+RewriteRule ^docs\.html$ /docs.php [R=301,L]
+RewriteRule ^gallery\.html$ /gallery.php [R=301,L]
+
+# Redirect HTML module pages
+RewriteRule ^modules/sim-100\.html$ /modules/sim-100.php [R=301,L]
+RewriteRule ^modules/adm-200\.html$ /modules/adm-200.php [R=301,L]
+RewriteRule ^modules/att-300\.html$ /modules/att-300.php [R=301,L]
+RewriteRule ^modules/com-400\.html$ /modules/com-400.php [R=301,L]
+RewriteRule ^modules/fin-500\.html$ /modules/fin-500.php [R=301,L]
+RewriteRule ^modules/lms-200\.html$ /modules/lms-200.php [R=301,L]
+RewriteRule ^modules/tts-300\.html$ /modules/tts-300.php [R=301,L]
+RewriteRule ^modules/rpt-800\.html$ /modules/rpt-800.php [R=301,L]
+RewriteRule ^modules/rpt-800-guide\.html$ /modules/rpt-800-guide.php [R=301,L]
+RewriteRule ^modules/ast-900\.html$ /modules/ast-900.php [R=301,L]
+RewriteRule ^modules/trn-1000\.html$ /modules/trn-1000.php [R=301,L]

@@ -1,12 +1,12 @@
-<!DOCTYPE html>
-<html lang="en-ZW">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact Us | Edupro SMS</title>
-<meta name="description" content="Contact Edupro SMS support and sales. Phone, WhatsApp, email, and office address in Harare, Zimbabwe.">
-<link rel="stylesheet" href="assets/css/style.css">
+<?php
+$page_title       = 'Contact Us | Edupro SMS';
+$page_description = 'Contact Edupro SMS support and sales. Phone, WhatsApp, email, and office address in Harare, Zimbabwe.';
+$current_page     = 'contact';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/site-config.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
+?>
 <style>
+
   .contact-hero {
     background:linear-gradient(135deg,#0f172a 0%,#1e293b 60%,#1a0a0e 100%);
     padding:80px 0 64px; text-align:center; color:#fff;
@@ -93,9 +93,6 @@
   .dept-sales   { background:#fef9c3; color:#854d0e; }
   .dept-billing { background:#f0fdf4; color:#166534; }
 </style>
-</head>
-<body>
-<script src="assets/js/components.js"></script>
 
 <?php
 require_once __DIR__ . '/includes/mailer.php';
@@ -339,5 +336,6 @@ function sel($k,$v,$o){ return (($o[$k]??'')===$v) ? ' selected' : ''; }
     </div>
   </div>
 </section>
-</body>
-</html>
+
+
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>

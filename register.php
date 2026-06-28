@@ -1,12 +1,12 @@
-<!DOCTYPE html>
-<html lang="en-ZW">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Register Your School | Edupro SMS</title>
-<meta name="description" content="Register your school for Edupro SMS. Fill in your school details and select the modules you need — our Harare team will be in touch within 24 hours.">
-<link rel="stylesheet" href="assets/css/style.css">
+<?php
+$page_title       = 'Register Your School | Edupro SMS';
+$page_description = 'Register your school for Edupro SMS. Fill in your school details and select the modules you need — our Harare team will be in touch within 24 hours.';
+$current_page     = 'register';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/site-config.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
+?>
 <style>
+
   .register-hero {
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #1a0a0e 100%);
     padding: 80px 0 64px;
@@ -254,9 +254,6 @@
   /* required field note */
   .req-note { font-size: 0.8rem; color: var(--gray-500); margin-bottom: 20px; }
 </style>
-</head>
-<body>
-<script src="assets/js/components.js"></script>
 
 <?php
 require_once __DIR__ . '/includes/mailer.php';
@@ -660,6 +657,4 @@ function chk(string $key, string $match, array $old): string {
     </div>
   </div>
 </section>
-
-</body>
-</html>
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>

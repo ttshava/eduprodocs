@@ -1,12 +1,12 @@
-<!DOCTYPE html>
-<html lang="en-ZW">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Book a Demo | Edupro SMS</title>
-<meta name="description" content="Book a free live demonstration of Edupro SMS. See the system in action — fee management, attendance, report cards — before committing.">
-<link rel="stylesheet" href="assets/css/style.css">
+<?php
+$page_title       = 'Book a Demo | Edupro SMS';
+$page_description = 'Book a free live demonstration of Edupro SMS. Our team will walk you through the system at a time that suits your school.';
+$current_page     = 'demo';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/site-config.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
+?>
 <style>
+
   .demo-hero {
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #1a0a0e 100%);
     padding: 80px 0 64px; text-align:center; color:#fff;
@@ -88,9 +88,6 @@
   .alert-error { background:#fff1f2; border:1.5px solid #fda4af; color:#9f1239; }
   .req-note { font-size:.8rem; color:var(--gray-500); margin-bottom:20px; }
 </style>
-</head>
-<body>
-<script src="assets/js/components.js"></script>
 
 <?php
 require_once __DIR__ . '/includes/mailer.php';
@@ -344,5 +341,4 @@ function sel($k,$v,$o){ return (($o[$k]??'') === $v) ? ' selected' : ''; }
     </div>
   </div>
 </section>
-</body>
-</html>
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>

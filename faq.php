@@ -1,0 +1,662 @@
+<?php
+$page_title       = 'Frequently Asked Questions | Edupro SMS';
+$current_page     = 'faq';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/site-config.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
+?>
+<style>
+  /* ── Hero ── */
+  .faq-hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #1a0a0e 100%);
+    padding: 80px 0 64px;
+    text-align: center;
+    color: #fff;
+  }
+  .faq-hero h1 { font-size: clamp(2rem,5vw,3rem); font-weight: 800; margin-bottom: 16px; }
+  .faq-hero p  { font-size: 1.1rem; color: rgba(255,255,255,.75); max-width: 540px; margin: 0 auto 32px; }
+
+  /* Search bar */
+  .faq-search-wrap { max-width: 480px; margin: 0 auto; position: relative; }
+  .faq-search {
+    width: 100%; padding: 14px 48px 14px 18px;
+    border: none; border-radius: 40px; font-size: 1rem;
+    font-family: inherit; outline: none; box-shadow: var(--shadow-md);
+  }
+  .faq-search-icon { position:absolute; right:18px; top:50%; transform:translateY(-50%); color:var(--gray-400); pointer-events:none; }
+
+  /* ── Layout ── */
+  .faq-section { padding: 64px 0 80px; background: var(--gray-50); }
+  .faq-layout  { display: grid; grid-template-columns: 240px 1fr; gap: 40px; align-items: start; }
+  @media(max-width:900px){ .faq-layout{ grid-template-columns: 1fr; } }
+
+  /* ── Sidebar nav ── */
+  .faq-sidebar { position: sticky; top: 90px; }
+  .faq-sidebar-inner { background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: 24px; }
+  .faq-sidebar-inner h3 { font-size: .85rem; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 14px; }
+  .faq-cat-link {
+    display: flex; align-items: center; gap: 10px; padding: 9px 12px;
+    border-radius: var(--radius-sm); font-size: .875rem; font-weight: 500;
+    color: var(--gray-600); text-decoration: none; transition: all .15s;
+    margin-bottom: 2px;
+  }
+  .faq-cat-link:hover { background: var(--gray-50); color: var(--gray-900); }
+  .faq-cat-link.active { background: var(--red-light); color: var(--red); font-weight: 700; }
+  .faq-cat-link svg { flex-shrink: 0; }
+  .faq-cat-count { margin-left: auto; background: var(--gray-100); color: var(--gray-500); font-size: .7rem; font-weight: 700; padding: 2px 7px; border-radius: 10px; }
+  .faq-cat-link.active .faq-cat-count { background: var(--red); color: #fff; }
+
+  /* ── FAQ categories & items ── */
+  .faq-category { margin-bottom: 48px; scroll-margin-top: 100px; }
+  .faq-category-header {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 20px; padding-bottom: 16px;
+    border-bottom: 2px solid var(--gray-100);
+  }
+  .faq-category-icon {
+    width: 44px; height: 44px; border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .faq-category-header h2 { font-size: 1.25rem; font-weight: 800; color: var(--gray-900); margin: 0; }
+  .faq-category-header p  { font-size: .85rem; color: var(--gray-400); margin: 2px 0 0; }
+
+  .faq-item {
+    background: #fff; border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-md); overflow: hidden; margin-bottom: 10px;
+    transition: border-color .18s;
+  }
+  .faq-item:hover { border-color: var(--gray-300); }
+  .faq-item.open  { border-color: var(--red); }
+
+  .faq-q {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px; padding: 18px 20px; cursor: pointer;
+    background: #fff; border: none; width: 100%;
+    text-align: left; font-family: inherit;
+    font-size: .975rem; font-weight: 600; color: var(--gray-900);
+    line-height: 1.45;
+  }
+  .faq-q:hover { background: var(--gray-50); }
+  .faq-item.open .faq-q { background: var(--red-light); color: var(--red-dark); }
+  .faq-chevron { flex-shrink: 0; margin-top: 2px; transition: transform .2s; color: var(--gray-400); }
+  .faq-item.open .faq-chevron { transform: rotate(180deg); color: var(--red); }
+
+  .faq-a {
+    display: none; padding: 0 20px 20px;
+    font-size: .925rem; color: var(--gray-600); line-height: 1.8;
+  }
+  .faq-item.open .faq-a { display: block; }
+  .faq-a p  { margin-bottom: 12px; }
+  .faq-a p:last-child { margin-bottom: 0; }
+  .faq-a ul { padding-left: 18px; margin-bottom: 12px; }
+  .faq-a li { margin-bottom: 6px; }
+  .faq-a strong { color: var(--gray-900); }
+  .faq-a a { color: var(--red); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+  .faq-a .note-box {
+    background: var(--red-light); border-left: 3px solid var(--red);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 12px 16px; margin-top: 14px;
+  }
+  .faq-a .note-box p { margin: 0; color: var(--gray-800); font-size: .875rem; }
+
+  /* ── No results ── */
+  #noResults { display:none; text-align:center; padding:48px 0; color:var(--gray-400); }
+  #noResults svg { margin: 0 auto 16px; display:block; }
+
+  /* ── Stats strip ── */
+  .faq-stats { background:#fff; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); padding:28px 32px; display:flex; gap:32px; flex-wrap:wrap; justify-content:center; margin-bottom:40px; }
+  .faq-stat { text-align:center; }
+  .faq-stat-num { font-size:1.8rem; font-weight:900; color:var(--red); }
+  .faq-stat-label { font-size:.8rem; color:var(--gray-400); }
+
+  /* ── Contact CTA inside FAQ ── */
+  .still-question {
+    background: var(--gray-900); color: #fff; border-radius: var(--radius-lg);
+    padding: 36px 40px; text-align: center; margin-top: 20px;
+  }
+  .still-question h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 8px; }
+  .still-question p  { color: rgba(255,255,255,.7); font-size: .95rem; margin-bottom: 24px; }
+  .still-question-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+</style>
+
+<!-- Hero -->
+<section class="faq-hero">
+  <div class="container">
+    <div class="module-code badge badge-red" style="margin-bottom:14px;">FAQ</div>
+    <h1>Frequently Asked Questions</h1>
+    <p>Everything schools ask before deploying Edupro SMS — answered honestly.</p>
+    <div class="faq-search-wrap">
+      <input type="text" class="faq-search" id="faqSearch" placeholder="Search questions…" oninput="searchFAQ(this.value)">
+      <span class="faq-search-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+    </div>
+  </div>
+</section>
+
+<section class="faq-section">
+  <div class="container">
+
+    <!-- Stats strip -->
+    <div class="faq-stats">
+      <div class="faq-stat"><div class="faq-stat-num">50+</div><div class="faq-stat-label">Questions answered</div></div>
+      <div class="faq-stat"><div class="faq-stat-num">8</div><div class="faq-stat-label">Topic categories</div></div>
+      <div class="faq-stat"><div class="faq-stat-num">72hrs</div><div class="faq-stat-label">Deployment target</div></div>
+      <div class="faq-stat"><div class="faq-stat-num">4hrs</div><div class="faq-stat-label">Support response time</div></div>
+    </div>
+
+    <div class="faq-layout" id="faqLayout">
+
+      <!-- ── Sidebar ── -->
+      <aside class="faq-sidebar">
+        <div class="faq-sidebar-inner">
+          <h3>Categories</h3>
+          <a href="#general" class="faq-cat-link active" onclick="setActive(this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            General
+            <span class="faq-cat-count">8</span>
+          </a>
+          <a href="#pricing" class="faq-cat-link" onclick="setActive(this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Pricing &amp; Payment
+            <span class="faq-cat-count">7</span>
+          </a>
+          <a href="#deployment" class="faq-cat-link" onclick="setActive(this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Deployment
+            <span class="faq-cat-count">7</span>
+          </a>
+          <a href="#offline" class="faq-cat-link" onclick="setActive(this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.56 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+            Offline &amp; Internet
+            <span class="faq-cat-count">6</span>
+          </a>
+          <a href="#security" class="faq-cat-link" onclick="setActive(this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Data &amp; Security
+            <span class="faq-cat-count">6</span>
+          </a>
+          <a href="#modules" class="faq-cat-link" onclick="setActive(this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="6" height="6" rx="1"/><rect x="9" y="3" width="6" height="6" rx="1"/><rect x="16" y="3" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="9" y="10" width="6" height="6" rx="1"/><rect x="16" y="10" width="6" height="6" rx="1"/></svg>
+            Modules
+            <span class="faq-cat-count">7</span>
+          </a>
+          <a href="#curriculum" class="faq-cat-link" onclick="setActive(this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            Curriculum
+            <span class="faq-cat-count">6</span>
+          </a>
+          <a href="#support" class="faq-cat-link" onclick="setActive(this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Support
+            <span class="faq-cat-count">6</span>
+          </a>
+        </div>
+      </aside>
+
+      <!-- ── FAQ Content ── -->
+      <div id="faqContent">
+
+        <!-- No results -->
+        <div id="noResults">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <p style="font-size:1.05rem;font-weight:600;color:var(--gray-600);">No matching questions found.</p>
+          <p>Try different keywords, or <a href="/contact.php" style="color:var(--red);font-weight:600;">contact our team</a> directly.</p>
+        </div>
+
+        <!-- ════ GENERAL ════ -->
+        <div class="faq-category" id="general">
+          <div class="faq-category-header">
+            <div class="faq-category-icon" style="background:#fff0f2;color:var(--red);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div>
+              <h2>General</h2>
+              <p>What Edupro SMS is and how it works</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">What is Edupro SMS?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Edupro SMS (School Management System) is a complete, modular software platform built specifically for Zimbabwean schools. It manages every aspect of school administration — learner records, admissions, attendance, school fees, timetabling, academic reporting, communications, e-learning, asset management, and staff training — in one integrated system.</p><p>It is designed for both ZIMSEC Heritage-Based Curriculum schools and Cambridge International schools, and works fully offline on the school's own local server.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Is Edupro SMS built specifically for Zimbabwe, or is it a generic African system?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Edupro SMS was designed specifically for the Zimbabwean school environment. This means:</p><ul><li>It supports ZIMSEC grading scales, subject codes, and Ministry attendance return formats</li><li>It handles USD and ZiG (Zimbabwe Gold) as currencies</li><li>It integrates with EcoCash, Innbucks, RTGS, and Steward Bank — the actual payment methods used by Zimbabwean parents</li><li>It works offline because Zimbabwe's internet infrastructure demands it</li><li>Fee structures reflect Zimbabwean school terms (Term 1, 2, 3) and levy types common in Zimbabwean schools</li></ul><p>It is not a generic product adapted for Zimbabwe — it was built from the ground up for this context.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">How many schools are currently using Edupro SMS?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Edupro SMS is currently live at 5 schools across Zimbabwe, including Gresham Government Primary School, B and P Study Centre, and First Class High School. Schools span government, private, and study centre categories. No school has left the platform since its launch.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Who owns the data stored in Edupro SMS?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p><strong>The school owns 100% of its data — always.</strong> Edupro SMS is the custodian of the system and provides support, but the school's data belongs to the school. If a school ever stops using Edupro SMS, they retain full access to their data. We do not hold data hostage or restrict exports.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Does Edupro SMS have a parent portal?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Yes. The parent portal allows parents to view their child's fee account balance, download receipts, check attendance records, and access academic reports. Parents can access the portal from a smartphone browser. Additionally, COM-400 pushes key updates — fee receipts, absentee alerts, and school announcements — directly to parents via WhatsApp and SMS, so even parents who are not comfortable using a web portal stay informed.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Is Edupro SMS endorsed or certified by the Ministry of Primary and Secondary Education (MoPSE)?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Edupro SMS is independently developed and positioned. It is not currently an official MoPSE system. However, it is designed to comply fully with MoPSE reporting requirements — attendance returns, class registers for inspector visits, ZIMSEC attendance certificates, and termly statistical tables are all generated in Ministry-standard formats.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">What devices can staff use to access the system?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Edupro SMS is browser-based — any device with a modern web browser can access the system on the school's local network. This includes:</p><ul><li>Desktop and laptop computers (Windows, Mac, Linux)</li><li>Tablets (Android, iPad)</li><li>Smartphones (for teachers marking attendance registers)</li></ul><p>No software installation is required on staff devices. The system runs on the school's local server and is accessed via a web browser.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Is there a mobile app for Edupro SMS?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Currently, Edupro SMS is browser-based and works on any device through a web browser — including smartphones. A dedicated mobile app is on the product roadmap. In the meantime, the system's interface is optimised for mobile screens, meaning teachers can comfortably mark attendance registers on their phones.</p></div>
+          </div>
+        </div>
+
+        <!-- ════ PRICING ════ -->
+        <div class="faq-category" id="pricing">
+          <div class="faq-category-header">
+            <div class="faq-category-icon" style="background:#fff7ed;color:#ea580c;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <div>
+              <h2>Pricing &amp; Payment</h2>
+              <p>Costs, managed services, and what is included</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">How much does Edupro SMS cost?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>There are two cost components:</p><ul><li><strong>Once-off setup fee: $2,000 USD</strong> — covers full installation, data migration, configuration of all modules, school branding on documents, and staff training. This is paid once.</li><li><strong>ZimHPC cloud hosting (online deployments only): $14 USD/month</strong> — covers your school's secure cloud backup and parent portal hosting at the Zimbabwe Higher Performance Computing Centre.</li><li><strong>Managed Services (optional, per term):</strong> Basic — $250/term | Full — $400/term</li></ul><p>There are no per-user fees, no per-learner fees, and no per-module charges. See the full <a href="/pricing.php">pricing page</a> for details.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">What is the difference between Basic and Full Managed Services?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p><strong>Basic Managed Services ($250/term)</strong> includes remote phone and WhatsApp support during school hours, remote desktop support sessions, system updates and patches, and a 4-hour response time.</p><p><strong>Full Managed Services ($400/term)</strong> includes everything in Basic, plus a scheduled on-site visit to your school each term, priority 2-hour response time, proactive system health monitoring, refresher training sessions for staff, and a term-end review meeting with your management team.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Are there per-learner or per-user charges?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p><strong>No.</strong> Edupro SMS is priced per school — not per learner, not per teacher, not per module. Whether your school has 100 learners or 2,000, the price is the same. All 10 modules are included in the setup fee.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Can we start with fewer modules and pay less?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>The $2,000 setup covers the full system including all 10 modules. There is no reduced price for fewer modules — the setup investment is the same. However, you are not obligated to use all modules immediately. Many schools start by actively using 3–4 modules and adopt the rest as staff grow comfortable with the system. Contact us to discuss which modules to prioritise for your school's most pressing needs.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">What payment methods does Edupro accept from schools?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>We accept <strong>USD cash</strong>, <strong>USD bank transfer (RTGS)</strong>, and <strong>EcoCash</strong>. All pricing is quoted in USD. Managed service invoices are sent to the Bursar before the start of each term for pre-payment.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Who pays for hardware if our school doesn't have a server?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Hardware is the school's responsibility. The $2,000 setup fee covers software installation and configuration only. If your school does not have suitable server hardware, our technical team will assess your needs and recommend appropriate specifications — you source and purchase the hardware, and we install the system on it. For smaller schools, a standard desktop PC can serve as the local server.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">What happens if we stop paying managed services? Does the system shut down?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>No. The system continues to work — it runs on your school's own server and you own the licence. If you stop paying managed services, you simply move to a self-managed arrangement and lose access to the Edupro support team. Your data remains yours at all times. We do not restrict access or disable the system.</p></div>
+          </div>
+        </div>
+
+        <!-- ════ DEPLOYMENT ════ -->
+        <div class="faq-category" id="deployment">
+          <div class="faq-category-header">
+            <div class="faq-category-icon" style="background:#f0fdf4;color:#16a34a;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+            <div>
+              <h2>Deployment &amp; Setup</h2>
+              <p>Installation, training, and go-live</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">What does "72-hour deployment" actually mean?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>From the moment our technical team arrives at your school with a signed agreement, the full system — installed, configured, data migrated, and staff trained — is operational within <strong>72 working hours</strong>. This is not a marketing promise; it is a target we have consistently met at every school deployment to date.</p><p>The 72 hours covers server setup, all module configuration, import of your existing student and fee data, school branding on printed documents, and role-specific training for all staff groups.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">What does the school need to prepare before deployment day?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Before our team arrives, the school should prepare:</p><ul><li>A student register spreadsheet (name, date of birth, grade, class, parent contact number)</li><li>Fee structure details (tuition per grade, levies, term dates for the current year)</li><li>Staff list (names, subjects taught, class assignments)</li><li>The school's logo for branding on printed documents</li><li>A designated server or computer for the installation</li><li>A designated IT contact person who will receive the administrator training</li></ul><p>Our team will do a pre-deployment site visit to assess your infrastructure and guide you through what to prepare.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Will you come to our school if we are not in Harare?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Yes. Edupro SMS deploys nationally across all 10 provinces. For schools outside Harare, our team plans a multi-day visit combining deployment and training in one trip. Travel and accommodation costs are the responsibility of the school and will be included in the deployment proposal. The 72-hour deployment clock starts when our team arrives at your school, not from the date of agreement.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Can you migrate data from our existing spreadsheets or system?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Yes. Our technical team migrates your existing data from Excel and CSV files as part of the setup process. Typical data migrated includes student records, historical fee ledger balances, and staff information. If your school uses a different software system, we assess migration feasibility on a case-by-case basis. You will not be starting from zero.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">What training is provided for staff?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Training is included in the setup fee and delivered in role-specific sessions:</p><ul><li><strong>Bursar &amp; Finance Staff</strong> (4 hours) — FIN-500 full workflow: invoicing, EcoCash recording, debtor dashboard, reports</li><li><strong>Class Teachers</strong> (2 hours) — ATT-300 daily register, Moodle basics</li><li><strong>Heads of Department</strong> (3 hours) — RPT-800 results, TTS-300 timetable, ATT-300 analytics</li><li><strong>Headmaster &amp; Management</strong> (1.5 hours) — dashboards, board reports</li><li><strong>IT Coordinator / Admin</strong> (2 hours) — server maintenance, backup procedures, user management</li></ul><p>Training materials are left with the school. Refresher training is available as part of the Full Managed Services plan each term.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Our staff are not very tech-savvy. Will they manage?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Edupro SMS is designed for school staff — not IT professionals. The interface is straightforward, and common tasks (recording a payment, marking a register, generating a report card) are designed to be completable in a few clicks. In our experience, most staff are confidently using their daily tasks within one day of training. For staff who need more time, our support team is available by phone and WhatsApp during school hours.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Can we run Edupro SMS alongside our existing system before fully switching over?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Yes — and we recommend it. After installation, schools typically run Edupro SMS in parallel with their existing processes for a short period to verify data accuracy and build staff confidence. Our technician remains on-site or on call during this parallel-running period. The Headmaster signs a final go-live confirmation once the team is satisfied.</p></div>
+          </div>
+        </div>
+
+        <!-- ════ OFFLINE & INTERNET ════ -->
+        <div class="faq-category" id="offline">
+          <div class="faq-category-header">
+            <div class="faq-category-icon" style="background:#eff6ff;color:#2563eb;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.56 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+            </div>
+            <div>
+              <h2>Offline &amp; Internet</h2>
+              <p>How the system works without internet</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Our school has very unreliable internet. Can we still use Edupro SMS?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p><strong>Yes — this is exactly what Edupro SMS was designed for.</strong> The system runs entirely on your school's local server. Teachers mark registers, the Bursar records payments, and the Deputy Head generates reports — all without any internet connection. Internet is only needed for cloud backup (to ZimHPC) and for sending parent SMS/WhatsApp notifications. Both of these happen automatically when internet is available and queue when it is not.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Our school has no internet at all. Can we still use the system?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Yes. All core functions — attendance registers, fee recording, report card generation, timetabling, student records — work 100% offline. The features that require internet are: cloud backup to ZimHPC, parent SMS/WhatsApp alerts, and the online parent portal. For schools with no internet, we recommend a local external hard drive backup schedule as a precaution. Our team will set this up during deployment.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">What happens to our data if the internet goes down mid-day?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Nothing. The system keeps working exactly as normal. Data is saved to the local server — not the cloud — during daily operations. When internet connectivity is restored, any pending cloud syncs happen automatically in the background. Staff do not need to take any action.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">What is ZimHPC and why is it used for cloud backup?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>ZimHPC is the <strong>Zimbabwe Higher Performance Computing Centre</strong>, located at the University of Zimbabwe in Harare. It is one of the most secure and capable data centres in the country. Edupro SMS uses ZimHPC for cloud backup because:</p><ul><li>Your school's data stays in Zimbabwe — not on servers in South Africa or Europe</li><li>ZimHPC meets high standards for physical and cybersecurity</li><li>Sync speeds are faster when the data centre is local</li><li>It is an institution Zimbabwean schools can trust</li></ul></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">How much internet data does Edupro SMS use when syncing?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Sync uses only incremental data — only changes since the last sync are uploaded, not the entire database. For a typical school's daily operations, this is a small amount of data (usually a few megabytes per day). Even schools on limited LTE mobile data plans can sustain the sync without significant data costs.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">What happens if the school's local server loses power mid-session?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>The system auto-saves data every 30 seconds to the local database, so at most 30 seconds of data entry could be affected. We strongly recommend all schools connect their server to a UPS (Uninterruptible Power Supply) with a minimum 2-hour runtime. This is on our pre-deployment checklist. When power is restored, the server restarts automatically and staff can continue from where they left off.</p></div>
+          </div>
+        </div>
+
+        <!-- ════ DATA & SECURITY ════ -->
+        <div class="faq-category" id="security">
+          <div class="faq-category-header">
+            <div class="faq-category-icon" style="background:#f0fdf4;color:#16a34a;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <h2>Data &amp; Security</h2>
+              <p>How your school's data is protected</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Where is our school's data stored?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Your data is stored primarily on <strong>your school's own local server</strong> — on your premises, under your physical control. For online deployments, encrypted backup copies are stored at ZimHPC (University of Zimbabwe). Edupro SMS does not store your school's data on our own servers.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Can Edupro staff access our school's data?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Edupro technical staff can access your system remotely <strong>only with your explicit consent</strong> — for example, when you contact us for support and grant us a remote session. All remote access sessions are logged. We do not maintain standing access to your school's system or data outside of support engagements.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">How is learner data protected — especially for minors?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Learner data is stored securely on the school's local server with role-based access controls — only users with the appropriate permissions can view student records. Cloud backup data is encrypted in transit and at rest. Access to the parent portal is authenticated per parent. We follow data protection best practices aligned with Zimbabwean data protection guidelines.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">What happens to our data if the server hardware fails completely?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>For online deployments with ZimHPC backup active, all data up to the last sync point is recoverable. Our team installs Edupro SMS on replacement hardware and restores the backup. For offline-only schools, recovery depends on the most recent local backup. This is why our deployment checklist includes setting up an automated local backup to an external drive. Schools with regular backups can typically be restored within a few hours.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Are QR receipts secure? Can they be faked?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>QR receipts generated by FIN-500 link to a verification endpoint that confirms the receipt's authenticity in real time. If a parent presents a receipt — printed or on their phone — the Bursar or a parent can scan the QR code to verify that it is a genuine, recorded transaction. Fraudulent receipts (photocopied or digitally altered) will not pass verification. This protects the school from a common fraud risk in school fee collection.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">What user roles and permissions are available?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Edupro SMS has role-based access control. Standard roles include:</p><ul><li><strong>System Administrator</strong> — full access, user management, system configuration</li><li><strong>Headmaster</strong> — view all reports and dashboards, no data entry restrictions</li><li><strong>Bursar</strong> — full FIN-500 access, view student records</li><li><strong>Deputy Head</strong> — ATT-300, RPT-800, TTS-300 management access</li><li><strong>Class Teacher</strong> — own class register, Moodle course management</li><li><strong>Registrar</strong> — SIM-100, ADM-200 access</li><li><strong>Parent</strong> — read-only portal access to their own child's records</li></ul><p>Custom roles can be configured during setup.</p></div>
+          </div>
+        </div>
+
+        <!-- ════ MODULES ════ -->
+        <div class="faq-category" id="modules">
+          <div class="faq-category-header">
+            <div class="faq-category-icon" style="background:#fef9c3;color:#a16207;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="6" height="6" rx="1"/><rect x="9" y="3" width="6" height="6" rx="1"/><rect x="16" y="3" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="9" y="10" width="6" height="6" rx="1"/><rect x="16" y="10" width="6" height="6" rx="1"/></svg>
+            </div>
+            <div>
+              <h2>Modules</h2>
+              <p>Questions about specific system modules</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Does FIN-500 support both USD and ZiG (Zimbabwe Gold)?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Yes. FIN-500 supports USD and ZiG as dual currencies. The Bursar sets an exchange rate per term. A parent can pay a mixed amount — for example, $100 USD in cash and an EcoCash ZiG payment for the balance — and FIN-500 records both components accurately on the receipt, showing the ZiG amount and its USD equivalent at the configured exchange rate. Financial reports are available in either currency.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Does ATT-300 automatically send a message to parents when a child is absent?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Yes. When a student is marked absent on the morning register, ATT-300 triggers an alert to COM-400 which sends a WhatsApp or SMS message to the parent's registered number. The message is sent automatically — the teacher does not need to take any additional action. Alerts require brief internet connectivity to deliver; they queue and send when connectivity is available if the school is currently offline.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">What e-learning platform powers LMS-200?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>LMS-200 is powered by <strong>Moodle</strong> — the world's most widely used open-source Learning Management System, trusted by over 400 million learners globally, including the University of Zimbabwe and most South African universities. Moodle provides your school with online lessons, assignment submission, quizzes, gradebooks, and course resources. It runs on the school's local server and works offline, syncing to the cloud when internet is available.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Can RPT-800 generate report cards for both ZIMSEC and Cambridge students in the same school?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Yes. RPT-800 supports dual-curriculum schools. ZIMSEC students are assessed using the ZIMSEC grading scale (1–7), while Cambridge students use the Cambridge grade band (A*–U for IGCSE, A–U for AS/A Level). Report card templates are separate per curriculum, and the system correctly applies the right grading framework to each student based on their curriculum assignment in SIM-100.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">How does TTS-300 handle teacher clashes when building the timetable?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>TTS-300 includes a clash detection engine that prevents the same teacher from being assigned to two classes at the same time, and prevents the same classroom from being double-booked. When a clash is detected, the system alerts the timetabler and prevents saving the conflicting allocation. The engine also manages split classes and double periods. For complex timetabling (e.g., A Level combinations), the system supports manual override with clash warnings.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">What does AST-900 track beyond basic equipment lists?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>AST-900 manages the full asset lifecycle: acquisition (purchase date, cost, supplier), assignment (which department or room the asset is assigned to), maintenance (scheduled service dates, maintenance history, fault reports), and disposal (write-off, sale, or donation records). It generates asset valuation reports for Board and audit purposes, and produces a depreciation schedule for annual financial reporting.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Can FIN-500 withhold a student's report card if fees are outstanding?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Yes. FIN-500 integrates with RPT-800 to apply a configurable fee clearance gate. The Headmaster sets a threshold (for example, more than $50 outstanding). When RPT-800 processes report cards for distribution, students with balances above the threshold are flagged and their report cards are held. This is a configurable setting — schools can choose to apply it strictly, softly (warning only), or not at all.</p></div>
+          </div>
+        </div>
+
+        <!-- ════ CURRICULUM ════ -->
+        <div class="faq-category" id="curriculum">
+          <div class="faq-category-header">
+            <div class="faq-category-icon" style="background:#f5f3ff;color:#7c3aed;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            </div>
+            <div>
+              <h2>Curriculum</h2>
+              <p>ZIMSEC, Cambridge, and subject configuration</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">We offer both ZIMSEC and Cambridge programmes. Can Edupro SMS handle both?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Yes. Edupro SMS is designed to run both curricula simultaneously within the same school. Each student is assigned to a curriculum (ZIMSEC, Cambridge, or both for transition-year students), and all relevant modules — grading, report cards, attendance certificates, timetabling — apply the appropriate framework for that student. Schools already running both Cambridge and ZIMSEC programmes are live on the system.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Does the system support the full ZIMSEC Heritage-Based Curriculum subject list?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Yes. Edupro SMS includes the complete ZIMSEC Heritage-Based Curriculum subject list from ECD through A Level — all primary subjects, O Level subjects (core, sciences, humanities, languages, commercial, technical, ICT, and arts), and A Level subject combinations. ZIMSEC subject codes are pre-configured. You can also add custom or non-ZIMSEC subjects (e.g., extracurricular activity records). See the full subject list on the <a href="/subjects.php">Curriculum &amp; Subjects</a> page.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Does the system support Cambridge IGCSE, AS Level, and A Level?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Yes. Edupro SMS supports IGCSE (Cambridge O Level equivalent), AS Level, and Cambridge A Level. The system uses Cambridge grading bands (A*–U for IGCSE, A–U for AS/A Level). Cambridge Centre Numbers and Candidate Numbers are configurable in RPT-800 for schools that submit results to Cambridge Assessment International Education.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Can the system produce ZIMSEC attendance certificates for examination candidates?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Yes. ATT-300 generates individual attendance certificates per student per term in the format required by ZIMSEC for examination entry. These can be printed or saved as PDF. The certificate shows total school days, days present, days absent, percentage attendance, and the class teacher's signature block.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">How does Edupro SMS handle practical subjects like Agriculture, Technical Drawing, and Art?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Practical subjects with separate assessment components (theory, practical, and project or coursework) are supported in RPT-800. Assessment components and their weightings are configurable per subject. For example, Agricultural Science can be configured with a theory component, a practical component, and a project — each with its own weighting — and the system calculates the combined grade automatically.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">We are a primary school only. Does Edupro SMS work for us?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Yes. Edupro SMS works for ECD and primary schools, secondary schools, combined schools, and study centres. Modules like SIM-100, ATT-300, FIN-500, and COM-400 are just as relevant — and just as powerful — for a primary school as they are for a secondary school. Gresham Government Primary School is one of our live deployments.</p></div>
+          </div>
+        </div>
+
+        <!-- ════ SUPPORT ════ -->
+        <div class="faq-category" id="support">
+          <div class="faq-category-header">
+            <div class="faq-category-icon" style="background:#fff0f2;color:var(--red);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <div>
+              <h2>Support</h2>
+              <p>Getting help after deployment</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">What are your support hours?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Our dedicated support team is in the office <strong>Monday to Friday, 07:30 – 16:30</strong>. There is a separate field team that handles on-site deployments and visits. For P1 emergencies (system completely down during school hours), the technical lead is reachable outside these hours — contact details are provided to all deployed schools.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">What is a P1 emergency and how quickly will you respond?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>A P1 (Priority 1) incident is when the school's Edupro SMS system is completely down during school hours — meaning no staff can access any module. This is treated as a critical incident regardless of which managed services plan the school is on. P1 incidents are escalated immediately to the technical lead. The standard P1 response target is <strong>within 4 hours</strong> for remote resolution, or next business day for on-site resolution if remote access is not sufficient.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">How do we contact support?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>You can reach our support team through:</p><ul><li><strong>Phone / WhatsApp:</strong> +263 788 111 611 (school hours, Mon–Fri)</li><li><strong>Email:</strong> support@edupro.co.zw (4-hour response during school hours)</li><li><strong>Contact form:</strong> <a href="/contact.php">contact.php</a></li></ul><p>For Managed Services clients, your support contact details are also provided in your welcome pack at deployment.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Do you provide ongoing system updates and improvements?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Yes. System updates — including bug fixes, security patches, and feature improvements — are included for all Managed Services clients. For self-managed schools, updates are available on request. Moodle version updates are managed by Edupro's technical team and applied to all deployed schools on the standard Moodle release cycle.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">What if a teacher leaves and a new one joins — do we need to contact Edupro?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>No. The school's System Administrator (typically the IT Coordinator or a designated admin officer) can create and deactivate user accounts directly in the system without contacting Edupro. Staff user management is self-service. If the System Administrator needs help, our support team can walk them through the process on a call.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Is there documentation or a user manual we can refer to?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Yes. Full documentation is available at <a href="/docs.php">docs.html</a> covering system architecture, each module's user guide, role-based instructions, curriculum configuration, and troubleshooting guides. Printed training materials are also left with the school at deployment. For Moodle-specific guidance, Moodle's own extensive documentation library is also available online.</p></div>
+          </div>
+        </div>
+
+        <!-- Still have a question -->
+        <div class="still-question">
+          <h3>Still have a question?</h3>
+          <p>Our team is here to help. Call, WhatsApp, or send us a message and we'll get back to you within 4 hours during school hours.</p>
+          <div class="still-question-btns">
+            <a href="tel:+263788111611" class="btn btn-red">Call +263 788 111 611</a>
+            <a href="/contact.php" class="btn btn-outline-white">Send a Message</a>
+            <a href="/demo.php" class="btn btn-outline-white">Book a Demo</a>
+          </div>
+        </div>
+
+      </div><!-- #faqContent -->
+    </div><!-- .faq-layout -->
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="container">
+    <h2>Ready to See Edupro SMS at Your School?</h2>
+    <p>Book a free 45-minute demonstration or register your school today.</p>
+    <div class="cta-actions">
+      <a href="/demo.php" class="btn btn-white btn-lg">Book a Free Demo</a>
+      <a href="/register.php" class="btn btn-outline-white btn-lg">Register Your School</a>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ── Toggle individual FAQ items ── */
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  // close all in the same category
+  item.closest('.faq-category').querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+/* ── Sidebar active state ── */
+function setActive(link) {
+  document.querySelectorAll('.faq-cat-link').forEach(l => l.classList.remove('active'));
+  link.classList.add('active');
+}
+
+/* ── Search ── */
+function searchFAQ(query) {
+  const q = query.trim().toLowerCase();
+  const sidebar = document.getElementById('faqLayout').querySelector('.faq-sidebar');
+  const noResults = document.getElementById('noResults');
+  let anyVisible = false;
+
+  document.querySelectorAll('.faq-category').forEach(cat => {
+    let catHasMatch = false;
+    cat.querySelectorAll('.faq-item').forEach(item => {
+      const text = item.textContent.toLowerCase();
+      const match = !q || text.includes(q);
+      item.style.display = match ? '' : 'none';
+      if (match) catHasMatch = true;
+    });
+    cat.style.display = catHasMatch ? '' : 'none';
+    if (catHasMatch) anyVisible = true;
+
+    // auto-open single result
+    if (q) {
+      const visible = [...cat.querySelectorAll('.faq-item')].filter(i => i.style.display !== 'none');
+      if (visible.length === 1) visible[0].classList.add('open');
+    }
+  });
+
+  noResults.style.display = anyVisible ? 'none' : 'block';
+  sidebar.style.display   = q ? 'none' : '';
+
+  if (!q) {
+    document.querySelectorAll('.faq-item').forEach(i => { i.style.display = ''; i.classList.remove('open'); });
+    document.querySelectorAll('.faq-category').forEach(c => c.style.display = '');
+  }
+}
+
+/* ── Intersection observer to update sidebar active state on scroll ── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      document.querySelectorAll('.faq-cat-link').forEach(l => {
+        l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.faq-category').forEach(c => observer.observe(c));
+</script><?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>
