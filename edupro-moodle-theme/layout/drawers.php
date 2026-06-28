@@ -16,7 +16,7 @@ $templatecontext = (object)[
     'forceblockdrawer'            => false,
     'activitynavigation'          => $OUTPUT->activity_navigation(),
     'regionmainsettingsmenu'      => $OUTPUT->region_main_settings_menu(),
-    'hasregionmainsettingsmenu'   => (bool)$PAGE->region_main_settings_menu(),
+    'hasregionmainsettingsmenu'   => (bool)$OUTPUT->region_main_settings_menu(),
 ];
 
 echo $OUTPUT->doctype();
