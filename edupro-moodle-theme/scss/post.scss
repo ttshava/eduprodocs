@@ -179,7 +179,13 @@
 #page-footer { background: #0a0f1a !important; padding: .5rem 1rem; font-size: .78rem; color: #475569; }
 #page-footer a { color: #64748b; }
 
-// ─── 12. Responsive ───────────────────────────────────────────────────
+// ─── 12. Footer utility classes (replaces inline styles) ──────────────
+.edupro-footer-badges    { margin-top: 14px; }
+.edupro-footer-viewall   { margin-top: 8px; color: #FF0527 !important; font-weight: 600; }
+.edupro-footer-address   { margin-top: 8px; display: block; line-height: 1.6; font-style: normal; color: #94a3b8; }
+.social-btn              { color: #fff; }
+
+// ─── 13. Responsive ───────────────────────────────────────────────────
 @media (max-width: 1024px) {
   .edupro-footer-main { grid-template-columns: 1fr 1fr; }
 }

@@ -22,4 +22,6 @@ $string['footercourses']       = 'Available Courses';
 $string['footercontact']       = 'Contact Edupro';
 $string['footerfollow']        = 'Follow Us';
 $string['footercopyright']     = '© {$a} Edupro Enterprises (Pvt) Ltd. All Rights Reserved. Harare, Zimbabwe.';
+// FIX #2: missing strings used in drawers.php
+$string['viewallcourses']      = 'View all courses';
 $string['region-side-pre']     = 'Right';

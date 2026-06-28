@@ -4,8 +4,11 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once(__DIR__ . '/../lib.php');
 
+// FIX #1: context_system, striplinks=false
+$syscontext = context_system::instance();
+
 $templatecontext = (object)[
-    'sitename'       => format_string($SITE->shortname, true, ['context' => context_course::instance(SITEID), 'escape' => false]),
+    'sitename'       => format_string($SITE->shortname, false, ['context' => $syscontext]),
     'output'         => $OUTPUT,
     'bodyattributes' => $OUTPUT->body_attributes(),
 ];

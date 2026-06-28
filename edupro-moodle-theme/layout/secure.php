@@ -2,6 +2,9 @@
 // Edupro Boost — Secure layout (CBT exam mode — no nav, no sidebar)
 defined('MOODLE_INTERNAL') || die();
 
+// FIX #3: explicit globals for CBT layout
+global $SITE, $OUTPUT, $PAGE, $CFG;
+
 echo $OUTPUT->doctype();
 ?>
 <html <?php echo $OUTPUT->htmlattributes(); ?>>

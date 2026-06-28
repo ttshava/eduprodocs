@@ -77,7 +77,9 @@ function theme_edupro_boost_get_head_meta() {
 
     $sitename = format_string($SITE->fullname);
     $desc = 'Edupro SMS — Zimbabwe\'s #1 School Management System. ZIMSEC Heritage-Based Curriculum and Cambridge compliant. Offline-first eLearning powered by Moodle.';
-    $ogimage = $CFG->wwwroot . '/theme/edupro_boost/pix/og-image.png';
+    // FIX #4: only reference OG image if file actually exists on disk
+    $ogimgpath = $CFG->dirroot . '/theme/edupro_boost/pix/og-image.png';
+    $ogimage   = file_exists($ogimgpath) ? $CFG->wwwroot . '/theme/edupro_boost/pix/og-image.png' : '';
     $canonical = $PAGE->url->out(false);
 
     $meta  = '<meta name="description" content="' . s($desc) . '">' . "\n";
@@ -87,15 +89,19 @@ function theme_edupro_boost_get_head_meta() {
     $meta .= '<meta property="og:site_name" content="' . s($sitename) . '">' . "\n";
     $meta .= '<meta property="og:title" content="' . s($PAGE->title) . '">' . "\n";
     $meta .= '<meta property="og:description" content="' . s($desc) . '">' . "\n";
-    $meta .= '<meta property="og:image" content="' . s($ogimage) . '">' . "\n";
-    $meta .= '<meta property="og:image:width" content="1200">' . "\n";
-    $meta .= '<meta property="og:image:height" content="630">' . "\n";
+    if ($ogimage) {
+        $meta .= '<meta property="og:image" content="' . s($ogimage) . '">' . "\n";
+        $meta .= '<meta property="og:image:width" content="1200">' . "\n";
+        $meta .= '<meta property="og:image:height" content="630">' . "\n";
+    }
     $meta .= '<meta property="og:locale" content="en_ZW">' . "\n";
     $meta .= '<meta name="twitter:card" content="summary_large_image">' . "\n";
     $meta .= '<meta name="twitter:site" content="@eduprozw">' . "\n";
     $meta .= '<meta name="twitter:title" content="' . s($PAGE->title) . '">' . "\n";
     $meta .= '<meta name="twitter:description" content="' . s($desc) . '">' . "\n";
-    $meta .= '<meta name="twitter:image" content="' . s($ogimage) . '">' . "\n";
+    if ($ogimage) {
+        $meta .= '<meta name="twitter:image" content="' . s($ogimage) . '">' . "\n";
+    }
     $meta .= '<meta name="theme-color" content="#FF0527">' . "\n";
     $meta .= '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
     $meta .= '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";

@@ -2,8 +2,12 @@
 // Edupro Boost — Single column layout (popup, print, frametop)
 defined('MOODLE_INTERNAL') || die();
 
+// FIX #1 + #3: correct context, explicit globals
+global $SITE, $OUTPUT, $PAGE;
+$syscontext = context_system::instance();
+
 $templatecontext = (object)[
-    'sitename'       => format_string($SITE->shortname, true, ['context' => context_course::instance(SITEID), 'escape' => false]),
+    'sitename'       => format_string($SITE->shortname, false, ['context' => $syscontext]),
     'output'         => $OUTPUT,
     'bodyattributes' => $OUTPUT->body_attributes(),
 ];
