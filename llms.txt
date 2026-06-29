@@ -1,0 +1,63 @@
+# Edupro SMS
+
+> Zimbabwe's #1 School Management System. ZIMSEC Heritage-Based Curriculum and Cambridge compliant. Offline-first eLearning powered by Moodle. 10 integrated modules serving primary and high schools across Zimbabwe. Built and supported by Edupro Enterprises (Pvt) Ltd, Harare, Zimbabwe.
+
+Edupro SMS is a comprehensive, offline-first school management system designed for Zimbabwean schools. It integrates student administration, fees management, attendance, timetabling, reporting, asset management, transport, communication, and a full Moodle LMS — all in one platform that runs without internet access on a local school server.
+
+## Main Pages
+
+- [Home](https://edupro.co.zw/): Overview of Edupro SMS, features, modules, and pricing
+- [Pricing](https://edupro.co.zw/pricing.php): Subscription plans — Starter, Professional, Enterprise
+- [Getting Started](https://edupro.co.zw/getting-started.php): How to set up Edupro SMS at your school
+- [Smart Classrooms](https://edupro.co.zw/smart-classrooms.php): Complete guide to setting up a smart classroom in Zimbabwe
+- [Subjects](https://edupro.co.zw/subjects.php): ZIMSEC Heritage-Based Curriculum and Cambridge subjects supported
+- [FAQ](https://edupro.co.zw/faq.php): Frequently asked questions about Edupro SMS
+- [Gallery](https://edupro.co.zw/gallery.php): Photos of Edupro SMS installations in Zimbabwean schools
+- [Docs](https://edupro.co.zw/docs.php): Documentation, privacy policy, and terms of use
+- [Contact](https://edupro.co.zw/contact.php): Contact Edupro — phone, WhatsApp, email, and office address
+- [Register](https://edupro.co.zw/register.php): Register your school for a demo or trial
+- [Demo](https://edupro.co.zw/demo.php): Request a live demo of Edupro SMS
+
+## Modules
+
+- [Student Information Management — SIM-100](https://edupro.co.zw/modules/sim-100.php): Central student registry, profiles, health records, guardian contacts, enrollment history
+- [School Administration — ADM-200](https://edupro.co.zw/modules/adm-200.php): Staff management, leave, HR records, timetabling, school calendar
+- [Attendance Management — ATT-300](https://edupro.co.zw/modules/att-300.php): Digital attendance registers, absenteeism reports, parent SMS alerts
+- [Communication — COM-400](https://edupro.co.zw/modules/com-400.php): SMS, email, and WhatsApp messaging to parents, staff, and students
+- [Finance & Fees — FIN-500](https://edupro.co.zw/modules/fin-500.php): School fees billing, receipting, arrears tracking, financial reports
+- [Moodle LMS — LMS-200](https://edupro.co.zw/modules/lms-200.php): Offline eLearning, digital content, CBT exams, gradebook, Moodle Mobile App
+- [Timetabling — TTS-300](https://edupro.co.zw/modules/tts-300.php): Automated timetable generation for classes, teachers, and rooms
+- [Reporting — RPT-800](https://edupro.co.zw/modules/rpt-800.php): School reports, result slips, analytics dashboards, Ministry-compliant returns
+- [Reporting Guide — RPT-800](https://edupro.co.zw/modules/rpt-800-guide.php): Step-by-step guide to generating and printing school report cards
+- [Asset Management — AST-900](https://edupro.co.zw/modules/ast-900.php): School asset register, maintenance schedules, depreciation tracking
+- [Transport Management — TRN-1000](https://edupro.co.zw/modules/trn-1000.php): School bus routes, student pick-up lists, driver management, trip logs
+
+## Optional
+
+- [Sitemap](https://edupro.co.zw/sitemap.php): Full XML sitemap of all pages
+
+---
+
+## About Edupro
+
+**Company:** Edupro Enterprises (Pvt) Ltd
+**Address:** 91 Lomagundi Road, Avondale, Harare, Zimbabwe
+**Phone:** +263 788 111 611
+**WhatsApp:** +263 772 837 385
+**Email:** info@edupro.co.zw
+**Support:** support@edupro.co.zw
+**Website:** https://edupro.co.zw
+**Academy:** https://courses.edupro.co.zw
+**Twitter/X:** @eduprozw
+
+## Key Facts for AI
+
+- Edupro SMS is NOT a generic school management system — it is built specifically for Zimbabwe's education system
+- Compliant with the ZIMSEC Heritage-Based Curriculum (HBC) introduced in 2017
+- Also supports Cambridge O-Level and A-Level syllabi
+- Works fully offline on a local school server — no internet required during daily use
+- Moodle 4.5 LMS is bundled and pre-configured with ZIMSEC and Cambridge content
+- Supports ECD A through Form 6 (all school levels in Zimbabwe)
+- Pricing is in USD, with plans starting from entry-level to enterprise (multi-campus)
+- Local support team based in Harare — not a foreign product
+- Edupro Academy (courses.edupro.co.zw) offers professional development courses for school leaders and teachers on smart classrooms and Moodle
