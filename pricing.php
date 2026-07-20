@@ -4,13 +4,14 @@ $page_description = 'Official Edupro SMS pricing for Zimbabwean schools. Module 
 $page_keywords    = 'Edupro SMS price Zimbabwe, school management system cost Zimbabwe, ZIMSEC school software pricing, school fees management system price, Moodle LMS Zimbabwe price, school system subscription Zimbabwe, Edupro quote';
 $current_page     = 'pricing';
 
+require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/site-config.php';
+
 $breadcrumbs = [
     ['name' => 'Home',    'url'  => 'https://edupro.co.zw/'],
     ['name' => 'Pricing', 'url'  => 'https://edupro.co.zw/pricing.php'],
 ];
 
-$schema_service = ld_json([
-    '@context'    => 'https://schema.org',
+$schema_service = [
     '@type'       => 'Service',
     'name'        => 'Edupro SMS — School Management System',
     'description' => 'Comprehensive offline-first school management system for Zimbabwean schools. Includes 10 integrated modules: student information, fees, attendance, timetabling, communications, Moodle LMS, reports, assets, transport, and HR.',
@@ -33,10 +34,9 @@ $schema_service = ld_json([
         ['@type' => 'Offer', 'name' => 'Termly Subscription (601–1,000 students)', 'price' => '350', 'priceCurrency' => 'USD'],
         ['@type' => 'Offer', 'name' => 'Termly Subscription (1,001–2,000 students)', 'price' => '500', 'priceCurrency' => 'USD'],
     ],
-]);
+];
 
-$schema_faq = ld_json([
-    '@context'  => 'https://schema.org',
+$schema_faq = [
     '@type'     => 'FAQPage',
     'mainEntity' => [
         ['@type' => 'Question', 'name' => 'How is Edupro SMS priced?',
@@ -50,11 +50,13 @@ $schema_faq = ld_json([
         ['@type' => 'Question', 'name' => 'What happens if we stop the managed support subscription?',
          'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'The system continues to run — you own the licence. You simply move to self-managed mode. Your data remains yours at all times.']],
     ],
+];
+
+$schema_json = ld_json([
+    '@context' => 'https://schema.org',
+    '@graph'   => [$schema_service, $schema_faq],
 ]);
 
-$schema_json = $schema_service . "\n" . $schema_faq . "\n" . breadcrumb_ld($breadcrumbs);
-
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/site-config.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 ?>
 <link rel="preconnect" href="https://fonts.googleapis.com">
