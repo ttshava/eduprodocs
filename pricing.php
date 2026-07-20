@@ -60,20 +60,20 @@ $schema_json = ld_json([
 include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 ?>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
 
 <style>
 /* ── Tokens ────────────────────────────────────────────────────────── */
 :root {
   --bg: #F1F3F6;
   --surface: #FFFFFF;
-  --ink: #142136;
+  --ink: #0f172a;
   --ink-soft: #4A5670;
   --line: #DCE1E9;
-  --navy: #142850;
-  --navy-deep: #0C1A34;
-  --gold: #B8862E;
-  --gold-soft: #F4E8D2;
+  --navy: #1e293b;
+  --navy-deep: #0f172a;
+  --gold: #FF0527;
+  --gold-soft: #fff1f2;
   --green: #2E6B52;
   --red: #FF0527;
   --red-dark: #cc0320;
@@ -82,13 +82,13 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
 /* ── Hero ──────────────────────────────────────────────────────────── */
 .pr-hero {
-  background: linear-gradient(135deg, #0C1A34 0%, #142850 55%, #1a0a0e 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 55%, #1a0a0e 100%);
   padding: 80px 0 68px;
   text-align: center;
   color: #fff;
 }
 .pr-hero h1 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Inter', sans-serif;
   font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -116,7 +116,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 }
 #edupro-calc .calc-header { margin-bottom: 24px; }
 #edupro-calc .calc-header h2 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 700; font-size: 1.75rem;
   color: var(--navy-deep); margin: 0 0 6px;
   letter-spacing: -0.02em;
@@ -142,7 +142,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
   margin-bottom: 16px;
 }
 #edupro-calc .card h3 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Inter', sans-serif;
   font-size: .97rem; font-weight: 600;
   margin: 0 0 3px; color: var(--navy);
 }
@@ -192,9 +192,9 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 #edupro-calc input[type="radio"] { accent-color: var(--navy); cursor: pointer; }
 
 #edupro-calc .tier-banner {
-  background: var(--gold-soft); border: 1px solid #E6D4A8;
+  background: var(--gold-soft); border: 1px solid #fecdd3;
   border-radius: 7px; padding: 9px 12px;
-  font-size: .8rem; margin-top: 12px; color: #6B4E14;
+  font-size: .8rem; margin-top: 12px; color: #7f1d1d;
 }
 #edupro-calc .tier-banner b { color: var(--navy-deep); }
 
@@ -205,7 +205,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
   border-radius: 10px; padding: 22px 22px 20px;
 }
 #edupro-calc .ledger h3 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Inter', sans-serif;
   font-size: .97rem; font-weight: 600;
   margin: 0 0 2px; color: #fff;
 }
@@ -229,7 +229,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
   display: flex; justify-content: space-between; align-items: baseline;
 }
 #edupro-calc .ledger-total .t-lbl {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Inter', sans-serif;
   font-size: .9rem; color: #E8ECF4;
 }
 #edupro-calc .ledger-total .t-amt {
@@ -272,7 +272,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
   justify-content: space-between; gap: 12px;
 }
 .qmodal-head h2 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1.2rem; font-weight: 700;
   color: var(--navy-deep); margin: 0 0 4px;
 }
@@ -328,7 +328,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 }
 .rate-table th {
   background: var(--navy-deep); color: #E8ECF4;
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 600; font-size: .82rem;
   text-align: left; padding: 12px 16px;
   white-space: nowrap;
@@ -355,7 +355,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 .tier-table { width: 100%; border-collapse: collapse; font-size: .875rem; }
 .tier-table th {
   background: var(--navy); color: #E8ECF4;
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 600; text-align: left;
   padding: 11px 16px;
 }
@@ -388,7 +388,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
 #quote-print-frame {
   font-family: 'Inter', -apple-system, sans-serif;
-  color: #142136;
+  color: #0f172a;
   max-width: 800px;
   margin: 0 auto;
   padding: 32px;
@@ -396,46 +396,46 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 .q-letterhead {
   display: flex; align-items: flex-start;
   justify-content: space-between; gap: 24px;
-  padding-bottom: 18px; margin-bottom: 24px;
+  padding-bottom: 12px; margin-bottom: 16px;
   border-bottom: 3px solid #FF0527;
 }
 .q-letterhead img { height: 44px; }
-.q-letterhead .q-company { text-align: right; font-size: .78rem; color: #4A5670; line-height: 1.6; }
-.q-letterhead .q-company strong { color: #0C1A34; font-size: .84rem; }
+.q-letterhead .q-company { text-align: right; font-size: .7rem; color: #4A5670; line-height: 1.6; }
+.q-letterhead .q-company strong { color: #0f172a; font-size: .84rem; }
 .q-meta { display: flex; justify-content: space-between; gap: 24px; margin-bottom: 28px; flex-wrap: wrap; }
 .q-meta .q-to { flex: 1; min-width: 200px; }
-.q-meta .q-to .q-label { font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #B8862E; margin-bottom: 6px; }
-.q-meta .q-to .q-school-name { font-size: 1.05rem; font-weight: 700; color: #0C1A34; margin-bottom: 3px; }
+.q-meta .q-to .q-label { font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #FF0527; margin-bottom: 6px; }
+.q-meta .q-to .q-school-name { font-size: 1.05rem; font-weight: 700; color: #0f172a; margin-bottom: 3px; }
 .q-meta .q-to .q-details { font-size: .8rem; color: #4A5670; line-height: 1.6; }
 .q-meta .q-ref { text-align: right; min-width: 160px; }
 .q-meta .q-ref table { font-size: .8rem; border-collapse: collapse; margin-left: auto; }
 .q-meta .q-ref td { padding: 3px 0 3px 12px; }
 .q-meta .q-ref td:first-child { color: #4A5670; padding-left: 0; }
-.q-meta .q-ref td:last-child { font-weight: 700; color: #0C1A34; text-align: right; font-family: 'JetBrains Mono', monospace; }
-.q-title { font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #B8862E; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+.q-meta .q-ref td:last-child { font-weight: 700; color: #0f172a; text-align: right; font-family: 'JetBrains Mono', monospace; }
+.q-title { font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #FF0527; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
 .q-title::after { content: ''; flex: 1; height: 1px; background: #DCE1E9; }
 .q-items-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; font-size: .84rem; }
-.q-items-table th { background: #0C1A34; color: #E8ECF4; padding: 9px 12px; text-align: left; font-size: .76rem; font-weight: 600; }
+.q-items-table th { background: #0f172a; color: #E8ECF4; padding: 9px 12px; text-align: left; font-size: .76rem; font-weight: 600; }
 .q-items-table th:last-child { text-align: right; }
 .q-items-table td { padding: 9px 12px; border-bottom: 1px solid #DCE1E9; }
 .q-items-table td:last-child { text-align: right; font-family: 'JetBrains Mono', monospace; font-weight: 600; }
 .q-items-table .subtotal-row td { font-weight: 600; background: #f8fafc; }
-.q-items-table .total-row td { font-weight: 800; background: #0C1A34; color: #fff; font-size: .95rem; }
-.q-items-table .total-row td:last-child { color: #B8862E; font-size: 1.05rem; }
-.q-notes { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 24px; }
-.q-notes .q-box { border: 1px solid #DCE1E9; border-radius: 8px; padding: 14px 16px; }
-.q-notes .q-box h4 { font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #B8862E; margin: 0 0 8px; }
-.q-notes .q-box p, .q-notes .q-box ul { font-size: .78rem; color: #4A5670; line-height: 1.6; margin: 0; }
-.q-notes .q-box ul { padding-left: 16px; }
-.q-notes .q-box .mono { font-family: 'JetBrains Mono', monospace; font-weight: 600; color: #0C1A34; }
+.q-items-table .total-row td { font-weight: 800; background: #0f172a; color: #fff; font-size: .95rem; }
+.q-items-table .total-row td:last-child { color: #FF0527; font-size: 1.05rem; }
+.q-notes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+.q-notes .q-box { border: 1px solid #DCE1E9; border-radius: 6px; padding: 8px 10px; }
+.q-notes .q-box h4 { font-size: .58rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #FF0527; margin: 0 0 4px; }
+.q-notes .q-box p, .q-notes .q-box ul { font-size: .64rem; color: #4A5670; line-height: 1.5; margin: 0; }
+.q-notes .q-box ul { padding-left: 14px; }
+.q-notes .q-box .mono { font-family: 'JetBrains Mono', monospace; font-weight: 600; color: #0f172a; }
 .q-footer-bar {
-  margin-top: 24px; padding-top: 14px;
+  margin-top: 14px; padding-top: 10px;
   border-top: 1px solid #DCE1E9;
   display: flex; justify-content: space-between; align-items: flex-start;
-  font-size: .72rem; color: #94a3b8; gap: 20px;
+  font-size: .6rem; color: #94a3b8; gap: 20px;
 }
-.q-sig { margin-top: 32px; display: flex; gap: 48px; }
-.q-sig .sig-block { flex: 1; border-top: 1px solid #142850; padding-top: 8px; font-size: .75rem; color: #4A5670; }
+.q-sig { margin-top: 20px; display: flex; gap: 48px; }
+.q-sig .sig-block { flex: 1; border-top: 1px solid #1e293b; padding-top: 6px; font-size: .68rem; color: #4A5670; }
 </style>
 
 <!-- ── Hero ──────────────────────────────────────────────────────── -->
@@ -871,7 +871,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
   </div>
 
   <!-- Signatures -->
-  <div class="q-sig" style="margin-top:40px;">
+  <div class="q-sig">
     <div class="sig-block">
       Authorised — Edupro Enterprises (Pvt) Ltd<br><br>
       <strong>Timothy Tshava</strong><br>Director
