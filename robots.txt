@@ -1,6 +1,7 @@
 # robots.txt — edupro.co.zw
 # Edupro SMS | School Management System for Zimbabwe
 
+# ── Standard crawlers ────────────────────────────────────────────────
 User-agent: *
 Allow: /
 
@@ -9,12 +10,137 @@ Disallow: /register.php?*
 Disallow: /demo.php?*
 Disallow: /contact.php?*
 
-# Block any admin or private paths if added in future
+# Block admin or private paths
 Disallow: /admin/
 Disallow: /private/
 Disallow: /uploads/
 Disallow: /.well-known/
 Disallow: /includes/
 
-# Sitemap location
+# ── AI / LLM crawlers — allow everything including llms.txt ──────────
+
+# OpenAI — ChatGPT, SearchGPT
+User-agent: GPTBot
+Allow: /
+Allow: /llms.txt
+
+# OpenAI legacy crawler
+User-agent: ChatGPT-User
+Allow: /
+Allow: /llms.txt
+
+# Anthropic — Claude
+User-agent: ClaudeBot
+Allow: /
+Allow: /llms.txt
+
+User-agent: Claude-Web
+Allow: /
+Allow: /llms.txt
+
+User-agent: anthropic-ai
+Allow: /
+Allow: /llms.txt
+
+# Google — Gemini, AI Overviews, NotebookLM
+User-agent: Googlebot
+Allow: /
+Allow: /llms.txt
+
+User-agent: Google-Extended
+Allow: /
+Allow: /llms.txt
+
+# Meta — Llama, Meta AI
+User-agent: meta-externalagent
+Allow: /
+Allow: /llms.txt
+
+User-agent: Meta-ExternalFetcher
+Allow: /
+Allow: /llms.txt
+
+User-agent: FacebookBot
+Allow: /
+Allow: /llms.txt
+
+# xAI — Grok
+User-agent: Grok
+Allow: /
+Allow: /llms.txt
+
+# Perplexity AI
+User-agent: PerplexityBot
+Allow: /
+Allow: /llms.txt
+
+# Microsoft — Copilot, Bing AI
+User-agent: Bingbot
+Allow: /
+Allow: /llms.txt
+
+User-agent: msnbot
+Allow: /
+Allow: /llms.txt
+
+User-agent: OAI-SearchBot
+Allow: /
+Allow: /llms.txt
+
+# Apple — Apple Intelligence, Siri
+User-agent: Applebot
+Allow: /
+Allow: /llms.txt
+
+User-agent: Applebot-Extended
+Allow: /
+Allow: /llms.txt
+
+# Amazon — Alexa, Bedrock
+User-agent: Amazonbot
+Allow: /
+Allow: /llms.txt
+
+# Cohere
+User-agent: cohere-ai
+Allow: /
+Allow: /llms.txt
+
+# Mistral AI
+User-agent: MistralAI-User
+Allow: /
+Allow: /llms.txt
+
+# You.com
+User-agent: YouBot
+Allow: /
+Allow: /llms.txt
+
+# Brave Search AI
+User-agent: Brave
+Allow: /
+Allow: /llms.txt
+
+# Common AI dataset / training crawlers — allow so Edupro appears in training data
+User-agent: CCBot
+Allow: /
+Allow: /llms.txt
+
+User-agent: DataForSeoBot
+Allow: /
+Allow: /llms.txt
+
+User-agent: omgili
+Allow: /
+Allow: /llms.txt
+
+User-agent: omgilibot
+Allow: /
+Allow: /llms.txt
+
+# ── Sitemaps ─────────────────────────────────────────────────────────
 Sitemap: https://edupro.co.zw/sitemap.php
+
+# ── LLMs.txt — structured content for AI systems ─────────────────────
+# https://llmstxt.org
+LLMs: https://edupro.co.zw/llms.txt

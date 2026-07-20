@@ -1,0 +1,821 @@
+{{!
+    Edupro Academy — Moove theme frontpage / course listing
+    Drop into: moodleroot/theme/moove/templates/frontpage.mustache
+
+    Example context (json):
+    {
+        "wwwroot": "https://courses.edupro.co.zw",
+        "output": { "main_content": "..." }
+    }
+}}
+
+{{! ── HERO BANNER ────────────────────────────────────────────────── }}
+<section class="ea-hero">
+    <div class="ea-hero-inner">
+        <div class="ea-hero-text">
+            <div class="ea-hero-badge">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                Edupro Academy — courses.edupro.co.zw
+            </div>
+            <h1 class="ea-hero-title">
+                Learn Smart.<br>
+                <span>Teach Better.</span>
+            </h1>
+            <p class="ea-hero-sub">
+                Professional development courses for Zimbabwean teachers, school administrators, and IT staff. ZIMSEC Heritage-Based Curriculum &amp; Cambridge aligned. Works fully offline.
+            </p>
+            <div class="ea-hero-actions">
+                <a href="/course/index.php" class="ea-btn ea-btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    Browse All Courses
+                </a>
+                <a href="/login/signup.php" class="ea-btn ea-btn-outline">
+                    Register Free
+                </a>
+            </div>
+            <div class="ea-hero-stats">
+                <div class="ea-stat">
+                    <strong>5+</strong>
+                    <span>Courses</span>
+                </div>
+                <div class="ea-stat-sep"></div>
+                <div class="ea-stat">
+                    <strong>100%</strong>
+                    <span>Offline capable</span>
+                </div>
+                <div class="ea-stat-sep"></div>
+                <div class="ea-stat">
+                    <strong>Free</strong>
+                    <span>to register</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="ea-hero-visual" aria-hidden="true">
+            <div class="ea-hero-card ea-hero-card-1">
+                <div class="ea-hc-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+                </div>
+                <div>
+                    <div class="ea-hc-title">Smart Classrooms 101</div>
+                    <div class="ea-hc-sub">5 modules · Certificate</div>
+                </div>
+                <div class="ea-hc-badge">New</div>
+            </div>
+            <div class="ea-hero-card ea-hero-card-2">
+                <div class="ea-hc-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                </div>
+                <div>
+                    <div class="ea-hc-title">Offline Server Setup</div>
+                    <div class="ea-hc-sub">4 modules · Certificate</div>
+                </div>
+            </div>
+            <div class="ea-hero-card ea-hero-card-3">
+                <div class="ea-hc-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                </div>
+                <div>
+                    <div class="ea-hc-title">Creating Quizzes &amp; Tests</div>
+                    <div class="ea-hc-sub">3 modules · Certificate</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{! ── TRUST BAR ───────────────────────────────────────────────────── }}
+<section class="ea-trust-bar">
+    <div class="ea-trust-inner">
+        <div class="ea-trust-item">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            ZIMSEC Aligned
+        </div>
+        <div class="ea-trust-item">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            Cambridge Ready
+        </div>
+        <div class="ea-trust-item">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/></svg>
+            100% Offline
+        </div>
+        <div class="ea-trust-item">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+            Mobile App Ready
+        </div>
+        <div class="ea-trust-item">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+            Certified Courses
+        </div>
+        <div class="ea-trust-item">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Harare Based Support
+        </div>
+    </div>
+</section>
+
+{{! ── FEATURED COURSES ───────────────────────────────────────────── }}
+<section class="ea-section ea-courses-section">
+    <div class="ea-container">
+        <div class="ea-section-head">
+            <div>
+                <div class="ea-section-label">What We Offer</div>
+                <h2 class="ea-section-title">Featured Courses</h2>
+                <p class="ea-section-sub">Practical, hands-on training for Zimbabwean schools. Earn a certificate on completion.</p>
+            </div>
+            <a href="/course/index.php" class="ea-btn ea-btn-outline-dark">View All Courses →</a>
+        </div>
+
+        <div class="ea-courses-grid">
+
+            <!-- Course card 1 -->
+            <div class="ea-course-card">
+                <div class="ea-course-thumb ea-thumb-red">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+                </div>
+                <div class="ea-course-body">
+                    <div class="ea-course-cat">Technology</div>
+                    <h3 class="ea-course-title">
+                        <a href="/course/index.php?categoryid=1">Smart Classrooms 101</a>
+                    </h3>
+                    <p class="ea-course-desc">Set up and manage a fully integrated smart classroom — interactive boards, tablets, offline Moodle, and classroom management software.</p>
+                    <div class="ea-course-meta">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/></svg>
+                            5 Modules
+                        </span>
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                            Certificate
+                        </span>
+                    </div>
+                </div>
+                <div class="ea-course-footer">
+                    <span class="ea-course-price">Free</span>
+                    <a href="/course/index.php?categoryid=1" class="ea-btn-sm">Enrol Now</a>
+                </div>
+            </div>
+
+            <!-- Course card 2 -->
+            <div class="ea-course-card">
+                <div class="ea-course-thumb ea-thumb-blue">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8 21 12 17 16 21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                </div>
+                <div class="ea-course-body">
+                    <div class="ea-course-cat">Technology</div>
+                    <h3 class="ea-course-title">
+                        <a href="/course/index.php?categoryid=2">Interactive Board in Classrooms</a>
+                    </h3>
+                    <p class="ea-course-desc">Master your interactive smart board — lesson delivery, annotation tools, wireless casting, and engaging student activities.</p>
+                    <div class="ea-course-meta">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/></svg>
+                            4 Modules
+                        </span>
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                            Certificate
+                        </span>
+                    </div>
+                </div>
+                <div class="ea-course-footer">
+                    <span class="ea-course-price">Free</span>
+                    <a href="/course/index.php?categoryid=2" class="ea-btn-sm">Enrol Now</a>
+                </div>
+            </div>
+
+            <!-- Course card 3 -->
+            <div class="ea-course-card">
+                <div class="ea-course-thumb ea-thumb-green">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+                </div>
+                <div class="ea-course-body">
+                    <div class="ea-course-cat">Infrastructure</div>
+                    <h3 class="ea-course-title">
+                        <a href="/course/index.php?categoryid=3">School Offline Server Setup</a>
+                    </h3>
+                    <p class="ea-course-desc">Install and configure a local Moodle server for your school — works without internet, supports 100+ students simultaneously.</p>
+                    <div class="ea-course-meta">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/></svg>
+                            6 Modules
+                        </span>
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                            Certificate
+                        </span>
+                    </div>
+                </div>
+                <div class="ea-course-footer">
+                    <span class="ea-course-price">Free</span>
+                    <a href="/course/index.php?categoryid=3" class="ea-btn-sm">Enrol Now</a>
+                </div>
+            </div>
+
+            <!-- Course card 4 -->
+            <div class="ea-course-card">
+                <div class="ea-course-thumb ea-thumb-purple">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><path d="M1 6l10.5 6L22 6M1 6v12l10.5 6L22 18V6"/></svg>
+                </div>
+                <div class="ea-course-body">
+                    <div class="ea-course-cat">Infrastructure</div>
+                    <h3 class="ea-course-title">
+                        <a href="/course/index.php?categoryid=4">School Network Infrastructure</a>
+                    </h3>
+                    <p class="ea-course-desc">Design and install a school network — Wi-Fi 6 access points, Cat6 cabling, gigabit switches, VLANs, and UPS for load-shedding.</p>
+                    <div class="ea-course-meta">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/></svg>
+                            5 Modules
+                        </span>
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                            Certificate
+                        </span>
+                    </div>
+                </div>
+                <div class="ea-course-footer">
+                    <span class="ea-course-price">Free</span>
+                    <a href="/course/index.php?categoryid=4" class="ea-btn-sm">Enrol Now</a>
+                </div>
+            </div>
+
+            <!-- Course card 5 -->
+            <div class="ea-course-card">
+                <div class="ea-course-thumb ea-thumb-orange">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                </div>
+                <div class="ea-course-body">
+                    <div class="ea-course-cat">Teaching &amp; Learning</div>
+                    <h3 class="ea-course-title">
+                        <a href="/course/index.php?categoryid=5">Creating Quizzes, Tests &amp; CBT Exams</a>
+                    </h3>
+                    <p class="ea-course-desc">Build auto-graded quizzes, weekly tests, and computer-based examinations in Moodle — aligned to ZIMSEC and Cambridge question formats.</p>
+                    <div class="ea-course-meta">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/></svg>
+                            4 Modules
+                        </span>
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                            Certificate
+                        </span>
+                    </div>
+                </div>
+                <div class="ea-course-footer">
+                    <span class="ea-course-price">Free</span>
+                    <a href="/course/index.php?categoryid=5" class="ea-btn-sm">Enrol Now</a>
+                </div>
+            </div>
+
+            <!-- CTA card -->
+            <div class="ea-course-card ea-cta-card">
+                <div class="ea-cta-card-inner">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <h3>More courses coming</h3>
+                    <p>School Administration, Moodle Mobile App, Digital Content Creation, and more — register now to be notified.</p>
+                    <a href="/login/signup.php" class="ea-btn ea-btn-primary" style="margin-top:8px;">Register Free</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{{! ── MOODLE MAIN CONTENT (blocks etc.) ─────────────────────────── }}
+<section class="ea-section ea-moodle-content">
+    <div class="ea-container">
+        {{{ output.main_content }}}
+    </div>
+</section>
+
+{{! ── WHY EDUPRO ACADEMY ─────────────────────────────────────────── }}
+<section class="ea-section ea-why-section">
+    <div class="ea-container">
+        <div class="ea-section-head ea-section-head-center">
+            <div class="ea-section-label">Why Choose Us</div>
+            <h2 class="ea-section-title">Built for Zimbabwe's Schools</h2>
+            <p class="ea-section-sub">Every course is designed around the realities of teaching and managing schools in Zimbabwe — load-shedding, limited internet, ZIMSEC curriculum, and tight budgets.</p>
+        </div>
+
+        <div class="ea-why-grid">
+            <div class="ea-why-card">
+                <div class="ea-why-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/></svg>
+                </div>
+                <h3>Offline-First Learning</h3>
+                <p>All courses and content run on the local Moodle server — no internet required during class.</p>
+            </div>
+            <div class="ea-why-card">
+                <div class="ea-why-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <h3>ZIMSEC &amp; Cambridge Aligned</h3>
+                <p>All content references Heritage-Based Curriculum and Cambridge syllabus frameworks.</p>
+            </div>
+            <div class="ea-why-card">
+                <div class="ea-why-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                </div>
+                <h3>Certificates on Completion</h3>
+                <p>Every course awards a verifiable Edupro Academy certificate, recognised by Zimbabwean schools.</p>
+            </div>
+            <div class="ea-why-card">
+                <div class="ea-why-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                </div>
+                <h3>Mobile App Access</h3>
+                <p>Download the Moodle Mobile App to complete courses on a phone or tablet — even without a laptop.</p>
+            </div>
+            <div class="ea-why-card">
+                <div class="ea-why-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <h3>Harare-Based Support</h3>
+                <p>Call, WhatsApp, or email our team in Harare. We support your school throughout the training journey.</p>
+            </div>
+            <div class="ea-why-card">
+                <div class="ea-why-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+                <h3>Free to Register</h3>
+                <p>Create your account at no cost. Most courses are free — enrol and start learning today.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{! ── BOTTOM CTA ─────────────────────────────────────────────────── }}
+<section class="ea-section ea-cta-section">
+    <div class="ea-container">
+        <div class="ea-cta-inner">
+            <div class="ea-cta-text">
+                <h2>Ready to upgrade your school?</h2>
+                <p>Join educators across Zimbabwe already using Edupro Academy. Register free in under 2 minutes.</p>
+            </div>
+            <div class="ea-cta-btns">
+                <a href="/login/signup.php" class="ea-btn ea-btn-white">Register Free</a>
+                <a href="https://wa.me/263772837385?text=Hi%20Edupro%2C%20I%20would%20like%20to%20enquire%20about%20Edupro%20Academy."
+                   target="_blank" rel="noopener noreferrer"
+                   class="ea-btn ea-btn-outline-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17" height="17"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    WhatsApp Us
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{! ── PAGE CSS ────────────────────────────────────────────────────── }}
+<style>
+/* ══ Edupro Academy — Frontpage ══════════════════════════════════════ */
+
+:root {
+    --ea-red:    #FF0527;
+    --ea-dark:   #0f172a;
+    --ea-slate:  #1e293b;
+    --ea-muted:  #64748b;
+    --ea-light:  #f8fafc;
+    --ea-border: #e2e8f0;
+}
+
+/* ─ Hero ─ */
+.ea-hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1a1033 50%, #1f0b12 100%);
+    color: #fff;
+    padding: 72px 0 64px;
+    position: relative;
+    overflow: hidden;
+}
+
+.ea-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Ccircle cx='40' cy='40' r='2'/%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+}
+
+.ea-hero-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 64px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.ea-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,5,39,.15);
+    border: 1px solid rgba(255,5,39,.3);
+    color: #fca5a5;
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+}
+
+.ea-hero-title {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0 0 20px;
+    color: #fff;
+}
+
+.ea-hero-title span { color: #ff8096; }
+
+.ea-hero-sub {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,.75);
+    line-height: 1.7;
+    margin-bottom: 32px;
+    max-width: 520px;
+}
+
+.ea-hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+}
+
+.ea-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 26px;
+    border-radius: 10px;
+    font-size: .95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all .2s;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.ea-btn-primary { background: var(--ea-red); color: #fff; border-color: var(--ea-red); }
+.ea-btn-primary:hover { background: #c0001c; border-color: #c0001c; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,5,39,.3); color: #fff; }
+
+.ea-btn-outline { background: transparent; color: #fff; border-color: rgba(255,255,255,.35); }
+.ea-btn-outline:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.6); color: #fff; }
+
+.ea-btn-outline-dark { background: transparent; color: var(--ea-slate); border-color: var(--ea-border); font-size: .875rem; padding: 10px 20px; }
+.ea-btn-outline-dark:hover { border-color: var(--ea-red); color: var(--ea-red); }
+
+.ea-btn-white { background: #fff; color: var(--ea-red); border-color: #fff; }
+.ea-btn-white:hover { background: #f1f5f9; transform: translateY(-2px); color: var(--ea-red); }
+
+.ea-btn-outline-white { background: transparent; color: #fff; border-color: rgba(255,255,255,.4); }
+.ea-btn-outline-white:hover { background: rgba(255,255,255,.1); border-color: #fff; color: #fff; }
+
+.ea-hero-stats {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.ea-stat { text-align: center; }
+.ea-stat strong { display: block; font-size: 1.5rem; font-weight: 800; color: #fff; }
+.ea-stat span   { font-size: .75rem; color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: .06em; }
+
+.ea-stat-sep {
+    width: 1px;
+    height: 36px;
+    background: rgba(255,255,255,.15);
+}
+
+/* Hero floating cards */
+.ea-hero-visual {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ea-hero-card {
+    background: rgba(255,255,255,.07);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 14px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: transform .2s;
+    color: #fff;
+}
+
+.ea-hero-card:hover { transform: translateX(4px); }
+
+.ea-hc-icon {
+    width: 46px; height: 46px;
+    background: rgba(255,5,39,.2);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    color: #fca5a5;
+}
+
+.ea-hc-title { font-weight: 600; font-size: .9rem; }
+.ea-hc-sub   { font-size: .75rem; color: rgba(255,255,255,.5); margin-top: 2px; }
+
+.ea-hc-badge {
+    margin-left: auto;
+    background: var(--ea-red);
+    color: #fff;
+    font-size: .65rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+
+/* ─ Trust bar ─ */
+.ea-trust-bar {
+    background: #fff;
+    border-bottom: 1px solid var(--ea-border);
+    padding: 16px 0;
+}
+
+.ea-trust-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 24px 40px;
+}
+
+.ea-trust-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: .82rem;
+    font-weight: 600;
+    color: var(--ea-muted);
+}
+
+.ea-trust-item svg { color: var(--ea-red); }
+
+/* ─ Sections ─ */
+.ea-section { padding: 72px 0; }
+.ea-container { max-width: 1300px; margin: 0 auto; padding: 0 32px; }
+
+.ea-courses-section { background: var(--ea-light); }
+.ea-why-section     { background: #fff; }
+
+.ea-section-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    gap: 16px;
+}
+
+.ea-section-head-center { flex-direction: column; align-items: center; text-align: center; }
+
+.ea-section-label {
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ea-red);
+    margin-bottom: 8px;
+}
+
+.ea-section-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--ea-dark);
+    margin: 0 0 10px;
+}
+
+.ea-section-sub {
+    font-size: .95rem;
+    color: var(--ea-muted);
+    max-width: 560px;
+    margin: 0;
+    line-height: 1.65;
+}
+
+/* ─ Course cards ─ */
+.ea-courses-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.ea-course-card {
+    background: #fff;
+    border: 1px solid var(--ea-border);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow .2s, transform .2s;
+}
+
+.ea-course-card:hover {
+    box-shadow: 0 12px 40px rgba(0,0,0,.1);
+    transform: translateY(-3px);
+}
+
+.ea-course-thumb {
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,.9);
+}
+
+.ea-thumb-red    { background: linear-gradient(135deg, #FF0527, #c0001c); }
+.ea-thumb-blue   { background: linear-gradient(135deg, #0ea5e9, #0369a1); }
+.ea-thumb-green  { background: linear-gradient(135deg, #16a34a, #15803d); }
+.ea-thumb-purple { background: linear-gradient(135deg, #7c3aed, #5b21b6); }
+.ea-thumb-orange { background: linear-gradient(135deg, #f59e0b, #d97706); }
+
+.ea-course-body {
+    padding: 20px 20px 12px;
+    flex: 1;
+}
+
+.ea-course-cat {
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ea-red);
+    margin-bottom: 8px;
+}
+
+.ea-course-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ea-dark);
+    margin: 0 0 10px;
+    line-height: 1.35;
+}
+
+.ea-course-title a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.ea-course-title a:hover { color: var(--ea-red); }
+
+.ea-course-desc {
+    font-size: .85rem;
+    color: var(--ea-muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.ea-course-meta {
+    display: flex;
+    gap: 14px;
+    margin-top: 14px;
+}
+
+.ea-course-meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: .78rem;
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.ea-course-meta svg { color: var(--ea-red); }
+
+.ea-course-footer {
+    padding: 14px 20px;
+    border-top: 1px solid var(--ea-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ea-course-price {
+    font-size: .95rem;
+    font-weight: 800;
+    color: #16a34a;
+}
+
+.ea-btn-sm {
+    background: var(--ea-red);
+    color: #fff;
+    font-size: .8rem;
+    font-weight: 600;
+    padding: 7px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background .2s;
+}
+
+.ea-btn-sm:hover { background: #c0001c; color: #fff; }
+
+/* CTA card */
+.ea-cta-card {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-color: #334155;
+    cursor: default;
+}
+
+.ea-cta-card:hover { transform: none; box-shadow: none; }
+
+.ea-cta-card-inner {
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 100%;
+    color: rgba(255,255,255,.6);
+}
+
+.ea-cta-card-inner svg { margin-bottom: 16px; color: rgba(255,255,255,.3); }
+.ea-cta-card-inner h3  { font-size: 1.05rem; font-weight: 700; color: #fff; margin: 0 0 10px; }
+.ea-cta-card-inner p   { font-size: .85rem; line-height: 1.6; margin: 0; color: rgba(255,255,255,.55); }
+
+/* ─ Why grid ─ */
+.ea-why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.ea-why-card {
+    padding: 28px;
+    border: 1px solid var(--ea-border);
+    border-radius: 14px;
+    background: var(--ea-light);
+    transition: box-shadow .2s;
+}
+
+.ea-why-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,.06); }
+
+.ea-why-icon {
+    width: 48px; height: 48px;
+    background: #fff1f2;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ea-red);
+    margin-bottom: 16px;
+}
+
+.ea-why-card h3 { font-size: .95rem; font-weight: 700; color: var(--ea-dark); margin: 0 0 8px; }
+.ea-why-card p  { font-size: .875rem; color: var(--ea-muted); margin: 0; line-height: 1.6; }
+
+/* ─ Moodle content area ─ */
+.ea-moodle-content { padding: 40px 0; }
+
+/* ─ Bottom CTA ─ */
+.ea-cta-section { background: linear-gradient(135deg, #FF0527 0%, #c0001c 100%); padding: 64px 0; }
+
+.ea-cta-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+}
+
+.ea-cta-text h2 { font-size: 1.8rem; font-weight: 800; color: #fff; margin: 0 0 8px; }
+.ea-cta-text p  { font-size: 1rem; color: rgba(255,255,255,.8); margin: 0; }
+
+.ea-cta-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* ─ Responsive ─ */
+@media (max-width: 1100px) {
+    .ea-courses-grid, .ea-why-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 900px) {
+    .ea-hero-inner { grid-template-columns: 1fr; }
+    .ea-hero-visual { display: none; }
+    .ea-hero-title { font-size: 2.2rem; }
+    .ea-section-head { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 640px) {
+    .ea-courses-grid, .ea-why-grid { grid-template-columns: 1fr; }
+    .ea-hero { padding: 48px 0 40px; }
+    .ea-hero-title { font-size: 1.8rem; }
+    .ea-cta-inner { flex-direction: column; text-align: center; }
+    .ea-cta-btns { justify-content: center; }
+    .ea-trust-inner { gap: 16px 24px; }
+    .ea-hero-inner, .ea-container { padding: 0 20px; }
+}
+</style>

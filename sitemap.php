@@ -29,6 +29,8 @@ $pages = [
   ['/modules/rpt-800-guide.php', $today, 'monthly', '0.6'],
   ['/modules/ast-900.php', $today, 'monthly', '0.8'],
   ['/modules/trn-1000.php', $today, 'monthly', '0.8'],
+  // Solutions
+  ['/smart-classrooms.php', $today, 'monthly', '0.9'],
 ];
 
 echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";

@@ -85,6 +85,37 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
   </div>
 </div>
 
+<!-- ═══════════════════════════════════════════ PHOTO SHOWCASE -->
+<section class="section photo-showcase">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">Edupro in Action</span>
+      <h2 class="heading">Transforming Schools Across Zimbabwe</h2>
+      <p class="subheading">Purpose-built school management technology, deployed and running in Zimbabwean primary and high schools.</p>
+    </div>
+    <div class="showcase-grid">
+      <div class="showcase-item showcase-item--large">
+        <img src="/assets/img/edupro1.jpg"
+             alt="Edupro SMS school management system in action at a Zimbabwean school"
+             width="800" height="500"
+             loading="lazy">
+      </div>
+      <div class="showcase-item">
+        <img src="/assets/img/edupro2.jpg"
+             alt="Teachers and students using Edupro SMS at a Zimbabwe school"
+             width="400" height="280"
+             loading="lazy">
+      </div>
+      <div class="showcase-item">
+        <img src="/assets/img/edupro3.jpg"
+             alt="Edupro offline school server setup — ZIMSEC and Cambridge compliant"
+             width="400" height="280"
+             loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ═══════════════════════════════════════════ WHY EDUPRO -->
 <section class="section section-dark" id="why">
   <div class="container">
@@ -359,5 +390,31 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
     </div>
   </div>
 </section>
+
+<style>
+.photo-showcase { padding-top: 48px; padding-bottom: 56px; }
+.showcase-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 16px;
+  margin-top: 40px;
+}
+.showcase-item { border-radius: 16px; overflow: hidden; }
+.showcase-item--large { grid-row: span 2; }
+.showcase-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .4s ease;
+}
+.showcase-item:hover img { transform: scale(1.03); }
+@media (max-width: 640px) {
+  .showcase-grid { grid-template-columns: 1fr; }
+  .showcase-item--large { grid-row: span 1; }
+  .showcase-item img { height: 240px; }
+}
+</style>
 
 <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>
