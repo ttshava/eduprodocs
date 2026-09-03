@@ -587,7 +587,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
           <div class="still-question-btns">
             <a href="tel:+263788111611" class="btn btn-red">Call +263 788 111 611</a>
             <a href="/contact.php" class="btn btn-outline-white">Send a Message</a>
-            <a href="/demo.php" class="btn btn-outline-white">Book a Demo</a>
+            <a href="https://beta.edupro.co.zw/book-demo" class="btn btn-outline-white">Book a Demo</a>
           </div>
         </div>
 
@@ -601,8 +601,8 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
     <h2>Ready to See Edupro SMS at Your School?</h2>
     <p>Book a free 45-minute demonstration or register your school today.</p>
     <div class="cta-actions">
-      <a href="/demo.php" class="btn btn-white btn-lg">Book a Free Demo</a>
-      <a href="/register.php" class="btn btn-outline-white btn-lg">Register Your School</a>
+      <a href="https://beta.edupro.co.zw/book-demo" class="btn btn-white btn-lg">Book a Free Demo</a>
+      <a href="https://beta.edupro.co.zw/get-started" class="btn btn-outline-white btn-lg">Register Your School</a>
     </div>
   </div>
 </section>

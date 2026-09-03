@@ -890,7 +890,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
         <li><a href="/modules/rpt-800.php">RPT-800 Academic Reporting — Module Overview</a></li>
         <li><a href="sim-100.html">SIM-100 Student Information Management</a></li>
         <li><a href="lms-200.html">LMS-200 Moodle Learning Management</a></li>
-        <li><a href="../portal/login.php">School Portal Login</a></li>
+        <li><a href="https://beta.edupro.co.zw/login">School Portal Login</a></li>
         <li><a href="../contact.php">Contact &amp; Support</a></li>
       </ul>
     </section>

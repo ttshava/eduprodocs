@@ -36,7 +36,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
           Edupro ESMS is a comprehensive 10-module digital ecosystem built for Zimbabwean schools — fully compliant with <strong>ZIMSEC Heritage-Based Curriculum</strong> and <strong>Cambridge</strong>. Works <strong>online and offline</strong>, powered by world-class Moodle LMS technology.
         </p>
         <div class="hero-cta">
-          <a href="/getting-started.php" class="btn btn-white btn-lg">
+          <a href="https://beta.edupro.co.zw/get-started" class="btn btn-white btn-lg">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
             Get Started
           </a>
@@ -373,7 +373,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
     <div style="background:var(--gray-900);color:white;border-radius:var(--radius-lg);padding:32px;margin-top:32px;display:flex;gap:32px;align-items:center;flex-wrap:wrap;">
       <div style="flex:1;min-width:200px;"><h4 style="font-size:1rem;font-weight:700;margin-bottom:8px;">Office Location</h4><p style="font-size:0.92rem;color:var(--gray-400);margin:0;"><?= ADDRESS ?><br><span style="color:var(--gray-500);font-size:0.85rem;">Mon–Fri · 8:00 AM – 5:00 PM CAT</span></p></div>
       <div style="flex:1;min-width:200px;"><h4 style="font-size:1rem;font-weight:700;margin-bottom:8px;">Banking Details</h4><p style="font-size:0.92rem;color:var(--gray-400);margin:0;">Steward Bank<br>USD Account: 1044227483<br>ZiG Account: 1044488473</p></div>
-      <div style="flex-shrink:0;"><a href="/getting-started.php" class="btn btn-red">Schedule a Demo Visit</a></div>
+      <div style="flex-shrink:0;"><a href="https://beta.edupro.co.zw/book-demo" class="btn btn-red">Schedule a Demo Visit</a></div>
     </div>
   </div>
 </section>
@@ -385,7 +385,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
     <h2>Start Your School's Digital Journey Today</h2>
     <p>Join the growing community of Zimbabwean schools that have modernised administration, enhanced teaching, and empowered parents with Edupro ESMS.</p>
     <div class="cta-actions">
-      <a href="/getting-started.php" class="btn btn-white btn-lg">Get Started — It's Simple</a>
+      <a href="https://beta.edupro.co.zw/get-started" class="btn btn-white btn-lg">Get Started — It's Simple</a>
       <a href="/docs.php" class="btn btn-outline-white btn-lg">Read Documentation</a>
     </div>
   </div>

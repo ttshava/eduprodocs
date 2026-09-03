@@ -129,7 +129,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
       </div>
     </div>
     <div style="text-align:center;margin-top:24px;">
-      <a href="/demo.php" class="btn btn-red btn-lg">Book a Live Demo Instead →</a>
+      <a href="https://beta.edupro.co.zw/book-demo" class="btn btn-red btn-lg">Book a Live Demo Instead →</a>
     </div>
   </div>
 </section>
@@ -313,7 +313,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
     <div style="text-align:center;margin-top:48px;">
       <p style="color:var(--gray-500);margin-bottom:20px;">These are illustrated previews. Book a demo to see the live system with real data.</p>
-      <a href="/demo.php" class="btn btn-red btn-lg">Book a Live Demo →</a>
+      <a href="https://beta.edupro.co.zw/book-demo" class="btn btn-red btn-lg">Book a Live Demo →</a>
     </div>
 
   </div>
@@ -330,7 +330,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
     <div class="lightbox-body">
       <p id="lb-desc"></p>
       <div class="lightbox-cta">
-        <a href="/demo.php" class="btn btn-red">Book a Demo to See This Live</a>
+        <a href="https://beta.edupro.co.zw/book-demo" class="btn btn-red">Book a Demo to See This Live</a>
         <button onclick="closeLightbox()" class="btn btn-outline-red">Close</button>
       </div>
     </div>
@@ -342,8 +342,8 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
     <h2>Ready to See It Live at Your School?</h2>
     <p>A 45-minute live demo — free, no commitment, tailored to your school's needs.</p>
     <div class="cta-actions">
-      <a href="/demo.php" class="btn btn-white btn-lg">Book a Free Demo</a>
-      <a href="/register.php" class="btn btn-outline-white btn-lg">Register Your School</a>
+      <a href="https://beta.edupro.co.zw/book-demo" class="btn btn-white btn-lg">Book a Free Demo</a>
+      <a href="https://beta.edupro.co.zw/get-started" class="btn btn-outline-white btn-lg">Register Your School</a>
     </div>
   </div>
 </section>

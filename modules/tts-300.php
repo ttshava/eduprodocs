@@ -237,7 +237,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
     <p>Contact our Harare team for a live demonstration of this module.</p>
     <div class="cta-actions">
       <a href="tel:+263788111611" class="btn btn-white btn-lg">Call +263 788 111 611</a>
-      <a href="/getting-started.php" class="btn btn-outline-white btn-lg">Get Started</a>
+      <a href="https://beta.edupro.co.zw/get-started" class="btn btn-outline-white btn-lg">Get Started</a>
     </div>
   </div>
 </section>

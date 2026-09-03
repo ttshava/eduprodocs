@@ -196,7 +196,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
         </div>
 
         <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--gray-200);">
-          <a href="/getting-started.php" class="btn btn-red btn-sm" style="width:100%;justify-content:center;border-radius:var(--radius-sm);">
+          <a href="https://beta.edupro.co.zw/get-started" class="btn btn-red btn-sm" style="width:100%;justify-content:center;border-radius:var(--radius-sm);">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
             Get Started
           </a>

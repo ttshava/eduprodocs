@@ -716,8 +716,8 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
     <h2>Ready to Get Started?</h2>
     <p>Generate your quotation above, or register your school and our team will prepare a deployment proposal within 3 business days.</p>
     <div class="cta-actions">
-      <a href="/register.php" class="btn btn-white btn-lg">Register Your School</a>
-      <a href="/demo.php" class="btn btn-outline-white btn-lg">Book a Demo First</a>
+      <a href="https://beta.edupro.co.zw/get-started" class="btn btn-white btn-lg">Register Your School</a>
+      <a href="https://beta.edupro.co.zw/book-demo" class="btn btn-outline-white btn-lg">Book a Demo First</a>
     </div>
   </div>
 </section>

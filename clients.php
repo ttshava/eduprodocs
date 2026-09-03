@@ -291,8 +291,8 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
       <h2>Ready to Join Them?</h2>
       <p>See how Edupro SMS can run fees, reporting, and online learning for your school or organisation.</p>
       <div class="clients-cta-actions">
-        <a href="/demo.php" class="btn btn-red">Book a Demo</a>
-        <a href="/register.php" class="btn btn-outline-red">Register Your School</a>
+        <a href="https://beta.edupro.co.zw/book-demo" class="btn btn-red">Book a Demo</a>
+        <a href="https://beta.edupro.co.zw/get-started" class="btn btn-outline-red">Register Your School</a>
       </div>
     </div>
 
