@@ -23,7 +23,13 @@ jobs:
           port:             21
           protocol:         ftp
           local-dir:        ./        # root of this repo
-          server-dir:       /public_html/
+          # The FTP account's own home directory is already
+          # /home/eduproco/public_html/ — setting server-dir to /public_html/
+          # here made every deploy land one level too deep, in a nested
+          # public_html/public_html/ that nothing actually served. Confirmed
+          # via cPanel File Manager: that's where every prior deploy's files
+          # were sitting, dating back to this workflow's original setup.
+          server-dir:       /
           dangerous-clean-slate: false   # safe: only uploads changed files
 
           # Exclude dev/internal files — these must NOT go to public_html
