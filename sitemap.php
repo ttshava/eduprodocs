@@ -12,6 +12,7 @@ $pages = [
   ['/getting-started.php', $today, 'monthly', '0.9'],
   ['/subjects.php', $today, 'monthly', '0.8'],
   ['/faq.php', $today, 'monthly', '0.8'],
+  ['/clients.php', $today, 'monthly', '0.8'],
   ['/gallery.php', $today, 'monthly', '0.7'],
   ['/docs.php', $today, 'monthly', '0.7'],
   ['/contact.php', $today, 'monthly', '0.7'],

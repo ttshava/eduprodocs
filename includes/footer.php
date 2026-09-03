@@ -42,6 +42,7 @@
         <a href="/subjects.php"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>Curriculum &amp; Subjects</a>
         <a href="/pricing.php"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>Pricing</a>
         <a href="/faq.php"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>FAQ</a>
+        <a href="/clients.php"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>Clients</a>
         <a href="/docs.php"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>Documentation</a>
         <a href="/contact.php"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>Contact Us</a>
       </div>

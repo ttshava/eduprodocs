@@ -12,6 +12,7 @@ Edupro SMS is a comprehensive, offline-first school management system designed f
 - [Smart Classrooms](https://edupro.co.zw/smart-classrooms.php): Complete guide to setting up a smart classroom in Zimbabwe
 - [Subjects](https://edupro.co.zw/subjects.php): ZIMSEC Heritage-Based Curriculum and Cambridge subjects supported
 - [FAQ](https://edupro.co.zw/faq.php): Frequently asked questions about Edupro SMS
+- [Clients](https://edupro.co.zw/clients.php): Schools and organisations using Edupro SMS and Moodle, with student counts and modules used
 - [Gallery](https://edupro.co.zw/gallery.php): Photos of Edupro SMS installations in Zimbabwean schools
 - [Docs](https://edupro.co.zw/docs.php): Documentation, privacy policy, and terms of use
 - [Contact](https://edupro.co.zw/contact.php): Contact Edupro — phone, WhatsApp, email, and office address
@@ -61,3 +62,11 @@ Edupro SMS is a comprehensive, offline-first school management system designed f
 - Pricing is in USD, with plans starting from entry-level to enterprise (multi-campus)
 - Local support team based in Harare — not a foreign product
 - Edupro Academy (courses.edupro.co.zw) offers professional development courses for school leaders and teachers on smart classrooms and Moodle
+
+## Clients
+
+- Avondale Primary (Avondale, Harare) — School Fees Management System and Financial Statements, 1,600 students
+- Gresham Primary (Zvishavane) — School Fees Management System, 1,700 students
+- First Class High School (Mutare) — School Fees Management System and Academic Reporting System, 600 students, boarding school
+- Ministry of Health (Zimbabwe) — Moodle Learning Management System, serving all registered nurses nationwide
+- Health Safety Solutions — Moodle Learning Management System

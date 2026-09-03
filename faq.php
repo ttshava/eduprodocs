@@ -151,7 +151,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
           <a href="#general" class="faq-cat-link active" onclick="setActive(this)">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             General
-            <span class="faq-cat-count">8</span>
+            <span class="faq-cat-count">10</span>
           </a>
           <a href="#pricing" class="faq-cat-link" onclick="setActive(this)">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
@@ -225,7 +225,17 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
           <div class="faq-item">
             <button class="faq-q" onclick="toggleFaq(this)">How many schools are currently using Edupro SMS?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
-            <div class="faq-a"><p>Edupro SMS is currently live at 5 schools across Zimbabwe, including Gresham Government Primary School, B and P Study Centre, and First Class High School. Schools span government, private, and study centre categories. No school has left the platform since its launch.</p></div>
+            <div class="faq-a"><p>Edupro SMS is currently live at schools across Zimbabwe, including Avondale Primary (Harare, 1,600 students), Gresham Primary (Zvishavane, 1,700 students), and First Class High School (Mutare, 600 students, boarding). No school has left the platform since its launch. See our <a href="/clients.php">full client list</a> for details.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Can I see examples of schools using Edupro SMS?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>Yes — visit our <a href="/clients.php">Clients page</a> for the full list of schools and organisations currently using Edupro SMS, including which modules each one runs and how many students each system manages.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Does Edupro only work for schools?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="faq-a"><p>No. While Edupro SMS itself is built for schools, our Moodle LMS module is also deployed for non-school clients — including the Ministry of Health (serving all registered nurses nationwide) and Health Safety Solutions — for staff training and learning management outside the classroom. See our <a href="/clients.php">Clients page</a> for the full list.</p></div>
           </div>
 
           <div class="faq-item">
